@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --paper: oklch(0.985 0.008 230);
+  --mist: oklch(0.965 0.012 230);
+  --line: oklch(0.9 0.02 230);
+  --navy: oklch(0.32 0.068 236);
+  --ink: oklch(0.38 0.025 250);
+  --ink-soft: oklch(0.46 0.02 250);
+  --frisian: oklch(0.68 0.14 230);
+  --pompebled: oklch(0.48 0.175 22);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-mist: var(--mist);
+  --color-line: var(--line);
+  --color-navy: var(--navy);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-frisian: var(--frisian);
+  --color-pompebled: var(--pompebled);
+  --font-sans: var(--font-latin), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  background:
+    radial-gradient(1200px 420px at 10% -10%, oklch(0.68 0.14 230 / 0.08), transparent 55%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-latin), ui-sans-serif, system-ui, sans-serif;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--frisian);
+  outline-offset: 3px;
+}
