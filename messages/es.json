@@ -97,7 +97,7 @@
     "cookiesTitle": "Cookies y almacenamiento local",
     "cookies": "El idioma va en la URL (/nl, /en, /es, /fa), no en una cookie de seguimiento. El tema claro u oscuro se guarda en localStorage y en una cookie de origen theme (un año) para que la página no parpadee. El escritorio de edición pone una cookie de origen hellolwd_admin tras el inicio de sesión; solo para quien edita el sitio.",
     "thirdTitle": "Otros servicios",
-    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador."
+    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.",
     "rightsTitle": "Tus derechos",
     "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en hello@hellolwd.nl. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
   },

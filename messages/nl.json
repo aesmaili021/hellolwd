@@ -97,7 +97,7 @@
     "cookiesTitle": "Cookies en lokale opslag",
     "cookies": "De taal zit in de URL (/nl, /en, /es, /fa), niet in een trackingcookie. Licht of donker thema staat in localStorage en in een first-party cookie theme (één jaar) zodat de pagina niet flitst. De redactiedesk zet na inloggen een first-party cookie hellolwd_admin; die is alleen voor wie de site bewerkt.",
     "thirdTitle": "Andere diensten",
-    "third": "Nieuws komt uit de openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS. We linken altijd terug naar het origineel.\n\nHet weer van Leeuwarden halen we op onze server bij Open-Meteo. Uitslagen van SC Cambuur en de eredivisietabel komen via ESPN op onze server. Vertalingen kunnen op onze server via Google AI Studio (Gemini) en anders via andere machinevertaling. Die verzoeken gaan van onze server, niet uit jouw browser."
+    "third": "Nieuws komt uit de openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS. We linken altijd terug naar het origineel.\n\nHet weer van Leeuwarden halen we op onze server bij Open-Meteo. Uitslagen van SC Cambuur en de eredivisietabel komen via ESPN op onze server. Vertalingen kunnen op onze server via Google AI Studio (Gemini) en anders via andere machinevertaling. Die verzoeken gaan van onze server, niet uit jouw browser.",
     "rightsTitle": "Jouw rechten",
     "rights": "Denk je dat we persoonsgegevens over je hebben, dan kun je inzage, correctie of verwijdering vragen via hello@hellolwd.nl. Je kunt een klacht indienen bij de Autoriteit Persoonsgegevens."
   },
