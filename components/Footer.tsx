@@ -6,6 +6,7 @@ const SOURCES = [
   { name: "Omrop Fryslân", href: "https://www.omropfryslan.nl/" },
   { name: "Omroep Leeuwarden", href: "https://www.omroepleeuwarden.nl/" },
   { name: "LC.nl", href: "https://lc.nl/" },
+  { name: "NOS", href: "https://nos.nl/" },
 ];
 
 export async function Footer() {

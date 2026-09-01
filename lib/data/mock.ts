@@ -29,6 +29,7 @@ export const mockRss: RssSource[] = [
     url: "https://www.omropfryslan.nl/rss/nederlands",
     enabled: true,
     locales: [...allLocales],
+    scope: "local",
     created_at: created,
   },
   {
@@ -37,6 +38,7 @@ export const mockRss: RssSource[] = [
     url: "https://omroepleeuwarden.nl/feed/",
     enabled: true,
     locales: [...allLocales],
+    scope: "local",
     created_at: created,
   },
   {
@@ -45,6 +47,16 @@ export const mockRss: RssSource[] = [
     url: "https://www.lc.nl/rss/",
     enabled: true,
     locales: [...allLocales],
+    scope: "local",
+    created_at: created,
+  },
+  {
+    id: "rss-nos",
+    name: "NOS Binnenland",
+    url: "https://feeds.nos.nl/nosnieuwsbinnenland",
+    enabled: true,
+    locales: [...allLocales],
+    scope: "national",
     created_at: created,
   },
 ];

@@ -89,6 +89,10 @@ export default async function AdminRssPage({
             <input type="checkbox" name="enabled" defaultChecked className="accent-primary" />
             On
           </label>
+          <label className="flex items-center gap-2 text-sm font-semibold text-navy">
+            <input type="checkbox" name="scope" value="national" className="accent-primary" />
+            National NL
+          </label>
           <button type="submit" className="min-h-11 cursor-pointer rounded-full bg-brand px-4 text-sm font-extrabold text-paper">
             Add feed
           </button>
@@ -103,7 +107,14 @@ export default async function AdminRssPage({
           <li key={feed.id} className="flex flex-col gap-3 px-4 py-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="font-bold text-navy">{feed.name}</p>
+                <p className="font-bold text-navy">
+                  {feed.name}
+                  {feed.scope === "national" ? (
+                    <span className="ms-2 align-middle text-[11px] font-extrabold tracking-[0.08em] text-primary uppercase">
+                      NL
+                    </span>
+                  ) : null}
+                </p>
                 <a href={feed.url} className="break-all text-[13px] text-primary hover:text-navy" target="_blank" rel="noreferrer">
                   {feed.url}
                 </a>
@@ -122,6 +133,7 @@ export default async function AdminRssPage({
                   <input type="hidden" name="id" value={feed.id} />
                   <input type="hidden" name="name" value={feed.name} />
                   <input type="hidden" name="url" value={feed.url} />
+                  <input type="hidden" name="scope" value={feed.scope} />
                   {feed.enabled ? null : <input type="hidden" name="enabled" value="on" />}
                   <button type="submit" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
                     {feed.enabled ? "Turn off" : "Turn on"}
@@ -134,6 +146,7 @@ export default async function AdminRssPage({
               <input type="hidden" name="id" value={feed.id} />
               <input type="hidden" name="name" value={feed.name} />
               <input type="hidden" name="url" value={feed.url} />
+              <input type="hidden" name="scope" value={feed.scope} />
               {feed.enabled ? <input type="hidden" name="enabled" value="on" /> : null}
               <LocalePicks selected={feed.locales} />
               <button type="submit" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">

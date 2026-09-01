@@ -24,6 +24,19 @@ export function isLeeuwardenStory(item: {
   return LOCAL.test(hay);
 }
 
+export function shouldIngestStory(
+  item: {
+    title: string;
+    summary: string;
+    link: string;
+    category: string;
+  },
+  sourceUrl: string,
+  national = false,
+) {
+  return national || isLeeuwardenStory(item, sourceUrl);
+}
+
 export function classifyCategory(item: {
   title: string;
   summary: string;

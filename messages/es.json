@@ -71,7 +71,7 @@
     "title": "Acerca de",
     "version": "versión {version}",
     "body": "HelloLWD es un briefing compacto de noticias locales y noches de fin de semana para internacionales en Leeuwarden. Solo resúmenes. Cada historia enlaza a su fuente.",
-    "more": "Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden y LC.nl, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
+    "more": "Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
   },
   "footer": {
     "version": "v{version}",
@@ -89,7 +89,7 @@
   },
   "privacy": {
     "title": "Política de privacidad",
-    "updated": "Última actualización 31 de agosto de 2026 · HelloLWD {version}",
+    "updated": "Última actualización 2 de septiembre de 2026 · HelloLWD {version}",
     "whoTitle": "Quiénes somos",
     "who": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden, Países Bajos. Contacto: hello@hellolwd.nl. El número KVK del pie es un marcador hasta que la organización esté registrada.",
     "dataTitle": "Qué tratamos",
@@ -97,13 +97,13 @@
     "cookiesTitle": "Cookies y almacenamiento local",
     "cookies": "El idioma va en la URL (/nl, /en, /es, /fa), no en una cookie de seguimiento. El tema claro u oscuro se guarda en localStorage y en una cookie de origen theme (un año) para que la página no parpadee. El escritorio de edición pone una cookie de origen hellolwd_admin tras el inicio de sesión; solo para quien edita el sitio.",
     "thirdTitle": "Otros servicios",
-    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden y LC.nl. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.",
+    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador."
     "rightsTitle": "Tus derechos",
     "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en hello@hellolwd.nl. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
   },
   "cookies": {
     "title": "Cookies",
-    "updated": "Última actualización 31 de agosto de 2026 · HelloLWD {version}",
+    "updated": "Última actualización 2 de septiembre de 2026 · HelloLWD {version}",
     "neededTitle": "Solo lo que el sitio necesita",
     "needed": "HelloLWD usa unas pocas cookies de origen para que el sitio funcione. No usamos cookies de publicidad, analítica o redes sociales, así que no hay banner de marketing.",
     "listTitle": "Cookies que ponemos",
@@ -112,6 +112,34 @@
     "notused": "Ni Google Analytics, ni píxeles publicitarios, ni huella digital. El tiempo y las noticias se cargan en el servidor, así que Open-Meteo y las redacciones no dejan cookies en tu navegador a través de este sitio.",
     "choiceTitle": "Tus opciones",
     "choice": "Puedes borrar cookies y datos del sitio en el navegador. Eso restablece el tema y cierra la sesión de un editor. Preguntas: hello@hellolwd.nl."
+  },
+  "calendar": {
+    "label": "Calendario de Países Bajos y Frisia",
+    "nl": "NL",
+    "frl": "FRL",
+    "day": {
+      "newYear": "Año Nuevo",
+      "goodFriday": "Viernes Santo",
+      "easter": "Pascua",
+      "easterMonday": "Lunes de Pascua",
+      "sintPiterArrival": "Llegada de Sint Piter, Grou",
+      "sintPiter": "Sint Piter, Grou",
+      "kingsNight": "Noche del Rey",
+      "kingsDay": "Día del Rey",
+      "remembrance": "Día de la Memoria",
+      "liberation": "Día de la Liberación",
+      "ascension": "Ascensión",
+      "pentecost": "Pentecostés",
+      "pentecostMonday": "Lunes de Pentecostés",
+      "pcFraneker": "PC de kaatsen, Franeker",
+      "sneekweek": "Sneekweek",
+      "prinsjesdag": "Prinsjesdag",
+      "sintMaarten": "San Martín",
+      "sinterklaas": "Sinterklaas",
+      "christmas": "Navidad",
+      "boxingDay": "Segundo día de Navidad",
+      "newYearsEve": "Nochevieja"
+    }
   },
   "weather": {
     "label": "Tiempo en Leeuwarden",

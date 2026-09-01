@@ -191,12 +191,14 @@ export async function saveRssAction(form: FormData) {
   await requireAdmin();
   const id = text(form, "id") || crypto.randomUUID();
   const locales = form.getAll("locales").length ? pickedLocales(form) : undefined;
+  const scopeRaw = text(form, "scope");
   const source = normalizeRss({
     id,
     name: text(form, "name"),
     url: text(form, "url"),
     enabled: form.get("enabled") === "on",
     locales,
+    scope: scopeRaw === "national" ? "national" : scopeRaw === "local" ? "local" : undefined,
   });
   if (!source.name || !source.url) redirect("/admin/rss?error=1");
 
@@ -208,6 +210,7 @@ export async function saveRssAction(form: FormData) {
         ...prev,
         ...source,
         locales: locales ?? prev.locales,
+        scope: scopeRaw ? source.scope : prev.scope,
         last_pulled_at: prev.last_pulled_at,
         last_error: prev.last_error,
       };

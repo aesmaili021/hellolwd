@@ -71,7 +71,7 @@
     "title": "Over",
     "version": "versie {version}",
     "body": "HelloLWD is een korte briefing van lokaal nieuws en weekendavonden voor internationals in Leeuwarden. Alleen samenvattingen. Elk bericht linkt terug naar de bron.",
-    "more": "We lezen openbare RSS van Omrop Fryslân, Omroep Leeuwarden en LC.nl, tonen het weer van Leeuwarden via Open-Meteo, en houden een weekendlijst bij. Geen accounts, geen reacties, geen volledige artikelen."
+    "more": "We lezen openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS, tonen het weer van Leeuwarden via Open-Meteo, en houden een weekendlijst bij. Geen accounts, geen reacties, geen volledige artikelen."
   },
   "footer": {
     "version": "v{version}",
@@ -89,7 +89,7 @@
   },
   "privacy": {
     "title": "Privacybeleid",
-    "updated": "Laatst bijgewerkt 31 augustus 2026 · HelloLWD {version}",
+    "updated": "Laatst bijgewerkt 2 september 2026 · HelloLWD {version}",
     "whoTitle": "Wie we zijn",
     "who": "HelloLWD is een lokale nieuws- en weekendbriefing voor internationals in Leeuwarden. Contact: hello@hellolwd.nl. Het KVK-nummer in de footer is een placeholder tot de organisatie is ingeschreven.",
     "dataTitle": "Wat we verwerken",
@@ -97,13 +97,13 @@
     "cookiesTitle": "Cookies en lokale opslag",
     "cookies": "De taal zit in de URL (/nl, /en, /es, /fa), niet in een trackingcookie. Licht of donker thema staat in localStorage en in een first-party cookie theme (één jaar) zodat de pagina niet flitst. De redactiedesk zet na inloggen een first-party cookie hellolwd_admin; die is alleen voor wie de site bewerkt.",
     "thirdTitle": "Andere diensten",
-    "third": "Nieuws komt uit de openbare RSS van Omrop Fryslân, Omroep Leeuwarden en LC.nl. We linken altijd terug naar het origineel.\n\nHet weer van Leeuwarden halen we op onze server bij Open-Meteo. Uitslagen van SC Cambuur en de eredivisietabel komen via ESPN op onze server. Vertalingen kunnen op onze server via Google AI Studio (Gemini) en anders via andere machinevertaling. Die verzoeken gaan van onze server, niet uit jouw browser.",
+    "third": "Nieuws komt uit de openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS. We linken altijd terug naar het origineel.\n\nHet weer van Leeuwarden halen we op onze server bij Open-Meteo. Uitslagen van SC Cambuur en de eredivisietabel komen via ESPN op onze server. Vertalingen kunnen op onze server via Google AI Studio (Gemini) en anders via andere machinevertaling. Die verzoeken gaan van onze server, niet uit jouw browser."
     "rightsTitle": "Jouw rechten",
     "rights": "Denk je dat we persoonsgegevens over je hebben, dan kun je inzage, correctie of verwijdering vragen via hello@hellolwd.nl. Je kunt een klacht indienen bij de Autoriteit Persoonsgegevens."
   },
   "cookies": {
     "title": "Cookies",
-    "updated": "Laatst bijgewerkt 31 augustus 2026 · HelloLWD {version}",
+    "updated": "Laatst bijgewerkt 2 september 2026 · HelloLWD {version}",
     "neededTitle": "Alleen wat de site nodig heeft",
     "needed": "HelloLWD zet een paar first-party cookies om de site te laten werken. We gebruiken geen advertentie-, analyse- of social-mediacookies, dus geen marketing-cookiebanner.",
     "listTitle": "Cookies die we zetten",
@@ -112,6 +112,34 @@
     "notused": "Geen Google Analytics, geen advertentiepixels, geen fingerprinting. Weer en feeds laden we op de server, dus Open-Meteo en de nieuwsredacties zetten via deze site geen cookies in jouw browser.",
     "choiceTitle": "Jouw keuzes",
     "choice": "Je kunt cookies en sitegegevens wissen in je browser. Daarmee reset je het thema en logt een redacteur uit. Vragen: hello@hellolwd.nl."
+  },
+  "calendar": {
+    "label": "Kalender Nederland en Fryslân",
+    "nl": "NL",
+    "frl": "FRL",
+    "day": {
+      "newYear": "Nieuwjaarsdag",
+      "goodFriday": "Goede Vrijdag",
+      "easter": "Eerste Paasdag",
+      "easterMonday": "Tweede Paasdag",
+      "sintPiterArrival": "Intocht Sint Piter, Grou",
+      "sintPiter": "Sint Piter, Grou",
+      "kingsNight": "Koningsnacht",
+      "kingsDay": "Koningsdag",
+      "remembrance": "Dodenherdenking",
+      "liberation": "Bevrijdingsdag",
+      "ascension": "Hemelvaart",
+      "pentecost": "Eerste Pinksterdag",
+      "pentecostMonday": "Tweede Pinksterdag",
+      "pcFraneker": "PC Franeker",
+      "sneekweek": "Sneekweek",
+      "prinsjesdag": "Prinsjesdag",
+      "sintMaarten": "Sint-Maarten",
+      "sinterklaas": "Sinterklaas",
+      "christmas": "Eerste Kerstdag",
+      "boxingDay": "Tweede Kerstdag",
+      "newYearsEve": "Oudejaarsavond"
+    }
   },
   "weather": {
     "label": "Weer in Leeuwarden",

@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { CalendarRibbon } from "@/components/CalendarRibbon";
 import { WeatherIcon } from "@/components/WeatherIcon";
 import { localeTag } from "@/i18n/routing";
 import { getLeeuwardenWeather, type WeatherKind } from "@/lib/weather";
@@ -10,13 +11,15 @@ function weekday(date: string, locale: string, index: number) {
 
 export async function WeatherStrip() {
   const weather = await getLeeuwardenWeather();
-  if (!weather) return null;
+  if (!weather) return <CalendarRibbon />;
 
   const locale = await getLocale();
   const t = await getTranslations("weather");
   const kind = (value: WeatherKind) => t(`kind.${value}`);
 
   return (
+    <>
+    <CalendarRibbon />
     <section className="border-b border-line bg-mist" aria-label={t("label")}>
       <div className="mx-auto flex max-w-[1440px] flex-col gap-4 px-4 py-3.5 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-10 lg:py-4">
         <div className="flex min-w-0 items-center gap-3.5">
@@ -63,5 +66,6 @@ export async function WeatherStrip() {
         {t("credit")}
       </p>
     </section>
+    </>
   );
 }

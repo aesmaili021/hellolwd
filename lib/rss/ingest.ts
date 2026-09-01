@@ -1,15 +1,23 @@
 import { revalidatePath } from "next/cache";
-import { getRssSources } from "@/lib/data/rss";
 import { loadStore, updateStore } from "@/lib/data/store";
-import { CONTENT_LOCALES, normalizeArticle, type Article } from "@/lib/types";
-import { briefing, classifyCategory, isLeeuwardenStory } from "@/lib/rss/classify";
+import { ensureNationalFeed, getRssSources } from "@/lib/data/rss";
+import {
+  CONTENT_LOCALES,
+  isNationalSource,
+  normalizeArticle,
+  type Article,
+} from "@/lib/types";
+import { briefing, classifyCategory, shouldIngestStory } from "@/lib/rss/classify";
 import { extractLead, normalizeArticleUrl, parseRssItems } from "@/lib/rss/parse";
 import { needsTranslation, translateMany } from "@/lib/rss/translate";
 
 const UA = "HelloLWD/0.1 (local news briefing; +https://hellolwd.nl)";
 const MAX_AGE_MS = 21 * 24 * 60 * 60 * 1000;
+const MAX_NATIONAL_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_NEW = 25;
+const MAX_NATIONAL_NEW = 8;
 const MAX_STORE = 80;
+const MAX_NATIONAL_STORE = 20;
 
 export type IngestResult = {
   added: number;
@@ -21,6 +29,19 @@ export type IngestResult = {
 };
 
 let running: Promise<IngestResult> | null = null;
+
+function byPublished(a: Article, b: Article) {
+  return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+}
+
+function trimStore(articles: Article[]) {
+  const local = articles.filter((row) => !isNationalSource(row)).sort(byPublished);
+  const national = articles
+    .filter((row) => isNationalSource(row))
+    .sort(byPublished)
+    .slice(0, MAX_NATIONAL_STORE);
+  return [...local.slice(0, Math.max(0, MAX_STORE - national.length)), ...national].sort(byPublished);
+}
 
 async function fetchText(url: string, ms = 20000) {
   const res = await fetch(url, {
@@ -78,6 +99,7 @@ function toArticle(item: {
 }
 
 async function runIngest(): Promise<IngestResult> {
+  await ensureNationalFeed();
   const feeds = (await getRssSources()).filter((feed) => feed.enabled);
   const result: IngestResult = { added: 0, updated: 0, translated: 0, images: 0, feeds: feeds.length, errors: [] };
   const incoming: Article[] = [];
@@ -87,9 +109,11 @@ async function runIngest(): Promise<IngestResult> {
   for (const feed of feeds) {
     try {
       const xml = await fetchText(feed.url);
+      const national = feed.scope === "national";
+      const maxAge = national ? MAX_NATIONAL_AGE_MS : MAX_AGE_MS;
       const items = parseRssItems(xml)
-        .filter((item) => isLeeuwardenStory(item, feed.url))
-        .filter((item) => now - new Date(item.published_at).getTime() < MAX_AGE_MS);
+        .filter((item) => shouldIngestStory(item, feed.url, national))
+        .filter((item) => now - new Date(item.published_at).getTime() < maxAge);
 
       for (const item of items) {
         if (!item.image_url || item.summary.length < 450) {
@@ -155,6 +179,8 @@ async function runIngest(): Promise<IngestResult> {
       }
     }
 
+    incoming.sort((a, b) => Number(isNationalSource(a)) - Number(isNationalSource(b)) || byPublished(a, b));
+    let addedNational = 0;
     for (const article of incoming) {
       const key = normalizeArticleUrl(article.source_url);
       const existing = store.articles.find((row) => normalizeArticleUrl(row.source_url) === key);
@@ -176,27 +202,33 @@ async function runIngest(): Promise<IngestResult> {
         if (changed) result.updated += 1;
         continue;
       }
+      const national = isNationalSource(article);
       if (result.added >= MAX_NEW) continue;
+      if (national && addedNational >= MAX_NATIONAL_NEW) continue;
       store.articles.unshift(article);
       seen.add(key);
       result.added += 1;
+      if (national) addedNational += 1;
       if (article.image_url) result.images += 1;
     }
 
-    store.articles.sort(
-      (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime(),
-    );
-    store.articles = store.articles.slice(0, MAX_STORE);
+    store.articles = trimStore(store.articles);
   });
 
   const pending = (await loadStore()).articles.filter((row) => needsTranslation(row)).slice(0, 25);
   if (pending.length) {
-    const translated = await translateMany(pending);
+    const { articles: translated, skippedIds } = await translateMany(pending);
     const byId = new Map(translated.map((row) => [row.id, row]));
     await updateStore((store) => {
+      if (skippedIds.length) {
+        store.articles = store.articles.filter((row) => !skippedIds.includes(row.id));
+      }
       for (const article of store.articles) {
         const next = byId.get(article.id);
         if (!next || needsTranslation(next)) continue;
+        article.category = next.category;
+        article.title_nl = next.title_nl;
+        article.summary_nl = next.summary_nl;
         article.title_en = next.title_en;
         article.title_es = next.title_es;
         article.title_fa = next.title_fa;

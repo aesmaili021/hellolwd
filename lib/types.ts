@@ -63,16 +63,36 @@ export type EventRow = {
   created_at: string;
 };
 
+export const RSS_SCOPES = ["local", "national"] as const;
+export type RssScope = (typeof RSS_SCOPES)[number];
+
 export type RssSource = {
   id: string;
   name: string;
   url: string;
   enabled: boolean;
   locales: ContentLocale[];
+  scope: RssScope;
   created_at: string;
   last_pulled_at?: string | null;
   last_error?: string | null;
 };
+
+const NATIONAL_SOURCE =
+  /feeds\.nos\.nl|(?:^|\/\/)(?:www\.)?nos\.nl|rijksoverheid\.nl/i;
+
+export function isNationalSource(value: {
+  scope?: RssScope;
+  url?: string;
+  source_url?: string;
+  source_name?: string;
+  name?: string;
+}) {
+  if (value.scope === "national") return true;
+  return NATIONAL_SOURCE.test(
+    `${value.url ?? ""} ${value.source_url ?? ""} ${value.source_name ?? ""} ${value.name ?? ""}`,
+  );
+}
 
 export function articleVisible(article: Article, locale: string) {
   if (!article.locales?.length) return true;
@@ -235,6 +255,7 @@ export function normalizeRss(row: Partial<RssSource> & { id: string }): RssSourc
     url: row.url ?? "",
     enabled: row.enabled !== false,
     locales: row.locales?.length ? row.locales : [...CONTENT_LOCALES],
+    scope: row.scope === "national" || isNationalSource(row) ? "national" : "local",
     created_at: row.created_at ?? new Date().toISOString(),
     last_pulled_at: row.last_pulled_at ?? null,
     last_error: row.last_error ?? null,

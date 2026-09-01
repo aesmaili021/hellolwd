@@ -2,8 +2,11 @@ import { normalizeReadableText } from "@/lib/rss/parse";
 import {
   articleHasTranslation,
   CONTENT_LOCALES,
+  isNationalSource,
+  NEWS_CATEGORIES,
   type Article,
   type ContentLocale,
+  type NewsCategory,
 } from "@/lib/types";
 
 export type TargetLocale = "en" | "es" | "fa";
@@ -78,21 +81,21 @@ function libreUrl() {
   return (process.env.LIBRETRANSLATE_URL || "").replace(/\/$/, "");
 }
 
-function extractJson(text: string) {
+function extractJson(text: string): Record<string, unknown> | null {
   const trimmed = text.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
   const start = trimmed.indexOf("{");
   const end = trimmed.lastIndexOf("}");
   if (start < 0 || end <= start) return null;
   try {
-    return JSON.parse(trimmed.slice(start, end + 1)) as Partial<LocalePiece>;
+    return JSON.parse(trimmed.slice(start, end + 1)) as Record<string, unknown>;
   } catch {
     return null;
   }
 }
 
-function asPiece(parsed: Partial<LocalePiece> | null): LocalePiece | null {
-  const title = parsed?.title?.trim() || "";
-  const summary = parsed?.summary?.trim() || "";
+function asPiece(parsed: Record<string, unknown> | Partial<LocalePiece> | null): LocalePiece | null {
+  const title = String(parsed?.title ?? "").trim();
+  const summary = String(parsed?.summary ?? "").trim();
   if (!title || !summary) return null;
   return { title, summary };
 }
@@ -103,24 +106,25 @@ function briefingPrompt(
   locale: ContentLocale,
   from: ContentLocale = "nl",
 ) {
-  return `You are HelloLWD: a friendly local news desk in Leeuwarden writing for internationals who just moved here.
+  const extra =
+    locale === "fa"
+      ? "- Farsi: natural contemporary Persian, not literary and not a calque. Correct Persian punctuation. Western digits for numbers and dates."
+      : locale === "es"
+        ? "- Spanish: neutral Latin American Spanish. No vosotros. No Spain-only slang."
+        : "- English: plain international English. Short sentences.";
 
-Translate this ${LANG[from]} briefing into ${LANG[locale]}.
+  return `You are a professional local-news editor and translator for HelloLWD in Leeuwarden.
 
-Voice:
-- Warm and plain, like telling a smart friend the news over coffee.
-- Short sentences. Everyday words. No stiff agency tone, no slang that needs a dictionary.
+Translate this ${LANG[from]} briefing into ${LANG[locale]}. Translate the briefing, not a new article.
+
+Rules:
+- Write as a native ${LANG[locale]} speaker. Compact local-news briefing, not word-for-word.
 - Keep every fact, name, place, date, and number. Do not invent news.
-- Do not copy Dutch word order.
+- Same approximate length and detail. Do not add or drop facts.
+- Keep Dutch and Frisian proper names (Leeuwarden, Grou, Cambuur, Zaailand, street names).
+${extra}
 
-Cultural terms:
-- If a Dutch or Frisian saying, nickname, or very local habit would confuse a newcomer, add one short extra sentence that says what it means in daily life.
-- Examples: mienskip, pompeblêd, borrel, oranjegevoel, a street everyone here just calls by a nickname.
-- Do not lecture. One sentence is enough, and only when it really helps.
-
-${locale === "fa" ? "Farsi: natural Persian (BBC Persian / radio), not a machine calque. Use Persian digits for ages and clock times." : "Keep it spoken and compact: 3–5 sentences."}
-
-Title: one line, no trailing period unless the source has one. Plain text, no HTML.
+Title: one-line natural headline, similar length, no trailing period unless the source has one. Plain text.
 
 Return JSON only:
 {"title":"...","summary":"..."}
@@ -128,7 +132,7 @@ Return JSON only:
 TITLE:
 ${title}
 
-SOURCE:
+BRIEFING:
 ${summary}`;
 }
 
@@ -148,6 +152,8 @@ async function postClaudeMessages(
   model: string,
   prompt: string,
   maxTokens = 1400,
+  temperature = 0.35,
+  system?: string,
 ) {
   const res = await fetch(url, {
     method: "POST",
@@ -159,7 +165,8 @@ async function postClaudeMessages(
     body: JSON.stringify({
       model,
       max_tokens: maxTokens,
-      temperature: 0.35,
+      temperature,
+      ...(system ? { system } : {}),
       messages: [{ role: "user", content: prompt }],
     }),
     signal: AbortSignal.timeout(maxTokens > 2000 ? 90000 : 45000),
@@ -501,13 +508,21 @@ export async function translateArticleTo(
 }
 
 export type BriefingCopy = {
+  category?: NewsCategory;
+  title_nl?: string;
   title_en: string;
   title_es: string;
   title_fa: string;
+  summary_nl?: string;
   summary_en: string;
   summary_es: string;
   summary_fa: string;
 };
+
+export type DeskBriefing = { skip: true } | ({ skip?: false } & BriefingCopy);
+
+const DESK_SYSTEM =
+  "You are a professional local-news editor and translator for HelloLWD, a multilingual local news site for Leeuwarden, Friesland, Netherlands. Return ONLY valid JSON. No markdown fences, no commentary.";
 
 function asBriefing(parsed: Record<string, unknown> | null): BriefingCopy | null {
   const title_en = String(parsed?.title_en ?? "").trim();
@@ -519,32 +534,87 @@ function asBriefing(parsed: Record<string, unknown> | null): BriefingCopy | null
   if (!title_en || !title_es || !title_fa || !summary_en || !summary_es || !summary_fa) {
     return null;
   }
-  return { title_en, title_es, title_fa, summary_en, summary_es, summary_fa };
+  const categoryRaw = String(parsed?.category ?? "").trim().toLowerCase();
+  const category = NEWS_CATEGORIES.includes(categoryRaw as NewsCategory)
+    ? (categoryRaw as NewsCategory)
+    : undefined;
+  const title_nl = String(parsed?.title_nl ?? "").trim();
+  const summary_nl = String(parsed?.summary_nl ?? "").trim();
+  return {
+    category,
+    title_nl: title_nl || undefined,
+    title_en,
+    title_es,
+    title_fa,
+    summary_nl: summary_nl || undefined,
+    summary_en,
+    summary_es,
+    summary_fa,
+  };
 }
 
-function briefingAllPrompt(title: string, summary: string) {
-  return `You are HelloLWD: a friendly local news desk in Leeuwarden writing for internationals who just moved here.
+function asDeskBriefing(parsed: Record<string, unknown> | null): DeskBriefing | null {
+  if (!parsed) return null;
+  if (String(parsed.category ?? "").trim().toLowerCase() === "skip") return { skip: true };
+  return asBriefing(parsed);
+}
 
-Translate this Dutch briefing into English, Spanish, and Persian (Farsi).
+function deskBriefingPrompt(title: string, body: string, sourceName: string, national = false) {
+  return `INPUT
+Title (Dutch): ${title}
+Body (Dutch): ${body}
+Source: ${sourceName}
+Desk: ${national ? "Dutch national / government news for readers in Leeuwarden" : "Leeuwarden / Friesland local news"}
 
-Voice:
-- Warm and plain, like telling a smart friend the news over coffee.
-- Short sentences. Everyday words.
-- Keep every fact, name, place, date, and number. Do not invent news.
-- If a Dutch or Frisian saying would confuse a newcomer, add one short extra sentence that explains it.
+INSTRUCTIONS
 
-Farsi: natural Persian (BBC Persian), Persian digits for ages and clock times.
-English / Spanish: 3–5 spoken sentences.
-Titles: one line, no trailing period unless the source has one. Plain text.
+1. CATEGORIZE into exactly one of:
+   politics, infrastructure, culture, business, safety, education, sports
 
-Return JSON only with keys:
-title_en, title_es, title_fa, summary_en, summary_es, summary_fa
+   Use these meanings:
+   - politics: cabinet, Tweede Kamer, ministers, elections, council, mayor, province, public policy
+   - infrastructure: roads, NS/OV, construction, water, energy, housing-as-building
+   - culture: arts, festivals, heritage, nightlife as culture
+   - business: shops, companies, jobs, tourism as economy
+   - safety: police, fire, accidents, crime, nuisance
+   - education: schools, universities, NHL Stenden, students
+   - sports: Cambuur, Oranje, matches, sport clubs
+   If two fit, pick the one the reader opened the story for.
 
-TITLE:
-${title}
+2. WRITE summary_nl: 2–3 factual Dutch sentences. Original paraphrase — do not copy sentences from the source. Neutral. No editorializing. No quotes.
+   The body may be only an RSS teaser. That is enough. Do not invent facts that are not in the title or body. If the teaser is thin, write two short sentences from what is given.
 
-SOURCE:
-${summary}`;
+3. TRANSLATE that Dutch summary (not the source article) into English, Spanish, and Farsi.
+   - Native voice. Compact local-news briefing. Not word-for-word.
+   - Same facts and roughly the same length. Do not add or drop facts.
+   - English: plain international English.
+   - Spanish: neutral Latin American Spanish (no vosotros, no Spain-only slang).
+   - Farsi: natural contemporary Persian, not literary. Correct Persian punctuation. Western digits for numbers and dates so they match the site.
+   - Keep Dutch and Frisian proper names (Leeuwarden, Grou, Cambuur, Zaailand, street names).
+
+4. TITLES
+   - title_nl: keep the original Dutch headline if it is already a clear news headline. Rewrite only if it is vague, clickbait, or all-caps — same length, factual.
+   - title_en / title_es / title_fa: natural headlines in each language, concise, similar length. Not a calque.
+
+5. SKIP
+   Set "category" to "skip" and all other fields to "" ONLY if:
+   - the text is empty, garbled, or not news, OR
+   - it is foreign/international wire with no Netherlands angle.
+   Dutch national news, cabinet, Tweede Kamer, Rijksoverheid, and national policy ARE in scope. Do not skip them for lacking a Leeuwarden angle.
+   Do NOT skip a short local RSS teaser.
+
+OUTPUT — valid JSON only:
+{
+  "category": "politics|infrastructure|culture|business|safety|education|sports|skip",
+  "title_nl": "...",
+  "title_en": "...",
+  "title_es": "...",
+  "title_fa": "...",
+  "summary_nl": "...",
+  "summary_en": "...",
+  "summary_es": "...",
+  "summary_fa": "..."
+}`;
 }
 
 function bodyPrompt(body: string, locale: TargetLocale) {
@@ -566,12 +636,12 @@ ARTICLE:
 ${body}`;
 }
 
-function asBody(parsed: Partial<LocalePiece> & { body?: string } | null) {
-  const body = normalizeReadableText(parsed?.body || "");
+function asBody(parsed: Record<string, unknown> | null) {
+  const body = normalizeReadableText(String(parsed?.body ?? ""));
   return body || null;
 }
 
-async function azurePrompt(prompt: string, maxTokens: number) {
+async function azurePrompt(prompt: string, maxTokens: number, system?: string, temperature = 0.35) {
   const url = azureClaudeUrl();
   const key = azureClaudeKey();
   if (!url || !key || Date.now() < claudeCoolUntil) return null;
@@ -582,6 +652,8 @@ async function azurePrompt(prompt: string, maxTokens: number) {
       azureClaudeModel(),
       prompt,
       maxTokens,
+      temperature,
+      system,
     );
     if (res.status === 429) {
       claudeCoolUntil = Date.now() + 60 * 60 * 1000;
@@ -644,7 +716,7 @@ async function geminiPrompt(prompt: string) {
   return null;
 }
 
-async function claudePrompt(prompt: string, maxTokens: number) {
+async function claudePrompt(prompt: string, maxTokens: number, system?: string, temperature = 0.35) {
   if (!claudeKey() || Date.now() < claudeCoolUntil) return null;
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -657,7 +729,8 @@ async function claudePrompt(prompt: string, maxTokens: number) {
       body: JSON.stringify({
         model: process.env.CLAUDE_MODEL || "claude-haiku-4-5",
         max_tokens: maxTokens,
-        temperature: 0.35,
+        temperature,
+        ...(system ? { system } : {}),
         messages: [{ role: "user", content: prompt }],
       }),
       signal: AbortSignal.timeout(60000),
@@ -680,6 +753,9 @@ async function claudePrompt(prompt: string, maxTokens: number) {
 export function applyBriefingCopy(article: Article, copy: BriefingCopy): Article {
   return {
     ...article,
+    ...(copy.category ? { category: copy.category } : {}),
+    ...(copy.title_nl ? { title_nl: copy.title_nl } : {}),
+    ...(copy.summary_nl ? { summary_nl: copy.summary_nl } : {}),
     title_en: copy.title_en,
     title_es: copy.title_es,
     title_fa: copy.title_fa,
@@ -691,49 +767,64 @@ export function applyBriefingCopy(article: Article, copy: BriefingCopy): Article
 
 export async function translateBriefingAll(
   title: string,
-  summary: string,
-): Promise<BriefingCopy | null> {
+  body: string,
+  sourceName = "",
+  national = false,
+): Promise<DeskBriefing | null> {
   if (!title.trim()) return null;
-  const prompt = briefingAllPrompt(title, summary);
+  const prompt = deskBriefingPrompt(title, body, sourceName, national);
   const text =
-    (await azurePrompt(prompt, 2200)) ||
-    (await geminiPrompt(prompt)) ||
-    (await claudePrompt(prompt, 2200));
-  const copy = asBriefing(extractJson(text || "") as Record<string, unknown> | null);
-  if (copy) return copy;
+    (await azurePrompt(prompt, 2200, DESK_SYSTEM, 0.2)) ||
+    (await geminiPrompt(`${DESK_SYSTEM}\n\n${prompt}`)) ||
+    (await claudePrompt(prompt, 2200, DESK_SYSTEM, 0.2));
+  const desk = asDeskBriefing(extractJson(text || ""));
+  if (desk) return desk;
 
-  const assembled: Partial<BriefingCopy> = {};
+  const assembled: Record<string, string> = {};
   for (const locale of TARGETS) {
-    const piece = await translateBriefingTo(title, summary, locale);
+    const piece = await translateBriefingTo(title, body, locale);
     if (!piece) return null;
     assembled[`title_${locale}`] = piece.title;
     assembled[`summary_${locale}`] = piece.summary;
   }
-  return asBriefing(assembled as Record<string, unknown>);
+  return asDeskBriefing(assembled);
 }
 
 export async function translateMany(articles: Article[]) {
   const done: Article[] = [];
+  const skippedIds: string[] = [];
   for (const article of articles) {
     if (!needsTranslation(article)) {
       done.push(article);
       continue;
     }
-    const wanted = wantedLocales(article);
-    if (wanted.length === TARGETS.length) {
-      const copy = await translateBriefingAll(article.title_nl, article.summary_nl);
-      done.push(copy ? applyBriefingCopy(article, copy) : article);
+    const national = isNationalSource(article);
+    const copy = await translateBriefingAll(
+      article.title_nl,
+      article.body_nl?.trim() || article.summary_nl,
+      article.source_name,
+      national,
+    );
+    if (copy?.skip) {
+      if (!national) {
+        console.warn("[translate] skipped non-local or empty story", article.title_nl.slice(0, 80));
+        skippedIds.push(article.id);
+        continue;
+      }
+      console.warn("[translate] ignoring skip on national story", article.title_nl.slice(0, 80));
+    } else if (copy) {
+      done.push(applyBriefingCopy(article, copy));
       continue;
     }
     let next = article;
-    for (const locale of wanted) {
+    for (const locale of wantedLocales(article)) {
       if (articleHasTranslation(next, locale)) continue;
       const piece = await translateBriefingTo(next.title_nl, next.summary_nl, locale);
       if (piece) next = applyLocaleTranslation(next, locale, piece);
     }
     done.push(next);
   }
-  return done;
+  return { articles: done, skippedIds };
 }
 
 export function applyBodyTranslation(
@@ -758,7 +849,7 @@ export async function translateBodyTo(
     (await azurePrompt(prompt, 4000)) ||
     (await geminiPrompt(prompt)) ||
     (await claudePrompt(prompt, 4000));
-  const parsed = asBody(extractJson(text || "") as { body?: string } | null);
+  const parsed = asBody(extractJson(text || ""));
   if (parsed) return parsed;
   return (await translateText(source.slice(0, 4500), "nl", locale)) || null;
 }

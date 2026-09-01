@@ -103,6 +103,7 @@ create table if not exists media (
 );
 
 alter table rss_sources add column if not exists locales text[] not null default array['nl','en','es','fa']::text[];
+alter table rss_sources add column if not exists scope text not null default 'local';
 alter table articles add column if not exists body_nl text;
 alter table articles add column if not exists body_en text;
 alter table articles add column if not exists body_es text;
@@ -181,6 +182,7 @@ function mapRss(row: Record<string, unknown>): RssSource {
     url: String(row.url ?? ""),
     enabled: row.enabled !== false,
     locales: (row.locales as RssSource["locales"]) ?? undefined,
+    scope: row.scope === "national" ? "national" : "local",
     created_at: iso(row.created_at),
     last_pulled_at: row.last_pulled_at ? iso(row.last_pulled_at) : null,
     last_error: (row.last_error as string | null) ?? null,
@@ -252,8 +254,8 @@ async function insertStore(client: PoolClient, data: StoreData) {
   for (const row of data.rss) {
     await client.query(
       `insert into rss_sources (
-        id, name, url, enabled, created_at, last_pulled_at, last_error, locales
-      ) values ($1,$2,$3,$4,$5,$6,$7,$8)`,
+        id, name, url, enabled, created_at, last_pulled_at, last_error, locales, scope
+      ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
       [
         row.id,
         row.name,
@@ -263,6 +265,7 @@ async function insertStore(client: PoolClient, data: StoreData) {
         row.last_pulled_at ?? null,
         row.last_error ?? null,
         row.locales,
+        row.scope,
       ],
     );
   }
