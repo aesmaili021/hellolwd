@@ -1,5 +1,5 @@
 import { Pool, type PoolClient } from "pg";
-import { mockArticles, mockEvents, mockRss } from "@/lib/data/mock";
+import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
 import {
   normalizeArticle,
   normalizeEvent,
@@ -104,7 +104,7 @@ function iso(value: unknown) {
 
 function seed(): StoreData {
   return {
-    articles: mockArticles.map((row) => normalizeArticle(row)),
+    articles: [],
     events: mockEvents.map((row) => normalizeEvent(row)),
     rss: mockRss.map((row) => normalizeRss(row)),
   };
@@ -269,11 +269,17 @@ export async function loadPostgresStore(): Promise<StoreData> {
     return next;
   }
 
-  return {
-    articles: articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
+  const data = {
+    articles: withoutSeedArticles(
+      articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
+    ),
     events: events.rows.map((row) => mapEvent(row as Record<string, unknown>)),
     rss: rss.rows.map((row) => mapRss(row as Record<string, unknown>)),
   };
+  if (data.articles.length !== (articles.rowCount ?? 0)) {
+    await persistPostgresStore(data);
+  }
+  return data;
 }
 
 export async function persistPostgresStore(data: StoreData) {

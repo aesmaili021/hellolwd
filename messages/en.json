@@ -31,7 +31,17 @@
     "more": "More stories",
     "featured": "Featured",
     "back": "Back to news",
-    "image": "Featured image"
+    "image": "Featured image",
+    "dutchOriginal": "Dutch original",
+    "showTranslation": "Show {language} translation",
+    "hideTranslation": "Show original Dutch",
+    "requestTranslation": "Translate this briefing to {language}",
+    "translating": "Translating…",
+    "translateFailed": "Translation is unavailable right now. Try again in a minute.",
+    "translatedBadge": "Translated",
+    "langEn": "English",
+    "langEs": "Spanish",
+    "langFa": "Persian"
   },
   "events": {
     "title": "Weekend events",

@@ -31,7 +31,17 @@
     "more": "Meer berichten",
     "featured": "Uitgelicht",
     "back": "Terug naar nieuws",
-    "image": "Uitgelichte afbeelding"
+    "image": "Uitgelichte afbeelding",
+    "dutchOriginal": "Nederlandse bron",
+    "showTranslation": "Toon {language} vertaling",
+    "hideTranslation": "Toon Nederlandse bron",
+    "requestTranslation": "Vertaal deze briefing naar het {language}",
+    "translating": "Bezig met vertalen…",
+    "translateFailed": "Vertalen lukt nu niet. Probeer het zo opnieuw.",
+    "translatedBadge": "Vertaald",
+    "langEn": "Engels",
+    "langEs": "Spaans",
+    "langFa": "Perzisch"
   },
   "events": {
     "title": "Weekendavonden",

@@ -31,7 +31,17 @@
     "more": "Más historias",
     "featured": "Destacado",
     "back": "Volver a noticias",
-    "image": "Imagen destacada"
+    "image": "Imagen destacada",
+    "dutchOriginal": "Original en neerlandés",
+    "showTranslation": "Ver traducción al {language}",
+    "hideTranslation": "Ver el original en neerlandés",
+    "requestTranslation": "Traducir este briefing al {language}",
+    "translating": "Traduciendo…",
+    "translateFailed": "La traducción no está disponible ahora. Prueba en un minuto.",
+    "translatedBadge": "Traducido",
+    "langEn": "inglés",
+    "langEs": "español",
+    "langFa": "persa"
   },
   "events": {
     "title": "Eventos del fin de semana",

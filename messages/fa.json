@@ -31,7 +31,17 @@
     "more": "خبرهای بیشتر",
     "featured": "برگزیده",
     "back": "بازگشت به خبر",
-    "image": "تصویر شاخص"
+    "image": "تصویر شاخص",
+    "dutchOriginal": "متن اصلی هلندی",
+    "showTranslation": "نمایش ترجمهٔ {language}",
+    "hideTranslation": "نمایش متن هلندی",
+    "requestTranslation": "ترجمهٔ این خبر به {language}",
+    "translating": "در حال ترجمه…",
+    "translateFailed": "الان ترجمه ممکن نیست. یک دقیقه دیگر دوباره بزن.",
+    "translatedBadge": "ترجمه‌شده",
+    "langEn": "انگلیسی",
+    "langEs": "اسپانیایی",
+    "langFa": "فارسی"
   },
   "events": {
     "title": "رویدادهای آخر هفته",

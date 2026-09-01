@@ -4,7 +4,6 @@ import { loadStore, updateStore } from "@/lib/data/store";
 import { CONTENT_LOCALES, normalizeArticle, type Article } from "@/lib/types";
 import { briefing, classifyCategory, isLeeuwardenStory } from "@/lib/rss/classify";
 import { extractLead, normalizeArticleUrl, parseRssItems } from "@/lib/rss/parse";
-import { needsTranslation, translateMany } from "@/lib/rss/translate";
 
 const UA = "HelloLWD/0.1 (local news briefing; +https://hellolwd.nl)";
 const MAX_AGE_MS = 21 * 24 * 60 * 60 * 1000;
@@ -67,13 +66,13 @@ function toArticle(item: {
     image_url: item.image_url,
     locales: [...CONTENT_LOCALES],
     title_nl: item.title,
-    title_en: item.title,
-    title_es: item.title,
-    title_fa: item.title,
+    title_en: "",
+    title_es: "",
+    title_fa: "",
     summary_nl: summary,
-    summary_en: summary,
-    summary_es: summary,
-    summary_fa: summary,
+    summary_en: "",
+    summary_es: "",
+    summary_fa: "",
   });
 }
 
@@ -167,14 +166,6 @@ async function runIngest(): Promise<IngestResult> {
         }
         if (article.summary_nl.length > existing.summary_nl.length + 20) {
           existing.summary_nl = article.summary_nl;
-        }
-        if (article.title_en !== article.title_nl) {
-          existing.title_en = article.title_en;
-          existing.title_es = article.title_es;
-          existing.title_fa = article.title_fa;
-          existing.summary_en = article.summary_en;
-          existing.summary_es = article.summary_es;
-          existing.summary_fa = article.summary_fa;
           changed = true;
         }
         if (changed) result.updated += 1;
@@ -192,27 +183,6 @@ async function runIngest(): Promise<IngestResult> {
     );
     store.articles = store.articles.slice(0, MAX_STORE);
   });
-
-  const pending = (await loadStore()).articles.filter(needsTranslation).slice(0, 25);
-  if (pending.length) {
-    const translated = await translateMany(pending, 3);
-    const byId = new Map(translated.map((row) => [row.id, row]));
-    await updateStore((store) => {
-      for (const article of store.articles) {
-        const next = byId.get(article.id);
-        if (!next || needsTranslation(next)) continue;
-        if (next.title_nl) article.title_nl = next.title_nl;
-        if (next.summary_nl) article.summary_nl = next.summary_nl;
-        article.title_en = next.title_en;
-        article.title_es = next.title_es;
-        article.title_fa = next.title_fa;
-        article.summary_en = next.summary_en;
-        article.summary_es = next.summary_es;
-        article.summary_fa = next.summary_fa;
-        result.translated += 1;
-      }
-    });
-  }
 
   try {
     revalidatePath("/", "layout");

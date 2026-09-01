@@ -5,7 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { getArticle, getArticles } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
-import { articleSummary, articleTitle } from "@/lib/types";
+import { ArticleTranslation } from "@/components/ArticleTranslation";
+import { articleLocaleCopy, articleSummary, articleTitle } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,10 @@ export default async function ArticlePage({
   const t = await getTranslations("article");
   const categories = await getTranslations("categories");
   const currentLocale = await getLocale();
+  const translated = articleLocaleCopy(article, currentLocale as "nl" | "en" | "es" | "fa");
+  const languageLabel = t(
+    currentLocale === "es" ? "langEs" : currentLocale === "fa" ? "langFa" : "langEn",
+  );
 
   return (
     <main id="content" className="mx-auto w-full max-w-[720px] flex-1 px-4 py-8 lg:px-10 lg:py-12">
@@ -65,12 +70,24 @@ export default async function ArticlePage({
           </time>
         </p>
       </div>
-      <h1 className="mt-3.5 max-w-[22ch] text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-navy text-pretty lg:text-[34px] lg:leading-[1.15]">
-        {articleTitle(article, currentLocale)}
+      {currentLocale !== "nl" ? (
+        <p className="mt-3.5 text-[10px] font-extrabold tracking-[0.12em] text-mute uppercase">
+          {t("dutchOriginal")}
+        </p>
+      ) : null}
+      <h1 className="mt-1.5 max-w-[22ch] text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-navy text-pretty lg:text-[34px] lg:leading-[1.15]">
+        {article.title_nl || articleTitle(article, currentLocale)}
       </h1>
       <p className="mt-4 max-w-[65ch] text-[15px] leading-[1.55] text-ink lg:text-base lg:leading-7">
-        {articleSummary(article, currentLocale)}
+        {article.summary_nl || articleSummary(article, currentLocale)}
       </p>
+      <ArticleTranslation
+        articleId={article.id}
+        locale={currentLocale}
+        languageLabel={languageLabel}
+        translatedTitle={translated && currentLocale !== "nl" ? translated.title : null}
+        translatedSummary={translated && currentLocale !== "nl" ? translated.summary : null}
+      />
       <a
         href={article.source_url}
         className="mt-7 inline-flex cursor-pointer text-[13px] font-bold text-primary hover:text-navy lg:text-sm"

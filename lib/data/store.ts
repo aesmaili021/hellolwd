@@ -1,7 +1,7 @@
 import { copyFile, mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { unstable_noStore as noStore } from "next/cache";
-import { mockArticles, mockEvents, mockRss } from "@/lib/data/mock";
+import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
 import { loadPostgresStore, persistPostgresStore } from "@/lib/data/postgres";
 import {
   normalizeArticle,
@@ -41,7 +41,7 @@ function enqueue<T>(fn: () => Promise<T>) {
 
 function seed(): StoreData {
   return {
-    articles: mockArticles.map((row) => normalizeArticle(row)),
+    articles: [],
     events: mockEvents.map((row) => normalizeEvent(row)),
     rss: mockRss.map((row) => normalizeRss(row)),
   };
@@ -51,11 +51,17 @@ async function readStore(): Promise<StoreData> {
   try {
     const raw = await readFile(FILE, "utf8");
     const parsed = JSON.parse(raw) as Partial<StoreData>;
-    return {
-      articles: (parsed.articles ?? []).map((row) => normalizeArticle(row)),
+    const next = {
+      articles: withoutSeedArticles(
+        (parsed.articles ?? []).map((row) => normalizeArticle(row)),
+      ),
       events: (parsed.events ?? []).map((row) => normalizeEvent(row)),
       rss: (parsed.rss ?? []).map((row) => normalizeRss(row)),
     };
+    if (next.articles.length !== (parsed.articles ?? []).length) {
+      await persist(next);
+    }
+    return next;
   } catch (error) {
     const code = (error as NodeJS.ErrnoException).code;
     if (code !== "ENOENT") throw error;

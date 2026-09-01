@@ -3,7 +3,7 @@ import { CoverImage } from "@/components/CoverImage";
 import { Link } from "@/i18n/navigation";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatRelative } from "@/lib/format";
-import { articleSummary, articleTitle, type Article } from "@/lib/types";
+import { articleHasTranslation, articleSummary, articleTitle, type Article } from "@/lib/types";
 
 export async function FeaturedStory({ article }: { article: Article }) {
   const locale = await getLocale();
@@ -24,6 +24,11 @@ export async function FeaturedStory({ article }: { article: Article }) {
         <span className="text-[11px] font-semibold text-mute lg:text-xs">
           {article.source_name} · {formatRelative(article.published_at, locale)}
         </span>
+        {locale !== "nl" && articleHasTranslation(article, locale) ? (
+          <span className="rounded bg-ice px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide text-navy">
+            {t("translatedBadge")}
+          </span>
+        ) : null}
       </div>
       <h2 className="max-w-[22ch] text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-navy text-pretty lg:text-[34px] lg:leading-[1.15]">
         <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
@@ -50,6 +55,7 @@ export async function FeaturedStory({ article }: { article: Article }) {
 
 export async function BriefingRow({ article }: { article: Article }) {
   const locale = await getLocale();
+  const t = await getTranslations("article");
   const categories = await getTranslations("categories");
 
   return (
@@ -61,6 +67,11 @@ export async function BriefingRow({ article }: { article: Article }) {
         <span className="text-[11px] font-semibold text-mute">
           {article.source_name} · {formatRelative(article.published_at, locale)}
         </span>
+        {locale !== "nl" && articleHasTranslation(article, locale) ? (
+          <span className="rounded bg-ice px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide text-navy">
+            {t("translatedBadge")}
+          </span>
+        ) : null}
       </div>
       <h3 className="text-base font-bold leading-snug tracking-[-0.01em] text-navy lg:text-[17px] lg:leading-[1.3]">
         <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
@@ -76,6 +87,7 @@ export async function BriefingRow({ article }: { article: Article }) {
 
 export async function FilterRow({ article }: { article: Article }) {
   const locale = await getLocale();
+  const t = await getTranslations("article");
 
   return (
     <article className="flex gap-4 border-b border-line py-5">
@@ -88,6 +100,11 @@ export async function FilterRow({ article }: { article: Article }) {
         <span className="text-[11px] font-bold text-mute">
           {article.source_name} · {formatRelative(article.published_at, locale)}
         </span>
+        {locale !== "nl" && articleHasTranslation(article, locale) ? (
+          <span className="ms-2 rounded bg-ice px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide text-navy">
+            {t("translatedBadge")}
+          </span>
+        ) : null}
         <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em] text-navy">
           <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
             {articleTitle(article, locale)}

@@ -80,7 +80,22 @@ function pickLocaleField(
   const key = (CONTENT_LOCALES as readonly string[]).includes(locale)
     ? (locale as ContentLocale)
     : "en";
-  return fields[key] ?? fields.en ?? "";
+  const value = fields[key]?.trim() || "";
+  const source = fields.nl?.trim() || "";
+  if (key !== "nl" && value && value !== source) return value;
+  if (key === "nl") return source || value;
+  return source || fields.en?.trim() || value;
+}
+
+export function articleHasTranslation(article: Article, locale: string) {
+  if (locale === "nl") return true;
+  const title = pickLocaleField(locale, {
+    nl: article.title_nl,
+    en: article.title_en,
+    es: article.title_es,
+    fa: article.title_fa,
+  });
+  return Boolean(title && title !== article.title_nl.trim());
 }
 
 export function articleTitle(article: Article, locale: string) {
@@ -99,6 +114,17 @@ export function articleSummary(article: Article, locale: string) {
     es: article.summary_es,
     fa: article.summary_fa,
   });
+}
+
+export function articleLocaleCopy(article: Article, locale: ContentLocale) {
+  if (locale === "nl") {
+    return { title: article.title_nl, summary: article.summary_nl };
+  }
+  if (!articleHasTranslation(article, locale)) return null;
+  return {
+    title: articleTitle(article, locale),
+    summary: articleSummary(article, locale),
+  };
 }
 
 export function eventDescription(event: EventRow, locale: string) {
