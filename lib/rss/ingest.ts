@@ -201,6 +201,8 @@ async function runIngest(): Promise<IngestResult> {
       for (const article of store.articles) {
         const next = byId.get(article.id);
         if (!next || needsTranslation(next)) continue;
+        if (next.title_nl) article.title_nl = next.title_nl;
+        if (next.summary_nl) article.summary_nl = next.summary_nl;
         article.title_en = next.title_en;
         article.title_es = next.title_es;
         article.title_fa = next.title_fa;

@@ -9,6 +9,8 @@ import { MobileTabBar } from "@/components/MobileTabBar";
 import { Nav } from "@/components/Nav";
 import { routing } from "@/i18n/routing";
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }

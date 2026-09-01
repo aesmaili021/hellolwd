@@ -1,6 +1,8 @@
 import type { Article } from "@/lib/types";
 
 export type LocaleCopy = {
+  title_nl?: string;
+  summary_nl?: string;
   title_en: string;
   title_es: string;
   title_fa: string;
@@ -34,6 +36,35 @@ function claudeKey() {
   return process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "";
 }
 
+function azureClaudeKey() {
+  return (
+    process.env.AZURE_ANTHROPIC_API_KEY ||
+    process.env.ANTHROPIC_FOUNDRY_API_KEY ||
+    process.env.AZURE_API_KEY ||
+    ""
+  );
+}
+
+function azureClaudeUrl() {
+  const raw = (
+    process.env.AZURE_ANTHROPIC_ENDPOINT ||
+    process.env.ANTHROPIC_FOUNDRY_BASE_URL ||
+    ""
+  ).replace(/\/$/, "");
+  if (!raw) return "";
+  if (raw.endsWith("/v1/messages")) return raw;
+  if (raw.endsWith("/anthropic")) return `${raw}/v1/messages`;
+  return `${raw}/anthropic/v1/messages`;
+}
+
+function azureClaudeModel() {
+  return (
+    process.env.AZURE_CLAUDE_DEPLOYMENT ||
+    process.env.CLAUDE_MODEL ||
+    "claude-haiku-4-5"
+  );
+}
+
 function libreUrl() {
   return (process.env.LIBRETRANSLATE_URL || "").replace(/\/$/, "");
 }
@@ -54,6 +85,8 @@ function asCopy(parsed: Partial<LocaleCopy> | null): LocaleCopy | null {
   if (!parsed?.title_en || !parsed.title_es || !parsed.title_fa) return null;
   if (!parsed.summary_en || !parsed.summary_es || !parsed.summary_fa) return null;
   return {
+    title_nl: parsed.title_nl?.trim() || undefined,
+    summary_nl: parsed.summary_nl?.trim() || undefined,
     title_en: parsed.title_en.trim(),
     title_es: parsed.title_es.trim(),
     title_fa: parsed.title_fa.trim(),
@@ -64,21 +97,83 @@ function asCopy(parsed: Partial<LocaleCopy> | null): LocaleCopy | null {
 }
 
 function briefingPrompt(title: string, summary: string) {
-  return `You translate Leeuwarden local-news briefings. Source language is Dutch.
-Keep facts, names, places, and numbers. Do not add new facts. Do not copy the Dutch sentence word-for-word.
-English and Spanish: compact news briefing, 3-5 sentences.
-Farsi: write like a Persian news desk (BBC Persian), not a word-for-word machine translation.
-Natural word order. No calques. Keep club and street names readable. Use Persian digits for ages and clock times. Same length, plain text, no HTML.
-Titles: one line, no trailing period unless the source has one.
+  return `You are the HelloLWD news desk for Leeuwarden. Source is Dutch local news (RSS/lead).
+First write a tight Dutch briefing, then translate it.
+Keep facts, names, places, and numbers. Do not add new facts. Do not copy the source word-for-word.
+Dutch / English / Spanish: compact news briefing, 3-5 sentences.
+Farsi: write like a Persian news desk (BBC Persian), not a machine calque. Use Persian digits for ages and clock times.
+Titles: one line, no trailing period unless the source has one. Plain text, no HTML.
 
 Return JSON only with keys:
-title_en, title_es, title_fa, summary_en, summary_es, summary_fa
+title_nl, title_en, title_es, title_fa, summary_nl, summary_en, summary_es, summary_fa
 
 TITLE:
 ${title}
 
-SUMMARY:
+SOURCE:
 ${summary}`;
+}
+
+function parseClaudeResponse(data: {
+  content?: { type?: string; text?: string }[];
+}) {
+  const text = (data.content ?? [])
+    .filter((part) => part.type === "text")
+    .map((part) => part.text ?? "")
+    .join("\n");
+  return asCopy(extractJson(text));
+}
+
+async function postClaudeMessages(
+  url: string,
+  headers: Record<string, string>,
+  model: string,
+  prompt: string,
+) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "anthropic-version": "2023-06-01",
+      ...headers,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 2200,
+      temperature: 0.2,
+      messages: [{ role: "user", content: prompt }],
+    }),
+    signal: AbortSignal.timeout(45000),
+  });
+  return res;
+}
+
+async function azureClaudeBriefing(title: string, summary: string): Promise<LocaleCopy | null> {
+  const url = azureClaudeUrl();
+  const key = azureClaudeKey();
+  if (!url || !key || Date.now() < claudeCoolUntil) return null;
+
+  try {
+    const res = await postClaudeMessages(
+      url,
+      { "x-api-key": key, "api-key": key },
+      azureClaudeModel(),
+      briefingPrompt(title, summary),
+    );
+    if (res.status === 429) {
+      claudeCoolUntil = Date.now() + 60 * 60 * 1000;
+      console.warn("[translate] Azure Claude quota hit, falling back");
+      return null;
+    }
+    if (!res.ok) {
+      console.warn("[translate] Azure Claude", res.status, (await res.text()).slice(0, 200));
+      return null;
+    }
+    return parseClaudeResponse(await res.json());
+  } catch (error) {
+    console.warn("[translate] Azure Claude", error instanceof Error ? error.message : error);
+    return null;
+  }
 }
 
 async function geminiBriefing(title: string, summary: string): Promise<LocaleCopy | null> {
@@ -298,6 +393,7 @@ export function needsTranslation(article: Article) {
 export async function translateBriefing(title: string, summary: string): Promise<LocaleCopy | null> {
   if (!title.trim()) return null;
   return (
+    (await azureClaudeBriefing(title, summary)) ||
     (await geminiBriefing(title, summary)) ||
     (await claudeBriefing(title, summary)) ||
     (await machineBriefing(title, summary))
@@ -307,6 +403,8 @@ export async function translateBriefing(title: string, summary: string): Promise
 export function applyTranslation(article: Article, copy: LocaleCopy): Article {
   return {
     ...article,
+    title_nl: copy.title_nl?.trim() || article.title_nl,
+    summary_nl: copy.summary_nl?.trim() || article.summary_nl,
     title_en: copy.title_en,
     title_es: copy.title_es,
     title_fa: copy.title_fa,

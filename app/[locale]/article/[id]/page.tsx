@@ -7,10 +7,7 @@ import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
 import { articleSummary, articleTitle } from "@/lib/types";
 
-export async function generateStaticParams() {
-  const articles = await getArticles();
-  return articles.map((article) => ({ id: article.id }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

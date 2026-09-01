@@ -1,6 +1,8 @@
 import { copyFile, mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { unstable_noStore as noStore } from "next/cache";
 import { mockArticles, mockEvents, mockRss } from "@/lib/data/mock";
+import { loadPostgresStore, persistPostgresStore } from "@/lib/data/postgres";
 import {
   normalizeArticle,
   normalizeEvent,
@@ -17,6 +19,14 @@ export type StoreData = {
 };
 
 const FILE = path.join(process.cwd(), "data", "store.json");
+
+function databaseUrl() {
+  return (
+    process.env.DATABASE_URL?.trim() ||
+    process.env.DATABASE_PRIVATE_URL?.trim() ||
+    ""
+  );
+}
 
 let writeChain = Promise.resolve();
 
@@ -64,14 +74,17 @@ async function persist(data: StoreData) {
 }
 
 export async function loadStore() {
+  noStore();
+  if (databaseUrl()) return loadPostgresStore();
   return readStore();
 }
 
 export async function updateStore(mutator: (data: StoreData) => StoreData | void) {
   return enqueue(async () => {
-    const current = await readStore();
+    const current = databaseUrl() ? await loadPostgresStore() : await readStore();
     const next = mutator(current) ?? current;
-    await persist(next);
+    if (databaseUrl()) await persistPostgresStore(next);
+    else await persist(next);
     return next;
   });
 }
