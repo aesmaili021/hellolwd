@@ -38,6 +38,10 @@ export type Article = {
   summary_en: string;
   summary_es: string;
   summary_fa: string;
+  body_nl: string | null;
+  body_en: string | null;
+  body_es: string | null;
+  body_fa: string | null;
   image_url: string | null;
   locales: ContentLocale[];
   created_at: string;
@@ -127,6 +131,25 @@ export function articleLocaleCopy(article: Article, locale: ContentLocale) {
   };
 }
 
+export function articleHasFullTranslation(article: Article, locale: string) {
+  if (locale === "nl") return Boolean(article.body_nl?.trim());
+  const body =
+    locale === "es"
+      ? article.body_es
+      : locale === "fa"
+        ? article.body_fa
+        : article.body_en;
+  return Boolean(body?.trim() && body.trim() !== article.body_nl?.trim());
+}
+
+export function articleBody(article: Article, locale: string) {
+  if (locale === "nl") return article.body_nl?.trim() || null;
+  if (!articleHasFullTranslation(article, locale)) return null;
+  if (locale === "es") return article.body_es?.trim() || null;
+  if (locale === "fa") return article.body_fa?.trim() || null;
+  return article.body_en?.trim() || null;
+}
+
 export function eventDescription(event: EventRow, locale: string) {
   const value = pickLocaleField(locale, {
     nl: event.description_nl,
@@ -152,6 +175,10 @@ export function normalizeArticle(row: Partial<Article> & { id: string }): Articl
     summary_en: row.summary_en ?? "",
     summary_es: row.summary_es ?? "",
     summary_fa: row.summary_fa ?? "",
+    body_nl: row.body_nl ?? null,
+    body_en: row.body_en ?? null,
+    body_es: row.body_es ?? null,
+    body_fa: row.body_fa ?? null,
     image_url: row.image_url ?? null,
     locales:
       row.locales?.length ? row.locales : [...CONTENT_LOCALES],

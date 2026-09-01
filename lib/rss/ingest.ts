@@ -4,6 +4,7 @@ import { loadStore, updateStore } from "@/lib/data/store";
 import { CONTENT_LOCALES, normalizeArticle, type Article } from "@/lib/types";
 import { briefing, classifyCategory, isLeeuwardenStory } from "@/lib/rss/classify";
 import { extractLead, normalizeArticleUrl, parseRssItems } from "@/lib/rss/parse";
+import { needsTranslation, translateMany } from "@/lib/rss/translate";
 
 const UA = "HelloLWD/0.1 (local news briefing; +https://hellolwd.nl)";
 const MAX_AGE_MS = 21 * 24 * 60 * 60 * 1000;
@@ -183,6 +184,25 @@ async function runIngest(): Promise<IngestResult> {
     );
     store.articles = store.articles.slice(0, MAX_STORE);
   });
+
+  const pending = (await loadStore()).articles.filter((row) => needsTranslation(row)).slice(0, 25);
+  if (pending.length) {
+    const translated = await translateMany(pending);
+    const byId = new Map(translated.map((row) => [row.id, row]));
+    await updateStore((store) => {
+      for (const article of store.articles) {
+        const next = byId.get(article.id);
+        if (!next || needsTranslation(next)) continue;
+        article.title_en = next.title_en;
+        article.title_es = next.title_es;
+        article.title_fa = next.title_fa;
+        article.summary_en = next.summary_en;
+        article.summary_es = next.summary_es;
+        article.summary_fa = next.summary_fa;
+        result.translated += 1;
+      }
+    });
+  }
 
   try {
     revalidatePath("/", "layout");

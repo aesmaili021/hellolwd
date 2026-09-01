@@ -36,12 +36,19 @@
     "showTranslation": "Show {language} translation",
     "hideTranslation": "Show original Dutch",
     "requestTranslation": "Translate this briefing to {language}",
+    "requestFull": "Translate the full article to {language}",
+    "requestFullNl": "Load the full article",
+    "showFull": "Show full {language} translation",
+    "hideFull": "Hide full article",
     "translating": "Translating…",
+    "translatingFull": "Translating the full article…",
     "translateFailed": "Translation is unavailable right now. Try again in a minute.",
     "translatedBadge": "Translated",
+    "fullBadge": "Full article",
     "langEn": "English",
     "langEs": "Spanish",
-    "langFa": "Persian"
+    "langFa": "Persian",
+    "langNl": "Dutch"
   },
   "events": {
     "title": "Weekend events",

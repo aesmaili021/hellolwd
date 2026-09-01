@@ -135,6 +135,7 @@ async function postClaudeMessages(
   headers: Record<string, string>,
   model: string,
   prompt: string,
+  maxTokens = 1400,
 ) {
   const res = await fetch(url, {
     method: "POST",
@@ -145,11 +146,11 @@ async function postClaudeMessages(
     },
     body: JSON.stringify({
       model,
-      max_tokens: 1400,
+      max_tokens: maxTokens,
       temperature: 0.35,
       messages: [{ role: "user", content: prompt }],
     }),
-    signal: AbortSignal.timeout(45000),
+    signal: AbortSignal.timeout(maxTokens > 2000 ? 90000 : 45000),
   });
   return res;
 }
@@ -439,4 +440,256 @@ export async function translateArticleTo(
   if (!needsTranslation(article, locale)) return article;
   const piece = await translateBriefingTo(article.title_nl, article.summary_nl, locale);
   return piece ? applyLocaleTranslation(article, locale, piece) : article;
+}
+
+export type BriefingCopy = {
+  title_en: string;
+  title_es: string;
+  title_fa: string;
+  summary_en: string;
+  summary_es: string;
+  summary_fa: string;
+};
+
+function asBriefing(parsed: Record<string, unknown> | null): BriefingCopy | null {
+  const title_en = String(parsed?.title_en ?? "").trim();
+  const title_es = String(parsed?.title_es ?? "").trim();
+  const title_fa = String(parsed?.title_fa ?? "").trim();
+  const summary_en = String(parsed?.summary_en ?? "").trim();
+  const summary_es = String(parsed?.summary_es ?? "").trim();
+  const summary_fa = String(parsed?.summary_fa ?? "").trim();
+  if (!title_en || !title_es || !title_fa || !summary_en || !summary_es || !summary_fa) {
+    return null;
+  }
+  return { title_en, title_es, title_fa, summary_en, summary_es, summary_fa };
+}
+
+function briefingAllPrompt(title: string, summary: string) {
+  return `You are HelloLWD: a friendly local news desk in Leeuwarden writing for internationals who just moved here.
+
+Translate this Dutch briefing into English, Spanish, and Persian (Farsi).
+
+Voice:
+- Warm and plain, like telling a smart friend the news over coffee.
+- Short sentences. Everyday words.
+- Keep every fact, name, place, date, and number. Do not invent news.
+- If a Dutch or Frisian saying would confuse a newcomer, add one short extra sentence that explains it.
+
+Farsi: natural Persian (BBC Persian), Persian digits for ages and clock times.
+English / Spanish: 3–5 spoken sentences.
+Titles: one line, no trailing period unless the source has one. Plain text.
+
+Return JSON only with keys:
+title_en, title_es, title_fa, summary_en, summary_es, summary_fa
+
+TITLE:
+${title}
+
+SOURCE:
+${summary}`;
+}
+
+function bodyPrompt(body: string, locale: TargetLocale) {
+  return `You are HelloLWD: a friendly local news desk in Leeuwarden writing for internationals who just moved here.
+
+Translate this full Dutch news article into ${LANG[locale]}.
+
+Voice:
+- Warm and plain. Short sentences. Everyday words.
+- Keep every fact, name, place, date, and number. Do not invent news.
+- Keep paragraph breaks.
+- If a Dutch or Frisian saying or very local habit would confuse a newcomer, add one short extra sentence that says what it means.
+${locale === "fa" ? "- Natural Persian (BBC Persian). Persian digits for ages and clock times." : ""}
+
+Return JSON only:
+{"body":"..."}
+
+ARTICLE:
+${body}`;
+}
+
+function asBody(parsed: Partial<LocalePiece> & { body?: string } | null) {
+  const body = parsed?.body?.trim() || "";
+  return body || null;
+}
+
+async function azurePrompt(prompt: string, maxTokens: number) {
+  const url = azureClaudeUrl();
+  const key = azureClaudeKey();
+  if (!url || !key || Date.now() < claudeCoolUntil) return null;
+  try {
+    const res = await postClaudeMessages(
+      url,
+      { "x-api-key": key, "api-key": key },
+      azureClaudeModel(),
+      prompt,
+      maxTokens,
+    );
+    if (res.status === 429) {
+      claudeCoolUntil = Date.now() + 60 * 60 * 1000;
+      return null;
+    }
+    if (!res.ok) return null;
+    const data = (await res.json()) as { content?: { type?: string; text?: string }[] };
+    return (data.content ?? [])
+      .filter((part) => part.type === "text")
+      .map((part) => part.text ?? "")
+      .join("\n");
+  } catch {
+    return null;
+  }
+}
+
+async function geminiPrompt(prompt: string) {
+  if (!geminiKey() || Date.now() < geminiCoolUntil) return null;
+  for (const model of GEMINI_MODELS) {
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": geminiKey(),
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                temperature: 0.35,
+                responseMimeType: "application/json",
+              },
+            }),
+            signal: AbortSignal.timeout(60000),
+          },
+        );
+        if (res.status === 429) {
+          if (attempt < 2) {
+            await sleep(12000 * (attempt + 1));
+            continue;
+          }
+          geminiCoolUntil = Date.now() + 60 * 60 * 1000;
+          return null;
+        }
+        if (!res.ok) break;
+        const data = (await res.json()) as {
+          candidates?: { content?: { parts?: { text?: string }[] } }[];
+        };
+        return (data.candidates?.[0]?.content?.parts ?? [])
+          .map((part) => part.text ?? "")
+          .join("\n");
+      } catch {
+        break;
+      }
+    }
+  }
+  return null;
+}
+
+async function claudePrompt(prompt: string, maxTokens: number) {
+  if (!claudeKey() || Date.now() < claudeCoolUntil) return null;
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": claudeKey(),
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: process.env.CLAUDE_MODEL || "claude-haiku-4-5",
+        max_tokens: maxTokens,
+        temperature: 0.35,
+        messages: [{ role: "user", content: prompt }],
+      }),
+      signal: AbortSignal.timeout(60000),
+    });
+    if (res.status === 429) {
+      claudeCoolUntil = Date.now() + 60 * 60 * 1000;
+      return null;
+    }
+    if (!res.ok) return null;
+    const data = (await res.json()) as { content?: { type?: string; text?: string }[] };
+    return (data.content ?? [])
+      .filter((part) => part.type === "text")
+      .map((part) => part.text ?? "")
+      .join("\n");
+  } catch {
+    return null;
+  }
+}
+
+export function applyBriefingCopy(article: Article, copy: BriefingCopy): Article {
+  return {
+    ...article,
+    title_en: copy.title_en,
+    title_es: copy.title_es,
+    title_fa: copy.title_fa,
+    summary_en: copy.summary_en,
+    summary_es: copy.summary_es,
+    summary_fa: copy.summary_fa,
+  };
+}
+
+export async function translateBriefingAll(
+  title: string,
+  summary: string,
+): Promise<BriefingCopy | null> {
+  if (!title.trim()) return null;
+  const prompt = briefingAllPrompt(title, summary);
+  const text =
+    (await azurePrompt(prompt, 2200)) ||
+    (await geminiPrompt(prompt)) ||
+    (await claudePrompt(prompt, 2200));
+  const copy = asBriefing(extractJson(text || "") as Record<string, unknown> | null);
+  if (copy) return copy;
+
+  const assembled: Partial<BriefingCopy> = {};
+  for (const locale of TARGETS) {
+    const piece = await translateBriefingTo(title, summary, locale);
+    if (!piece) return null;
+    assembled[`title_${locale}`] = piece.title;
+    assembled[`summary_${locale}`] = piece.summary;
+  }
+  return asBriefing(assembled as Record<string, unknown>);
+}
+
+export async function translateMany(articles: Article[]) {
+  const done: Article[] = [];
+  for (const article of articles) {
+    if (!needsTranslation(article)) {
+      done.push(article);
+      continue;
+    }
+    const copy = await translateBriefingAll(article.title_nl, article.summary_nl);
+    done.push(copy ? applyBriefingCopy(article, copy) : article);
+  }
+  return done;
+}
+
+export function applyBodyTranslation(
+  article: Article,
+  locale: TargetLocale | "nl",
+  body: string,
+): Article {
+  if (locale === "nl") return { ...article, body_nl: body };
+  if (locale === "en") return { ...article, body_en: body };
+  if (locale === "es") return { ...article, body_es: body };
+  return { ...article, body_fa: body };
+}
+
+export async function translateBodyTo(
+  dutch: string,
+  locale: TargetLocale,
+): Promise<string | null> {
+  const source = dutch.trim();
+  if (!source) return null;
+  const prompt = bodyPrompt(source, locale);
+  const text =
+    (await azurePrompt(prompt, 4000)) ||
+    (await geminiPrompt(prompt)) ||
+    (await claudePrompt(prompt, 4000));
+  const parsed = asBody(extractJson(text || "") as { body?: string } | null);
+  if (parsed) return parsed;
+  return (await translateText(source.slice(0, 4500), "nl", locale)) || null;
 }

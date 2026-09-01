@@ -36,12 +36,19 @@
     "showTranslation": "Toon {language} vertaling",
     "hideTranslation": "Toon Nederlandse bron",
     "requestTranslation": "Vertaal deze briefing naar het {language}",
+    "requestFull": "Vertaal het hele artikel naar het {language}",
+    "requestFullNl": "Laad het hele artikel",
+    "showFull": "Toon volledige {language} vertaling",
+    "hideFull": "Verberg het hele artikel",
     "translating": "Bezig met vertalen…",
+    "translatingFull": "Het hele artikel wordt vertaald…",
     "translateFailed": "Vertalen lukt nu niet. Probeer het zo opnieuw.",
     "translatedBadge": "Vertaald",
+    "fullBadge": "Volledig artikel",
     "langEn": "Engels",
     "langEs": "Spaans",
-    "langFa": "Perzisch"
+    "langFa": "Perzisch",
+    "langNl": "Nederlands"
   },
   "events": {
     "title": "Weekendavonden",

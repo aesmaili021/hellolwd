@@ -2,30 +2,25 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { requestArticleTranslation } from "@/app/[locale]/article/actions";
+import { requestFullTranslation } from "@/app/[locale]/article/actions";
 
 export function ArticleTranslation({
   articleId,
   locale,
   languageLabel,
-  translatedTitle,
-  translatedSummary,
+  fullBody,
 }: {
   articleId: string;
   locale: string;
   languageLabel: string;
-  translatedTitle: string | null;
-  translatedSummary: string | null;
+  fullBody: string | null;
 }) {
   const t = useTranslations("article");
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(translatedTitle);
-  const [summary, setSummary] = useState(translatedSummary);
+  const [open, setOpen] = useState(Boolean(fullBody));
+  const [body, setBody] = useState(fullBody);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
-  const ready = Boolean(title && summary);
-
-  if (locale === "nl") return null;
+  const ready = Boolean(body);
 
   function reveal() {
     setError("");
@@ -34,13 +29,12 @@ export function ArticleTranslation({
       return;
     }
     startTransition(async () => {
-      const result = await requestArticleTranslation(articleId, locale);
+      const result = await requestFullTranslation(articleId, locale);
       if (!result.ok) {
         setError(t("translateFailed"));
         return;
       }
-      setTitle(result.title);
-      setSummary(result.summary);
+      setBody(result.body);
       setOpen(true);
     });
   }
@@ -54,7 +48,7 @@ export function ArticleTranslation({
             onClick={() => setOpen(false)}
             className="inline-flex min-h-11 cursor-pointer items-center rounded-full bg-wash px-4 text-[13px] font-extrabold text-navy transition-[transform,background-color] duration-200 ease-out hover:bg-ice active:scale-[0.96]"
           >
-            {t("hideTranslation")}
+            {t("hideFull")}
           </button>
         ) : (
           <button
@@ -64,10 +58,12 @@ export function ArticleTranslation({
             className="inline-flex min-h-11 cursor-pointer items-center rounded-full bg-primary px-4 text-[13px] font-extrabold text-brand transition-[transform,background-color] duration-200 ease-out hover:opacity-90 active:scale-[0.96] disabled:cursor-wait disabled:opacity-70"
           >
             {pending
-              ? t("translating")
+              ? t("translatingFull")
               : ready
-                ? t("showTranslation", { language: languageLabel })
-                : t("requestTranslation", { language: languageLabel })}
+                ? t("showFull", { language: languageLabel })
+                : locale === "nl"
+                  ? t("requestFullNl")
+                  : t("requestFull", { language: languageLabel })}
           </button>
         )}
       </div>
@@ -76,17 +72,16 @@ export function ArticleTranslation({
           {error}
         </p>
       ) : null}
-      {open && title && summary ? (
+      {open && body ? (
         <div className="mt-4 rounded-[10px] bg-mist px-4 py-4 lg:px-5 lg:py-5">
           <p className="text-[10px] font-extrabold tracking-[0.12em] text-mute uppercase">
-            {t("translatedBadge")}
+            {t("fullBadge")}
           </p>
-          <h2 className="mt-2 max-w-[28ch] text-[20px] font-extrabold leading-[1.25] tracking-[-0.02em] text-navy text-pretty lg:text-[24px]">
-            {title}
-          </h2>
-          <p className="mt-3 max-w-[65ch] text-[15px] leading-[1.6] text-ink text-pretty lg:text-base">
-            {summary}
-          </p>
+          <div className="mt-3 max-w-[65ch] space-y-4 text-[15px] leading-[1.65] text-ink text-pretty lg:text-base">
+            {body.split(/\n{2,}/).map((para, index) => (
+              <p key={`${index}-${para.slice(0, 24)}`}>{para}</p>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>

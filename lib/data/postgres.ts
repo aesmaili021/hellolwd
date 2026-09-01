@@ -94,6 +94,11 @@ create table if not exists rss_sources (
 create index if not exists articles_published_at_idx on articles (published_at desc);
 create index if not exists articles_category_idx on articles (category);
 create index if not exists events_datetime_idx on events (event_datetime asc);
+
+alter table articles add column if not exists body_nl text;
+alter table articles add column if not exists body_en text;
+alter table articles add column if not exists body_es text;
+alter table articles add column if not exists body_fa text;
 `;
 
 function iso(value: unknown) {
@@ -134,6 +139,10 @@ function mapArticle(row: Record<string, unknown>): Article {
     summary_en: String(row.summary_en ?? ""),
     summary_es: String(row.summary_es ?? ""),
     summary_fa: String(row.summary_fa ?? ""),
+    body_nl: (row.body_nl as string | null) ?? null,
+    body_en: (row.body_en as string | null) ?? null,
+    body_es: (row.body_es as string | null) ?? null,
+    body_fa: (row.body_fa as string | null) ?? null,
     image_url: (row.image_url as string | null) ?? null,
     locales: (row.locales as Article["locales"]) ?? undefined,
     created_at: iso(row.created_at),
@@ -176,9 +185,10 @@ async function insertStore(client: PoolClient, data: StoreData) {
         id, source_url, source_name, category, published_at,
         title_nl, title_en, title_es, title_fa,
         summary_nl, summary_en, summary_es, summary_fa,
+        body_nl, body_en, body_es, body_fa,
         image_url, locales, created_at
       ) values (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20
       )`,
       [
         row.id,
@@ -194,6 +204,10 @@ async function insertStore(client: PoolClient, data: StoreData) {
         row.summary_en,
         row.summary_es,
         row.summary_fa,
+        row.body_nl,
+        row.body_en,
+        row.body_es,
+        row.body_fa,
         row.image_url,
         row.locales,
         row.created_at,

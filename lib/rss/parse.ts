@@ -100,6 +100,18 @@ export function extractLead(html: string) {
   return paras.slice(0, 4).join(" ");
 }
 
+export function extractArticleBody(html: string) {
+  const paras = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((match) => stripHtml(match[1]))
+    .filter(
+      (text) =>
+        text.length > 40 &&
+        !/cookie|nieuwsbrief|inschrijven|privacy|abonneer|advertentie/i.test(text),
+    );
+  const text = paras.join("\n\n").trim();
+  return text.slice(0, 8000);
+}
+
 export function normalizeArticleUrl(value: string) {
   try {
     const url = new URL(value);

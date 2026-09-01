@@ -36,12 +36,19 @@
     "showTranslation": "نمایش ترجمهٔ {language}",
     "hideTranslation": "نمایش متن هلندی",
     "requestTranslation": "ترجمهٔ این خبر به {language}",
+    "requestFull": "ترجمهٔ متن کامل خبر به {language}",
+    "requestFullNl": "بارگذاری متن کامل",
+    "showFull": "نمایش ترجمهٔ کامل {language}",
+    "hideFull": "بستن متن کامل",
     "translating": "در حال ترجمه…",
+    "translatingFull": "متن کامل در حال ترجمه است…",
     "translateFailed": "الان ترجمه ممکن نیست. یک دقیقه دیگر دوباره بزن.",
     "translatedBadge": "ترجمه‌شده",
+    "fullBadge": "متن کامل",
     "langEn": "انگلیسی",
     "langEs": "اسپانیایی",
-    "langFa": "فارسی"
+    "langFa": "فارسی",
+    "langNl": "هلندی"
   },
   "events": {
     "title": "رویدادهای آخر هفته",

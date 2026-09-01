@@ -36,12 +36,19 @@
     "showTranslation": "Ver traducción al {language}",
     "hideTranslation": "Ver el original en neerlandés",
     "requestTranslation": "Traducir este briefing al {language}",
+    "requestFull": "Traducir el artículo completo al {language}",
+    "requestFullNl": "Cargar el artículo completo",
+    "showFull": "Ver traducción completa al {language}",
+    "hideFull": "Ocultar el artículo completo",
     "translating": "Traduciendo…",
+    "translatingFull": "Traduciendo el artículo completo…",
     "translateFailed": "La traducción no está disponible ahora. Prueba en un minuto.",
     "translatedBadge": "Traducido",
+    "fullBadge": "Artículo completo",
     "langEn": "inglés",
     "langEs": "español",
-    "langFa": "persa"
+    "langFa": "persa",
+    "langNl": "neerlandés"
   },
   "events": {
     "title": "Eventos del fin de semana",
