@@ -95,6 +95,14 @@ create index if not exists articles_published_at_idx on articles (published_at d
 create index if not exists articles_category_idx on articles (category);
 create index if not exists events_datetime_idx on events (event_datetime asc);
 
+create table if not exists media (
+  id text primary key,
+  mime text not null,
+  bytes bytea not null,
+  created_at timestamptz not null default now()
+);
+
+alter table rss_sources add column if not exists locales text[] not null default array['nl','en','es','fa']::text[];
 alter table articles add column if not exists body_nl text;
 alter table articles add column if not exists body_en text;
 alter table articles add column if not exists body_es text;
@@ -172,6 +180,7 @@ function mapRss(row: Record<string, unknown>): RssSource {
     name: String(row.name ?? ""),
     url: String(row.url ?? ""),
     enabled: row.enabled !== false,
+    locales: (row.locales as RssSource["locales"]) ?? undefined,
     created_at: iso(row.created_at),
     last_pulled_at: row.last_pulled_at ? iso(row.last_pulled_at) : null,
     last_error: (row.last_error as string | null) ?? null,
@@ -243,8 +252,8 @@ async function insertStore(client: PoolClient, data: StoreData) {
   for (const row of data.rss) {
     await client.query(
       `insert into rss_sources (
-        id, name, url, enabled, created_at, last_pulled_at, last_error
-      ) values ($1,$2,$3,$4,$5,$6,$7)`,
+        id, name, url, enabled, created_at, last_pulled_at, last_error, locales
+      ) values ($1,$2,$3,$4,$5,$6,$7,$8)`,
       [
         row.id,
         row.name,
@@ -253,6 +262,7 @@ async function insertStore(client: PoolClient, data: StoreData) {
         row.created_at,
         row.last_pulled_at ?? null,
         row.last_error ?? null,
+        row.locales,
       ],
     );
   }
@@ -310,6 +320,22 @@ export async function persistPostgresStore(data: StoreData) {
   } finally {
     client.release();
   }
+}
+
+export async function savePostgresMedia(id: string, mime: string, bytes: Uint8Array) {
+  await ensureSchema();
+  await getPool().query(
+    "insert into media (id, mime, bytes) values ($1, $2, $3) on conflict (id) do update set mime = $2, bytes = $3",
+    [id, mime, Buffer.from(bytes)],
+  );
+}
+
+export async function loadPostgresMedia(id: string) {
+  await ensureSchema();
+  const result = await getPool().query("select mime, bytes from media where id = $1", [id]);
+  const row = result.rows[0] as { mime?: string; bytes?: Buffer } | undefined;
+  if (!row?.bytes) return null;
+  return { mime: row.mime || "application/octet-stream", bytes: row.bytes };
 }
 
 export async function pingPostgres() {

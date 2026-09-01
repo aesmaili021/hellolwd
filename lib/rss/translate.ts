@@ -1,4 +1,10 @@
-import { articleHasTranslation, type Article } from "@/lib/types";
+import { normalizeReadableText } from "@/lib/rss/parse";
+import {
+  articleHasTranslation,
+  CONTENT_LOCALES,
+  type Article,
+  type ContentLocale,
+} from "@/lib/types";
 
 export type TargetLocale = "en" | "es" | "fa";
 
@@ -9,7 +15,8 @@ export type LocalePiece = {
 
 const TARGETS = ["en", "es", "fa"] as const;
 
-const LANG: Record<TargetLocale, string> = {
+const LANG: Record<ContentLocale, string> = {
+  nl: "Dutch",
   en: "English",
   es: "Spanish",
   fa: "Persian (Farsi)",
@@ -90,10 +97,15 @@ function asPiece(parsed: Partial<LocalePiece> | null): LocalePiece | null {
   return { title, summary };
 }
 
-function briefingPrompt(title: string, summary: string, locale: TargetLocale) {
+function briefingPrompt(
+  title: string,
+  summary: string,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
+) {
   return `You are HelloLWD: a friendly local news desk in Leeuwarden writing for internationals who just moved here.
 
-Translate this Dutch briefing into ${LANG[locale]}.
+Translate this ${LANG[from]} briefing into ${LANG[locale]}.
 
 Voice:
 - Warm and plain, like telling a smart friend the news over coffee.
@@ -158,7 +170,8 @@ async function postClaudeMessages(
 async function azureClaudeBriefing(
   title: string,
   summary: string,
-  locale: TargetLocale,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
 ): Promise<LocalePiece | null> {
   const url = azureClaudeUrl();
   const key = azureClaudeKey();
@@ -169,7 +182,7 @@ async function azureClaudeBriefing(
       url,
       { "x-api-key": key, "api-key": key },
       azureClaudeModel(),
-      briefingPrompt(title, summary, locale),
+      briefingPrompt(title, summary, locale, from),
     );
     if (res.status === 429) {
       claudeCoolUntil = Date.now() + 60 * 60 * 1000;
@@ -190,11 +203,12 @@ async function azureClaudeBriefing(
 async function geminiBriefing(
   title: string,
   summary: string,
-  locale: TargetLocale,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
 ): Promise<LocalePiece | null> {
   if (!geminiKey() || Date.now() < geminiCoolUntil) return null;
 
-  const prompt = briefingPrompt(title, summary, locale);
+  const prompt = briefingPrompt(title, summary, locale, from);
   for (const model of GEMINI_MODELS) {
     for (let attempt = 0; attempt < 3; attempt += 1) {
       try {
@@ -245,7 +259,8 @@ async function geminiBriefing(
 async function claudeBriefing(
   title: string,
   summary: string,
-  locale: TargetLocale,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
 ): Promise<LocalePiece | null> {
   if (!claudeKey() || Date.now() < claudeCoolUntil) return null;
 
@@ -262,7 +277,7 @@ async function claudeBriefing(
         model,
         max_tokens: 2000,
         temperature: 0.2,
-        messages: [{ role: "user", content: briefingPrompt(title, summary, locale) }],
+        messages: [{ role: "user", content: briefingPrompt(title, summary, locale, from) }],
       }),
       signal: AbortSignal.timeout(45000),
     });
@@ -387,11 +402,12 @@ async function translateText(text: string, source: string, target: string) {
 async function machineBriefing(
   title: string,
   summary: string,
-  locale: TargetLocale,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
 ): Promise<LocalePiece | null> {
-  const nextTitle = await translateText(title, "nl", locale);
+  const nextTitle = await translateText(title, from, locale);
   await sleep(120);
-  const nextSummary = await translateText(summary, "nl", locale);
+  const nextSummary = await translateText(summary, from, locale);
   return asPiece({ title: nextTitle, summary: nextSummary });
 }
 
@@ -399,38 +415,80 @@ export function isTargetLocale(value: string): value is TargetLocale {
   return (TARGETS as readonly string[]).includes(value);
 }
 
+function wantedLocales(article: Article) {
+  const picked = article.locales?.length ? article.locales : [...CONTENT_LOCALES];
+  return TARGETS.filter((code) => picked.includes(code));
+}
+
 export function needsTranslation(article: Article, locale?: TargetLocale) {
   if (!article.title_nl || !article.summary_nl) return false;
-  if (locale) return !articleHasTranslation(article, locale);
-  return TARGETS.some((code) => !articleHasTranslation(article, code));
+  if (locale) return wantedLocales(article).includes(locale) && !articleHasTranslation(article, locale);
+  return wantedLocales(article).some((code) => !articleHasTranslation(article, code));
 }
 
 export async function translateBriefingTo(
   title: string,
   summary: string,
-  locale: TargetLocale,
+  locale: ContentLocale,
+  from: ContentLocale = "nl",
 ): Promise<LocalePiece | null> {
-  if (!title.trim()) return null;
+  if (!title.trim() || locale === from) return { title: title.trim(), summary: summary.trim() };
   return (
-    (await azureClaudeBriefing(title, summary, locale)) ||
-    (await geminiBriefing(title, summary, locale)) ||
-    (await claudeBriefing(title, summary, locale)) ||
-    (await machineBriefing(title, summary, locale))
+    (await azureClaudeBriefing(title, summary, locale, from)) ||
+    (await geminiBriefing(title, summary, locale, from)) ||
+    (await claudeBriefing(title, summary, locale, from)) ||
+    (await machineBriefing(title, summary, locale, from))
   );
 }
 
 export function applyLocaleTranslation(
   article: Article,
-  locale: TargetLocale,
+  locale: ContentLocale,
   piece: LocalePiece,
 ): Article {
-  if (locale === "en") {
-    return { ...article, title_en: piece.title, summary_en: piece.summary };
-  }
-  if (locale === "es") {
-    return { ...article, title_es: piece.title, summary_es: piece.summary };
-  }
+  if (locale === "nl") return { ...article, title_nl: piece.title, summary_nl: piece.summary };
+  if (locale === "en") return { ...article, title_en: piece.title, summary_en: piece.summary };
+  if (locale === "es") return { ...article, title_es: piece.title, summary_es: piece.summary };
   return { ...article, title_fa: piece.title, summary_fa: piece.summary };
+}
+
+function localeCopy(article: Article, locale: ContentLocale) {
+  if (locale === "nl") return { title: article.title_nl, summary: article.summary_nl };
+  if (locale === "en") return { title: article.title_en, summary: article.summary_en };
+  if (locale === "es") return { title: article.title_es, summary: article.summary_es };
+  return { title: article.title_fa, summary: article.summary_fa };
+}
+
+export function pickBriefingSource(
+  article: Article,
+  locales: ContentLocale[] = [...CONTENT_LOCALES],
+  preferred?: ContentLocale,
+) {
+  if (preferred && localeCopy(article, preferred).title.trim()) return preferred;
+  const filled = locales.filter((code) => localeCopy(article, code).title.trim());
+  if (!filled.length) return null;
+  return filled.sort(
+    (a, b) => localeCopy(article, b).summary.trim().length - localeCopy(article, a).summary.trim().length,
+  )[0];
+}
+
+export async function fillMissingBriefings(
+  article: Article,
+  locales: ContentLocale[],
+  preferred?: ContentLocale,
+): Promise<Article> {
+  const source = pickBriefingSource(article, locales, preferred);
+  if (!source) return article;
+  const { title, summary } = localeCopy(article, source);
+  let next = article;
+  for (const locale of locales) {
+    if (locale === source) continue;
+    const existing = localeCopy(next, locale);
+    if (existing.title.trim() && existing.summary.trim()) continue;
+    const piece = await translateBriefingTo(title, summary, locale, source);
+    if (piece) next = applyLocaleTranslation(next, locale, piece);
+  }
+  return next;
 }
 
 export async function translateArticleTo(
@@ -509,7 +567,7 @@ ${body}`;
 }
 
 function asBody(parsed: Partial<LocalePiece> & { body?: string } | null) {
-  const body = parsed?.body?.trim() || "";
+  const body = normalizeReadableText(parsed?.body || "");
   return body || null;
 }
 
@@ -661,8 +719,19 @@ export async function translateMany(articles: Article[]) {
       done.push(article);
       continue;
     }
-    const copy = await translateBriefingAll(article.title_nl, article.summary_nl);
-    done.push(copy ? applyBriefingCopy(article, copy) : article);
+    const wanted = wantedLocales(article);
+    if (wanted.length === TARGETS.length) {
+      const copy = await translateBriefingAll(article.title_nl, article.summary_nl);
+      done.push(copy ? applyBriefingCopy(article, copy) : article);
+      continue;
+    }
+    let next = article;
+    for (const locale of wanted) {
+      if (articleHasTranslation(next, locale)) continue;
+      const piece = await translateBriefingTo(next.title_nl, next.summary_nl, locale);
+      if (piece) next = applyLocaleTranslation(next, locale, piece);
+    }
+    done.push(next);
   }
   return done;
 }

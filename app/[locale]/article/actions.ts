@@ -9,11 +9,11 @@ import {
   isTargetLocale,
   translateBodyTo,
 } from "@/lib/rss/translate";
-import { articleBody, articleHasFullTranslation } from "@/lib/types";
+import { articleBody, articleHasFullTranslation, isSubstantialBody } from "@/lib/types";
 
 export type FullTranslateResult =
   | { ok: true; body: string; cached: boolean }
-  | { ok: false; error: "missing" | "locale" | "busy" | "failed" };
+  | { ok: false; error: "missing" | "locale" | "busy" | "failed" | "unavailable" };
 
 const UA = "HelloLWD/0.1 (local news briefing; +https://hellolwd.nl)";
 const inflight = new Map<string, Promise<FullTranslateResult>>();
@@ -55,18 +55,22 @@ export async function requestFullTranslation(
     const article = await getArticle(articleId);
     if (!article) return { ok: false, error: "missing" };
 
-    if (articleHasFullTranslation(article, locale) || (locale === "nl" && article.body_nl)) {
-      const body = locale === "nl" ? article.body_nl : articleBody(article, locale);
+    if (articleHasFullTranslation(article, locale)) {
+      const body = articleBody(article, locale);
       if (body) return { ok: true, cached: true, body };
     }
 
-    let dutch = article.body_nl?.trim() || "";
+    let dutch = isSubstantialBody(article.body_nl, article.summary_nl)
+      ? article.body_nl?.trim() || ""
+      : "";
     if (!dutch) {
-      dutch = (await fetchDutchBody(article.source_url)) || article.summary_nl;
-      if (!dutch) return { ok: false, error: "failed" };
+      dutch = await fetchDutchBody(article.source_url);
+      if (!isSubstantialBody(dutch, article.summary_nl)) {
+        return { ok: false, error: "unavailable" };
+      }
       await updateStore((store) => {
         const row = store.articles.find((item) => item.id === articleId);
-        if (row && !row.body_nl) row.body_nl = dutch;
+        if (row && !isSubstantialBody(row.body_nl, row.summary_nl)) row.body_nl = dutch;
       });
     }
 

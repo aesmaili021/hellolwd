@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { logoutAction } from "@/app/admin/actions";
 import { LogoMark } from "@/components/Pompebled";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { isAdmin } from "@/lib/admin/auth";
+import { requireAdmin } from "@/lib/admin/auth";
 
 const TABS = [
   { href: "/admin/news", label: "News" },
@@ -18,7 +17,7 @@ export async function AdminShell({
   current: "news" | "events" | "rss";
   children: React.ReactNode;
 }) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-paper">

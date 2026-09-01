@@ -1,4 +1,5 @@
 import { routing, type Locale } from "@/i18n/routing";
+import { normalizeReadableText } from "@/lib/rss/parse";
 
 export const NEWS_CATEGORIES = [
   "politics",
@@ -67,6 +68,7 @@ export type RssSource = {
   name: string;
   url: string;
   enabled: boolean;
+  locales: ContentLocale[];
   created_at: string;
   last_pulled_at?: string | null;
   last_error?: string | null;
@@ -120,6 +122,13 @@ export function articleSummary(article: Article, locale: string) {
   });
 }
 
+export function textParagraphs(value: string) {
+  return normalizeReadableText(value)
+    .split(/\n{2,}/)
+    .map((para) => para.replace(/\n/g, " ").trim())
+    .filter(Boolean);
+}
+
 export function articleLocaleCopy(article: Article, locale: ContentLocale) {
   if (locale === "nl") {
     return { title: article.title_nl, summary: article.summary_nl };
@@ -131,23 +140,39 @@ export function articleLocaleCopy(article: Article, locale: ContentLocale) {
   };
 }
 
+export function isSubstantialBody(body: string | null | undefined, summary = "") {
+  const text = (body ?? "").replace(/\s+/g, " ").trim();
+  const brief = summary.replace(/\s+/g, " ").trim();
+  if (text.length < 280) return false;
+  if (brief && text.length < brief.length + 160) return false;
+  return true;
+}
+
 export function articleHasFullTranslation(article: Article, locale: string) {
-  if (locale === "nl") return Boolean(article.body_nl?.trim());
+  if (locale === "nl") return isSubstantialBody(article.body_nl, article.summary_nl);
   const body =
     locale === "es"
       ? article.body_es
       : locale === "fa"
         ? article.body_fa
         : article.body_en;
-  return Boolean(body?.trim() && body.trim() !== article.body_nl?.trim());
+  return Boolean(body?.trim() && body.trim() !== article.body_nl?.trim()) &&
+    isSubstantialBody(body, article.summary_nl);
 }
 
 export function articleBody(article: Article, locale: string) {
-  if (locale === "nl") return article.body_nl?.trim() || null;
-  if (!articleHasFullTranslation(article, locale)) return null;
-  if (locale === "es") return article.body_es?.trim() || null;
-  if (locale === "fa") return article.body_fa?.trim() || null;
-  return article.body_en?.trim() || null;
+  const raw =
+    locale === "nl"
+      ? article.body_nl
+      : !articleHasFullTranslation(article, locale)
+        ? null
+        : locale === "es"
+          ? article.body_es
+          : locale === "fa"
+            ? article.body_fa
+            : article.body_en;
+  const body = normalizeReadableText(raw || "");
+  return body || null;
 }
 
 export function eventDescription(event: EventRow, locale: string) {
@@ -209,6 +234,7 @@ export function normalizeRss(row: Partial<RssSource> & { id: string }): RssSourc
     name: row.name ?? "",
     url: row.url ?? "",
     enabled: row.enabled !== false,
+    locales: row.locales?.length ? row.locales : [...CONTENT_LOCALES],
     created_at: row.created_at ?? new Date().toISOString(),
     last_pulled_at: row.last_pulled_at ?? null,
     last_error: row.last_error ?? null,

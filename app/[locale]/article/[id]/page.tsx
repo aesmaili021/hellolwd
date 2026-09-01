@@ -6,7 +6,7 @@ import { getArticle, getArticles } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
 import { ArticleTranslation } from "@/components/ArticleTranslation";
-import { articleBody, articleSummary, articleTitle } from "@/lib/types";
+import { articleBody, articleSummary, articleTitle, textParagraphs } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -79,9 +79,11 @@ export default async function ArticlePage({
       <h1 className="mt-3.5 max-w-[22ch] text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-navy text-pretty lg:text-[34px] lg:leading-[1.15]">
         {articleTitle(article, currentLocale)}
       </h1>
-      <p className="mt-4 max-w-[65ch] text-[15px] leading-[1.55] text-ink lg:text-base lg:leading-7">
-        {articleSummary(article, currentLocale)}
-      </p>
+      <div className="mt-4 max-w-[65ch] space-y-4 text-[15px] leading-[1.55] text-ink lg:text-base lg:leading-7">
+        {textParagraphs(articleSummary(article, currentLocale)).map((para, index) => (
+          <p key={`${index}-${para.slice(0, 24)}`}>{para}</p>
+        ))}
+      </div>
       <ArticleTranslation
         articleId={article.id}
         locale={currentLocale}

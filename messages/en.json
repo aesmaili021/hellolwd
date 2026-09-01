@@ -43,6 +43,7 @@
     "translating": "Translating…",
     "translatingFull": "Translating the full article…",
     "translateFailed": "Translation is unavailable right now. Try again in a minute.",
+    "fullUnavailable": "The source keeps the full article on its own site. Use the link below to read it there.",
     "translatedBadge": "Translated",
     "fullBadge": "Full article",
     "langEn": "English",

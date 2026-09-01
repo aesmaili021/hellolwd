@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { loginAction } from "@/app/admin/actions";
+import { isAdmin } from "@/lib/admin/auth";
 import { LogoMark } from "@/components/Pompebled";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { isAdmin } from "@/lib/admin/auth";
 
 export default async function AdminLoginPage({
   searchParams,
@@ -29,11 +29,18 @@ export default async function AdminLoginPage({
       <h1 className="mt-2 text-[32px] font-extrabold tracking-[-0.03em] text-navy">
         Sign in
       </h1>
-      <p className="mt-2 text-sm text-muted">
-        Local default password is <code className="text-navy">lwd-admin</code>. Set{" "}
-        <code className="text-navy">ADMIN_PASSWORD</code> in <code>.env</code> for production.
-      </p>
       <form action={loginAction} className="mt-8 flex flex-col gap-4">
+        <label className="text-[11px] font-extrabold tracking-[0.08em] text-mute uppercase" htmlFor="username">
+          Username
+        </label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          autoComplete="username"
+          required
+          className="rounded-lg border border-line bg-paper px-3 py-2.5 text-navy"
+        />
         <label className="text-[11px] font-extrabold tracking-[0.08em] text-mute uppercase" htmlFor="password">
           Password
         </label>
@@ -46,7 +53,7 @@ export default async function AdminLoginPage({
           className="rounded-lg border border-line bg-paper px-3 py-2.5 text-navy"
         />
         {error ? (
-          <p className="text-sm font-semibold text-accent">Wrong password.</p>
+          <p className="text-sm font-semibold text-accent">Sign-in failed. Try again in a moment.</p>
         ) : null}
         <button
           type="submit"

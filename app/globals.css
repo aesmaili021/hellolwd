@@ -82,3 +82,22 @@ select:focus-visible {
 .shimmer {
   animation: shimmer 1.4s ease-in-out infinite;
 }
+
+.story-desk p {
+  margin: 0 0 1em;
+}
+
+.story-desk p:last-child {
+  margin-bottom: 0;
+}
+
+.story-desk[data-empty="true"]::before {
+  content: attr(data-placeholder);
+  color: var(--c-mute);
+  pointer-events: none;
+  position: absolute;
+}
+
+.story-desk {
+  position: relative;
+}

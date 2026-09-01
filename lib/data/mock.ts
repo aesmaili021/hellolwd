@@ -20,12 +20,15 @@ export function withoutSeedArticles<T extends { id: string }>(rows: T[]) {
 
 export const mockArticles: Article[] = [];
 
+const allLocales = ["nl", "en", "es", "fa"] as const;
+
 export const mockRss: RssSource[] = [
   {
     id: "rss-omrop",
     name: "Omrop Fryslân",
     url: "https://www.omropfryslan.nl/rss/nederlands",
     enabled: true,
+    locales: [...allLocales],
     created_at: created,
   },
   {
@@ -33,6 +36,7 @@ export const mockRss: RssSource[] = [
     name: "Omroep Leeuwarden",
     url: "https://omroepleeuwarden.nl/feed/",
     enabled: true,
+    locales: [...allLocales],
     created_at: created,
   },
   {
@@ -40,6 +44,7 @@ export const mockRss: RssSource[] = [
     name: "LC.nl",
     url: "https://www.lc.nl/rss/",
     enabled: true,
+    locales: [...allLocales],
     created_at: created,
   },
 ];

@@ -56,7 +56,7 @@ function toArticle(item: {
   published_at: string;
   image_url: string | null;
   category: string;
-}, sourceName: string): Article {
+}, sourceName: string, locales = [...CONTENT_LOCALES]): Article {
   const summary = briefing(item.summary || item.title);
   return normalizeArticle({
     id: crypto.randomUUID(),
@@ -65,7 +65,7 @@ function toArticle(item: {
     category: classifyCategory(item),
     published_at: item.published_at,
     image_url: item.image_url,
-    locales: [...CONTENT_LOCALES],
+    locales,
     title_nl: item.title,
     title_en: "",
     title_es: "",
@@ -102,7 +102,7 @@ async function runIngest(): Promise<IngestResult> {
             if (!item.image_url) item.image_url = await fillImage(item.link);
           }
         }
-        incoming.push(toArticle(item, feed.name));
+        incoming.push(toArticle(item, feed.name, feed.locales));
       }
 
       await updateStore((store) => {
@@ -167,6 +167,10 @@ async function runIngest(): Promise<IngestResult> {
         }
         if (article.summary_nl.length > existing.summary_nl.length + 20) {
           existing.summary_nl = article.summary_nl;
+          changed = true;
+        }
+        if (article.locales?.length && article.locales.join() !== existing.locales.join()) {
+          existing.locales = article.locales;
           changed = true;
         }
         if (changed) result.updated += 1;

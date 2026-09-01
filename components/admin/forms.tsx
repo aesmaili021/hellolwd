@@ -1,9 +1,9 @@
+import { ArticleDesk } from "@/components/admin/ArticleDesk";
+import { ImageField } from "@/components/admin/ImageField";
 import {
   CONTENT_LOCALES,
   EVENT_GENRES,
-  NEWS_CATEGORIES,
   type Article,
-  type ContentLocale,
   type EventRow,
 } from "@/lib/types";
 
@@ -25,93 +25,7 @@ export function ArticleForm({
   action: (form: FormData) => void | Promise<void>;
   article?: Article;
 }) {
-  const locales = article?.locales ?? [...CONTENT_LOCALES];
-
-  return (
-    <form action={action} className="flex flex-col gap-5">
-      {article ? <input type="hidden" name="id" value={article.id} /> : null}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field name="source_name" label="Source name" defaultValue={article?.source_name} required />
-        <Field
-          name="source_url"
-          label="Article URL (full story, not homepage)"
-          defaultValue={article?.source_url}
-          required
-        />
-        <div>
-          <label className={label} htmlFor="category">Category</label>
-          <select id="category" name="category" defaultValue={article?.category ?? "culture"} className={field}>
-            {NEWS_CATEGORIES.map((id) => (
-              <option key={id} value={id}>{id}</option>
-            ))}
-          </select>
-        </div>
-        <Field
-          name="published_at"
-          label="Published"
-          type="datetime-local"
-          defaultValue={toLocalInput(article?.published_at)}
-        />
-        <Field
-          name="image_url"
-          label="Image URL (blank = placeholder)"
-          defaultValue={article?.image_url ?? ""}
-          className="sm:col-span-2"
-        />
-      </div>
-
-      <fieldset>
-        <legend className={label}>Show in languages</legend>
-        <div className="flex flex-wrap gap-3">
-          {CONTENT_LOCALES.map((code) => (
-            <label key={code} className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy">
-              <input
-                type="checkbox"
-                name="locales"
-                value={code}
-                defaultChecked={locales.includes(code as ContentLocale)}
-                className="accent-primary"
-              />
-              {code.toUpperCase()}
-            </label>
-          ))}
-        </div>
-        <p className="mt-2 text-[13px] text-muted">
-          Uncheck a language and that story stays off that locale. Fill title and summary only for the languages you keep.
-        </p>
-      </fieldset>
-
-      <div className="grid gap-4">
-        {CONTENT_LOCALES.map((code) => (
-          <div key={code} className="rounded-xl border border-line p-4">
-            <p className="mb-3 text-[11px] font-extrabold tracking-[0.1em] text-primary uppercase">
-              {code}
-            </p>
-            <Field
-              name={`title_${code}`}
-              label="Title"
-              defaultValue={article ? article[`title_${code}`] : ""}
-            />
-            <label className={`${label} mt-3`} htmlFor={`summary_${code}`}>Summary</label>
-            <textarea
-              id={`summary_${code}`}
-              name={`summary_${code}`}
-              rows={3}
-              defaultValue={article ? article[`summary_${code}`] : ""}
-              className={field}
-            />
-          </div>
-        ))}
-      </div>
-
-      <button
-        type="submit"
-        className="min-h-11 cursor-pointer self-start rounded-full bg-brand px-5 text-sm font-extrabold text-paper"
-      >
-        Save story
-      </button>
-    </form>
-  );
+  return <ArticleDesk action={action} article={article} />;
 }
 
 export function EventForm({
@@ -122,7 +36,7 @@ export function EventForm({
   event?: EventRow;
 }) {
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form action={action} encType="multipart/form-data" className="flex flex-col gap-5">
       {event ? <input type="hidden" name="id" value={event.id} /> : null}
       <div className="grid gap-4 sm:grid-cols-2">
         <Field name="name" label="Name" defaultValue={event?.name} required />
@@ -143,7 +57,7 @@ export function EventForm({
           </select>
         </div>
         <Field name="ticket_link" label="Tickets or Instagram URL" defaultValue={event?.ticket_link ?? ""} />
-        <Field name="image_url" label="Image URL (blank = placeholder)" defaultValue={event?.image_url ?? ""} />
+        <ImageField currentUrl={event?.image_url} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {CONTENT_LOCALES.map((code) => (

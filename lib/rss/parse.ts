@@ -17,15 +17,27 @@ const ENTITIES: Record<string, string> = {
 };
 
 function decodeXml(value: string) {
-  return value
-    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
-    .replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (_, code: string) => {
+  let text = value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1");
+  for (let i = 0; i < 2; i++) {
+    text = text.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (_, code: string) => {
       if (code[0] === "#") {
         const n = code[1] === "x" || code[1] === "X" ? parseInt(code.slice(2), 16) : Number(code.slice(1));
         return Number.isFinite(n) ? String.fromCodePoint(n) : "";
       }
       return ENTITIES[code.toLowerCase()] ?? "";
-    })
+    });
+  }
+  return text;
+}
+
+export function normalizeReadableText(value: string) {
+  return decodeXml(value)
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\u2028\u2029]/g, "\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
 
@@ -93,23 +105,61 @@ export function parseRssItems(xml: string): RssItem[] {
   }).filter((item) => item.title && item.link);
 }
 
+const NOISE =
+  /cookie|nieuwsbrief|inschrijven|privacy|abonneer|advertentie|lees ook|fout gezien|just a moment|enable javascript/i;
+
+function isBlockedHtml(html: string) {
+  return /just a moment|cf-browser-verification|challenge-platform|enable javascript and cookies|sorry, you have been blocked/i.test(
+    html,
+  );
+}
+
+function usefulText(value: string, min = 40) {
+  const text = normalizeReadableText(value).replace(/[ \t]+/g, " ").trim();
+  return text.length >= min && !NOISE.test(text) ? text : "";
+}
+
+function extractJsonLdBody(html: string) {
+  const scripts = [
+    ...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi),
+  ];
+  let best = "";
+  for (const match of scripts) {
+    try {
+      const data = JSON.parse(match[1] || "null") as
+        | { articleBody?: string; "@graph"?: { articleBody?: string }[] }
+        | { articleBody?: string }[]
+        | null;
+      const nodes = Array.isArray(data) ? data : data?.["@graph"] ? data["@graph"] : data ? [data] : [];
+      for (const node of nodes) {
+        const body = normalizeReadableText(node?.articleBody || "");
+        if (body.length < 80 || NOISE.test(body)) continue;
+        if (body.length > best.length) best = body;
+      }
+    } catch {
+      /* ignore broken json-ld */
+    }
+  }
+  return best;
+}
+
 export function extractLead(html: string) {
+  if (isBlockedHtml(html)) return "";
   const paras = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
-    .map((match) => stripHtml(match[1]))
-    .filter((text) => text.length > 40 && !/cookie|nieuwsbrief|inschrijven|privacy/i.test(text));
+    .map((match) => usefulText(stripHtml(match[1])))
+    .filter(Boolean);
   return paras.slice(0, 4).join(" ");
 }
 
 export function extractArticleBody(html: string) {
-  const paras = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
-    .map((match) => stripHtml(match[1]))
-    .filter(
-      (text) =>
-        text.length > 40 &&
-        !/cookie|nieuwsbrief|inschrijven|privacy|abonneer|advertentie/i.test(text),
-    );
-  const text = paras.join("\n\n").trim();
-  return text.slice(0, 8000);
+  if (isBlockedHtml(html)) return "";
+  const jsonLd = extractJsonLdBody(html);
+  const article = html.match(/<article\b[\s\S]*?<\/article>/i)?.[0] ?? html;
+  const blocks = [...article.matchAll(/<(p|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/gi)]
+    .map((match) => usefulText(stripHtml(match[2]), match[1].toLowerCase() === "p" ? 40 : 8))
+    .filter(Boolean);
+  const text = blocks.join("\n\n").trim();
+  return (jsonLd.length > text.length ? jsonLd : text).slice(0, 12000);
 }
 
 export function normalizeArticleUrl(value: string) {

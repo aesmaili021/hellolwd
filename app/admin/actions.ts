@@ -1,15 +1,20 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  ADMIN_COOKIE,
-  checkAdminPassword,
+  adminLoginPath,
+  checkAdminCredentials,
+  clearAdminCookie,
   isAdmin,
-  signAdminToken,
+  loginAllowed,
+  recordFailedLogin,
+  requireAdmin,
+  setAdminCookie,
 } from "@/lib/admin/auth";
+import { resolveImageUrl } from "@/lib/data/media";
 import { updateStore } from "@/lib/data/store";
+import { fillMissingBriefings, translateBriefingTo } from "@/lib/rss/translate";
 import {
   CONTENT_LOCALES,
   EVENT_GENRES,
@@ -55,27 +60,25 @@ function refreshPublic() {
 }
 
 export async function loginAction(form: FormData) {
-  if (!checkAdminPassword(text(form, "password"))) {
-    redirect("/admin/login?error=1");
+  const gate = adminLoginPath();
+  const allowed = await loginAllowed();
+  const ok = allowed && (await checkAdminCredentials(text(form, "username"), text(form, "password")));
+  if (!ok) {
+    if (allowed) await recordFailedLogin();
+    await new Promise((resolve) => setTimeout(resolve, 350));
+    redirect(`${gate}?error=1`);
   }
-  const jar = await cookies();
-  jar.set(ADMIN_COOKIE, signAdminToken(), {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 14,
-  });
+  await setAdminCookie();
   redirect("/admin");
 }
 
 export async function logoutAction() {
-  const jar = await cookies();
-  jar.delete(ADMIN_COOKIE);
-  redirect("/admin/login");
+  await clearAdminCookie();
+  redirect(adminLoginPath());
 }
 
 export async function saveArticleAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id") || crypto.randomUUID();
   const category = text(form, "category") as NewsCategory;
   const locales = pickedLocales(form);
@@ -85,7 +88,7 @@ export async function saveArticleAction(form: FormData) {
     source_name: text(form, "source_name") || "HelloLWD",
     category: NEWS_CATEGORIES.includes(category) ? category : "culture",
     published_at: toIso(text(form, "published_at") || new Date().toISOString()),
-    image_url: optional(form, "image_url"),
+    image_url: await resolveImageUrl(form),
     locales,
     title_nl: text(form, "title_nl"),
     title_en: text(form, "title_en"),
@@ -96,21 +99,48 @@ export async function saveArticleAction(form: FormData) {
     summary_es: text(form, "summary_es"),
     summary_fa: text(form, "summary_fa"),
   });
+  const source = text(form, "source_locale");
+  const preferred = (CONTENT_LOCALES as readonly string[]).includes(source)
+    ? (source as ContentLocale)
+    : undefined;
+  const filled = await fillMissingBriefings(article, locales, preferred);
 
-  const hasCopy = locales.some((code) => article[`title_${code}` as const]);
+  const hasCopy = locales.some((code) => filled[`title_${code}` as const]);
   if (!hasCopy) redirect("/admin/news/new?error=1");
 
   await updateStore((store) => {
     const index = store.articles.findIndex((row) => row.id === id);
-    if (index >= 0) store.articles[index] = article;
-    else store.articles.unshift(article);
+    if (index >= 0) store.articles[index] = filled;
+    else store.articles.unshift(filled);
   });
   refreshPublic();
   redirect("/admin/news");
 }
 
+export async function translateDeskCopyAction(input: {
+  source: ContentLocale;
+  title: string;
+  summary: string;
+  targets: ContentLocale[];
+}): Promise<
+  | { ok: true; copy: Partial<Record<ContentLocale, { title: string; summary: string }>> }
+  | { ok: false }
+> {
+  if (!(await isAdmin())) return { ok: false };
+  if (!(CONTENT_LOCALES as readonly string[]).includes(input.source) || !input.title.trim()) {
+    return { ok: false };
+  }
+  const copy: Partial<Record<ContentLocale, { title: string; summary: string }>> = {};
+  for (const locale of input.targets) {
+    if (!(CONTENT_LOCALES as readonly string[]).includes(locale) || locale === input.source) continue;
+    const piece = await translateBriefingTo(input.title, input.summary, locale, input.source);
+    if (piece) copy[locale] = piece;
+  }
+  return { ok: true, copy };
+}
+
 export async function deleteArticleAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id");
   await updateStore((store) => {
     store.articles = store.articles.filter((row) => row.id !== id);
@@ -120,7 +150,7 @@ export async function deleteArticleAction(form: FormData) {
 }
 
 export async function saveEventAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id") || crypto.randomUUID();
   const genre = text(form, "genre") as EventGenre;
   const event = normalizeEvent({
@@ -130,7 +160,7 @@ export async function saveEventAction(form: FormData) {
     event_datetime: toIso(text(form, "event_datetime")),
     genre: EVENT_GENRES.includes(genre) ? genre : "live-band",
     ticket_link: optional(form, "ticket_link"),
-    image_url: optional(form, "image_url"),
+    image_url: await resolveImageUrl(form),
     description_nl: optional(form, "description_nl"),
     description_en: optional(form, "description_en"),
     description_es: optional(form, "description_es"),
@@ -148,7 +178,7 @@ export async function saveEventAction(form: FormData) {
 }
 
 export async function deleteEventAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id");
   await updateStore((store) => {
     store.events = store.events.filter((row) => row.id !== id);
@@ -158,13 +188,15 @@ export async function deleteEventAction(form: FormData) {
 }
 
 export async function saveRssAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id") || crypto.randomUUID();
+  const locales = form.getAll("locales").length ? pickedLocales(form) : undefined;
   const source = normalizeRss({
     id,
     name: text(form, "name"),
     url: text(form, "url"),
     enabled: form.get("enabled") === "on",
+    locales,
   });
   if (!source.name || !source.url) redirect("/admin/rss?error=1");
 
@@ -175,6 +207,7 @@ export async function saveRssAction(form: FormData) {
       store.rss[index] = {
         ...prev,
         ...source,
+        locales: locales ?? prev.locales,
         last_pulled_at: prev.last_pulled_at,
         last_error: prev.last_error,
       };
@@ -185,7 +218,7 @@ export async function saveRssAction(form: FormData) {
 }
 
 export async function ingestFeedsAction() {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const { ingestFeeds } = await import("@/lib/rss/ingest");
   const result = await ingestFeeds();
   refreshPublic();
@@ -193,7 +226,7 @@ export async function ingestFeedsAction() {
 }
 
 export async function deleteRssAction(form: FormData) {
-  if (!(await isAdmin())) redirect("/admin/login");
+  await requireAdmin();
   const id = text(form, "id");
   await updateStore((store) => {
     store.rss = store.rss.filter((row) => row.id !== id);

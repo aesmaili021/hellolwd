@@ -3,6 +3,14 @@
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { requestFullTranslation } from "@/app/[locale]/article/actions";
+import { normalizeReadableText } from "@/lib/rss/parse";
+
+function bodyParagraphs(value: string) {
+  return normalizeReadableText(value)
+    .split(/\n{2,}/)
+    .map((para) => para.replace(/\n/g, " ").trim())
+    .filter(Boolean);
+}
 
 export function ArticleTranslation({
   articleId,
@@ -31,7 +39,7 @@ export function ArticleTranslation({
     startTransition(async () => {
       const result = await requestFullTranslation(articleId, locale);
       if (!result.ok) {
-        setError(t("translateFailed"));
+        setError(result.error === "unavailable" ? t("fullUnavailable") : t("translateFailed"));
         return;
       }
       setBody(result.body);
@@ -78,7 +86,7 @@ export function ArticleTranslation({
             {t("fullBadge")}
           </p>
           <div className="mt-3 max-w-[65ch] space-y-4 text-[15px] leading-[1.65] text-ink text-pretty lg:text-base">
-            {body.split(/\n{2,}/).map((para, index) => (
+            {bodyParagraphs(body).map((para, index) => (
               <p key={`${index}-${para.slice(0, 24)}`}>{para}</p>
             ))}
           </div>
