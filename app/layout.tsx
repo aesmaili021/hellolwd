@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Manrope, Vazirmatn } from "next/font/google";
-import { headers } from "next/headers";
-import { copy } from "@/lib/copy";
-import { isLocale, localeDir, type Locale } from "@/lib/locales";
+import { cookies } from "next/headers";
+import { getLocale } from "next-intl/server";
+import { localeDir } from "@/i18n/routing";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -22,26 +22,40 @@ export const metadata: Metadata = {
     default: "HelloLWD",
     template: "%s · HelloLWD",
   },
-  description: copy.tagline.en,
+  description: "Local news and weekend nights in Leeuwarden",
   icons: { icon: "/favicon.svg" },
 };
+
+const themeScript = `(function(){try{var m=document.cookie.match(/(?:^|; )theme=(dark|light)/);var t=m&&m[1];if(!t){t=localStorage.getItem("theme")}if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})();`;
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headerList = await headers();
-  const raw = headerList.get("x-locale") ?? "en";
-  const locale: Locale = isLocale(raw) ? raw : "en";
+  let locale = "en";
+  try {
+    locale = await getLocale();
+  } catch {
+    locale = "en";
+  }
+  const jar = await cookies();
+  const theme = jar.get("theme")?.value === "dark" ? "dark" : undefined;
 
   return (
     <html
       lang={locale}
       dir={localeDir(locale)}
+      data-theme={theme}
       className={`${manrope.variable} ${vazirmatn.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="flex min-h-full flex-col bg-paper text-ink" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

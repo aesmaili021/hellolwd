@@ -1,26 +1,38 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --paper: oklch(0.985 0.008 230);
-  --mist: oklch(0.965 0.012 230);
-  --line: oklch(0.9 0.02 230);
-  --navy: oklch(0.32 0.068 236);
-  --ink: oklch(0.38 0.025 250);
-  --ink-soft: oklch(0.46 0.02 250);
-  --frisian: oklch(0.68 0.14 230);
-  --pompebled: oklch(0.48 0.175 22);
+  --c-primary: #01a0e2;
+  --c-brand: #0b3d5c;
+  --c-navy: #0b3d5c;
+  --c-accent: #c8102e;
+  --c-paper: #ffffff;
+  --c-mist: #f7fafc;
+  --c-wash: #f1f5f8;
+  --c-ink: #374151;
+  --c-muted: #6b7a87;
+  --c-mute: #8894a0;
+  --c-line: #e5ebf0;
+  --c-ice: #e1f3fc;
+  --c-slate: #dde5ec;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-paper: var(--paper);
-  --color-mist: var(--mist);
-  --color-line: var(--line);
-  --color-navy: var(--navy);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-frisian: var(--frisian);
-  --color-pompebled: var(--pompebled);
-  --font-sans: var(--font-latin), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+html[data-theme="dark"] {
+  --c-primary: #3bb6ea;
+  --c-brand: #0b3d5c;
+  --c-navy: #e6eef4;
+  --c-accent: #e23b54;
+  --c-paper: #08131c;
+  --c-mist: #0c1822;
+  --c-wash: #132433;
+  --c-ink: #c5d0d8;
+  --c-muted: #9aabb6;
+  --c-mute: #8a9aa6;
+  --c-line: #1d3344;
+  --c-ice: #123044;
+  --c-slate: #1a2c3a;
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -35,23 +47,38 @@
 }
 
 html {
-  background: var(--paper);
+  background: var(--c-paper);
 }
 
 body {
-  background:
-    radial-gradient(1200px 420px at 10% -10%, oklch(0.68 0.14 230 / 0.08), transparent 55%),
-    var(--paper);
-  color: var(--ink);
-  font-family: var(--font-sans);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-latin), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
 }
 
 html[dir="rtl"] body {
   font-family: var(--font-arabic), var(--font-latin), ui-sans-serif, system-ui, sans-serif;
 }
 
+.emoji {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
+
 a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--frisian);
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--c-primary);
   outline-offset: 3px;
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.45; }
+  50% { opacity: 1; }
+  100% { opacity: 0.45; }
+}
+
+.shimmer {
+  animation: shimmer 1.4s ease-in-out infinite;
 }

@@ -1,10 +1,16 @@
+import { hasLocale } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { copy } from "@/lib/copy";
-import { isLocale, locales } from "@/lib/locales";
+import { Suspense } from "react";
+import { DocumentLocale } from "@/components/DocumentLocale";
 import { Footer } from "@/components/Footer";
+import { MobileTabBar } from "@/components/MobileTabBar";
+import { Nav } from "@/components/Nav";
+import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({
@@ -13,10 +19,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!isLocale(locale)) return {};
+  if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: "site" });
   return {
-    title: { absolute: copy.siteName },
-    description: copy.tagline[locale],
+    title: { absolute: t("name") },
+    description: t("tagline"),
   };
 }
 
@@ -28,18 +35,29 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
+  if (!hasLocale(routing.locales, locale)) notFound();
+
+  setRequestLocale(locale);
+  const messages = await getMessages();
+  const t = await getTranslations("nav");
 
   return (
-    <>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <DocumentLocale />
+      <div className="flex min-h-full flex-1 flex-col">
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-navy focus:px-4 focus:py-2 focus:text-paper"
+        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand focus:px-4 focus:py-2 focus:text-paper"
       >
-        {copy.skip[locale]}
+        {t("skip")}
       </a>
+      <Suspense fallback={<div className="h-16 border-b border-line bg-paper" />}>
+        <Nav />
+      </Suspense>
       {children}
-      <Footer locale={locale} />
-    </>
+      <Footer />
+      <MobileTabBar />
+      </div>
+    </NextIntlClientProvider>
   );
 }

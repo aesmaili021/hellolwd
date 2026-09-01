@@ -1,4 +1,10 @@
-export function Pompebled({ className }: { className?: string }) {
+export function Pompebled({
+  className,
+  vein = true,
+}: {
+  className?: string;
+  vein?: boolean;
+}) {
   return (
     <svg
       viewBox="0 0 32 32"
@@ -7,9 +13,26 @@ export function Pompebled({ className }: { className?: string }) {
       focusable="false"
     >
       <path
-        d="M16.1 3.2c-.4 2.4-2.2 4.4-4.6 6.2-2.8 2.1-5.7 4.6-5.7 8.6 0 5 4.1 8.8 10.2 8.8s10.2-3.8 10.2-8.8c0-4-2.9-6.5-5.7-8.6-2.4-1.8-4.2-3.8-4.6-6.2Z"
+        d="M16 3c5 4 9 8 9 13.5C25 22.3 21 27 16 29c-5-2-9-6.7-9-12.5C7 11 11 7 16 3z"
         fill="currentColor"
       />
+      {vein ? (
+        <path
+          d="M16 3v26"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="1.6"
+          opacity=".7"
+        />
+      ) : null}
     </svg>
+  );
+}
+
+export function LogoMark({ className = "h-[30px] w-[30px]" }: { className?: string }) {
+  return (
+    <span className={`inline-flex text-accent ${className}`}>
+      <Pompebled className="h-full w-full" />
+    </span>
   );
 }

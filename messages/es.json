@@ -1,0 +1,156 @@
+{
+  "site": {
+    "name": "HelloLWD",
+    "tagline": "Noticias locales y fines de semana en Leeuwarden"
+  },
+  "nav": {
+    "skip": "Saltar al contenido",
+    "news": "Noticias",
+    "events": "Fin de semana",
+    "about": "Acerca de",
+    "tabs": "Principal",
+    "language": "Idioma",
+    "theme": "Tema oscuro"
+  },
+  "filters": {
+    "all": "Todo",
+    "allGenres": "Todos los géneros",
+    "news": "Filtrar por tema",
+    "events": "Filtrar por género",
+    "clear": "Quitar filtro",
+    "storiesThisWeek": "{count} noticias esta semana"
+  },
+  "article": {
+    "readFull": "Leer el artículo en {source}",
+    "readAt": "Leer el artículo en {source}",
+    "readSource": "Leer en la fuente",
+    "empty": "No hay noticias en esta categoría. Prueba un filtro más amplio o quítalo.",
+    "emptyTitle": "No hay noticias de {category} en los últimos 7 días",
+    "meanwhile": "Mientras tanto",
+    "briefing": "Último briefing",
+    "more": "Más historias",
+    "featured": "Destacado",
+    "back": "Volver a noticias",
+    "image": "Imagen destacada"
+  },
+  "events": {
+    "title": "Eventos del fin de semana",
+    "kicker": "Vida nocturna y música en vivo",
+    "strip": "Este fin de semana en Leeuwarden",
+    "stripShort": "Este fin de semana",
+    "all": "Los {count} eventos",
+    "allShort": "Todos {count}",
+    "updated": "{count} eventos · actualizado jueves 18:00",
+    "tickets": "Entradas",
+    "instagram": "Instagram",
+    "emptyGenre": "No hay noches de {genre} este fin de semana",
+    "emptyTitle": "Aún no hay nada para este fin de semana",
+    "emptyBody": "Publicamos la lista cada jueves a las 18:00. ¿Conoces una fiesta que se nos pasó?",
+    "submit": "Enviar un evento",
+    "image": "Imagen del evento"
+  },
+  "about": {
+    "title": "Acerca de",
+    "version": "versión {version}",
+    "body": "HelloLWD es un briefing compacto de noticias locales y noches de fin de semana para internacionales en Leeuwarden. Solo resúmenes. Cada historia enlaza a su fuente.",
+    "more": "Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden y LC.nl, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
+  },
+  "footer": {
+    "version": "v{version}",
+    "blurb": "Noticias locales y fines de semana para internacionales en Leeuwarden. Solo resúmenes: cada historia enlaza a su fuente.",
+    "colofon": "Colofón",
+    "kvk": "KVK",
+    "kvkValue": "00000000",
+    "address": "Calle 00, 8900 AA Leeuwarden",
+    "contact": "Contacto",
+    "email": "hello@hellolwd.nl",
+    "privacy": "Política de privacidad",
+    "cookies": "Cookies",
+    "legal": "Legal",
+    "sources": "Fuentes"
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "updated": "Última actualización 31 de agosto de 2026 · HelloLWD {version}",
+    "whoTitle": "Quiénes somos",
+    "who": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden, Países Bajos. Contacto: hello@hellolwd.nl. El número KVK del pie es un marcador hasta que la organización esté registrada.",
+    "dataTitle": "Qué tratamos",
+    "data": "No hay cuentas, comentarios, boletines ni anuncios. No vendemos datos.\n\nEn nuestro servidor guardamos ítems RSS públicos (titular, resumen corto, enlace a la fuente, foto, categoría) y eventos de fin de semana. Tu navegador no nos envía un perfil de visitante. Si nos escribes, solo guardamos el correo para responder.",
+    "cookiesTitle": "Cookies y almacenamiento local",
+    "cookies": "El idioma va en la URL (/nl, /en, /es, /fa), no en una cookie de seguimiento. El tema claro u oscuro se guarda en localStorage y en una cookie de origen theme (un año) para que la página no parpadee. El escritorio de edición pone una cookie de origen hellolwd_admin tras el inicio de sesión; solo para quien edita el sitio.",
+    "thirdTitle": "Otros servicios",
+    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden y LC.nl. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.",
+    "rightsTitle": "Tus derechos",
+    "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en hello@hellolwd.nl. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
+  },
+  "cookies": {
+    "title": "Cookies",
+    "updated": "Última actualización 31 de agosto de 2026 · HelloLWD {version}",
+    "neededTitle": "Solo lo que el sitio necesita",
+    "needed": "HelloLWD usa unas pocas cookies de origen para que el sitio funcione. No usamos cookies de publicidad, analítica o redes sociales, así que no hay banner de marketing.",
+    "listTitle": "Cookies que ponemos",
+    "list": "theme — de origen, funcional, un año. Recuerda claro u oscuro.\n\nhellolwd_admin — de origen, funcional, solo cuando un editor entra en /admin. No se pone para lectores.\n\nEl idioma no es una cookie: es la primera parte de la dirección (/fa, /en, /nl, /es).",
+    "notusedTitle": "Qué no ponemos",
+    "notused": "Ni Google Analytics, ni píxeles publicitarios, ni huella digital. El tiempo y las noticias se cargan en el servidor, así que Open-Meteo y las redacciones no dejan cookies en tu navegador a través de este sitio.",
+    "choiceTitle": "Tus opciones",
+    "choice": "Puedes borrar cookies y datos del sitio en el navegador. Eso restablece el tema y cierra la sesión de un editor. Preguntas: hello@hellolwd.nl."
+  },
+  "weather": {
+    "label": "Tiempo en Leeuwarden",
+    "city": "Leeuwarden ahora",
+    "today": "Hoy",
+    "nowMeta": "Viento {wind} km/h · humedad {humidity}%",
+    "rain": "{value}% lluvia",
+    "credit": "Previsión de Open-Meteo. Centro, Europe/Amsterdam.",
+    "kind": {
+      "clear": "Despejado",
+      "cloudy": "Nublado",
+      "fog": "Niebla",
+      "drizzle": "Llovizna",
+      "rain": "Lluvia",
+      "snow": "Nieve",
+      "storm": "Tormenta"
+    }
+  },
+  "cambuur": {
+    "label": "SC Cambuur",
+    "kicker": "SC Cambuur · Eredivisie",
+    "rank": "{rank}.º",
+    "of": "de 18",
+    "record": "{points} pts · {played} partidos · {w}G {d}E {l}P · {gf}–{ga} ({gd})",
+    "results": "Resultados",
+    "table": "Clasificación",
+    "club": "Club",
+    "vs": "vs {team}",
+    "at": "en {team}",
+    "next": "SIG",
+    "live": "En directo",
+    "credit": "Eredivisie vía ESPN. Se actualiza cada 15 minutos.",
+    "zone": {
+      "relegation": "Zona de descenso",
+      "playoff": "Play-off de descenso",
+      "mid": "Eredivisie"
+    }
+  },
+  "categories": {
+    "politics": "Política / Concejo",
+    "infrastructure": "Infraestructura",
+    "culture": "Cultura / Eventos",
+    "business": "Economía",
+    "safety": "Seguridad / Incidentes",
+    "education": "Educación",
+    "sports": "Deportes"
+  },
+  "genres": {
+    "electronic": "Electrónica",
+    "hiphop": "Hip-hop",
+    "live-band": "Banda en vivo",
+    "student-party": "Fiesta estudiantil"
+  },
+  "locales": {
+    "nl": "NL",
+    "en": "EN",
+    "es": "ES",
+    "fa": "فا"
+  }
+}

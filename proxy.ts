@@ -1,34 +1,24 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { isLocale } from "@/lib/locales";
+import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
+import { routing } from "./i18n/routing";
 
-const FILE = /\.[^/]+$/;
+const intl = createMiddleware(routing);
+const ADMIN_COOKIE = "hellolwd_admin";
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export default function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
 
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    FILE.test(pathname)
-  ) {
+  if (pathname.startsWith("/admin")) {
+    const onLogin = pathname.startsWith("/admin/login");
+    if (!onLogin && !req.cookies.get(ADMIN_COOKIE)?.value) {
+      return NextResponse.redirect(new URL("/admin/login", req.url));
+    }
     return NextResponse.next();
   }
 
-  const segment = pathname.split("/")[1];
-  const locale = isLocale(segment) ? segment : null;
-
-  if (!locale) {
-    const url = request.nextUrl.clone();
-    url.pathname = `/en${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
-  }
-
-  const headers = new Headers(request.headers);
-  headers.set("x-locale", locale);
-  return NextResponse.next({ request: { headers } });
+  return intl(req);
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|trpc|_next|_vercel|.*\\..*).*)"],
 };

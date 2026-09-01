@@ -1,17 +1,13 @@
-import { notFound } from "next/navigation";
-import { Header } from "@/components/Header";
-import { copy } from "@/lib/copy";
-import { isLocale } from "@/lib/locales";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { LegalDoc } from "@/components/LegalDoc";
+import { SITE_VERSION } from "@/lib/version";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  if (!isLocale(locale)) return {};
-  return { title: copy.privacyTitle[locale] };
+export async function generateMetadata() {
+  const t = await getTranslations("privacy");
+  return { title: t("title") };
 }
+
+const SECTIONS = ["who", "data", "cookies", "third", "rights"] as const;
 
 export default async function PrivacyPage({
   params,
@@ -19,19 +15,17 @@ export default async function PrivacyPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
+  const t = await getTranslations("privacy");
 
   return (
-    <>
-      <Header locale={locale} section="news" />
-      <main id="content" className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
-        <h1 className="text-3xl font-semibold tracking-tight text-navy">
-          {copy.privacyTitle[locale]}
-        </h1>
-        <p className="mt-4 max-w-[65ch] text-base leading-7 text-ink">
-          {copy.privacyBody[locale]}
-        </p>
-      </main>
-    </>
+    <LegalDoc
+      title={t("title")}
+      updated={t("updated", { version: SITE_VERSION })}
+      sections={SECTIONS.map((key) => ({
+        heading: t(`${key}Title`),
+        body: t(key),
+      }))}
+    />
   );
 }

@@ -1,37 +1,45 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { copy, localeLabels } from "@/lib/copy";
-import { locales, type Locale } from "@/lib/locales";
+import { useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { localeDir, routing } from "@/i18n/routing";
 
-export function LanguageSwitcher({ locale }: { locale: Locale }) {
-  const pathname = usePathname() || `/${locale}`;
+export function LanguageSwitcher() {
+  const t = useTranslations("nav");
+  const labels = useTranslations("locales");
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
   const search = useSearchParams();
-  const query = search.toString();
-  const suffix = query ? `?${query}` : "";
 
   return (
-    <nav aria-label={copy.language[locale]} className="flex items-center gap-1">
-      {locales.map((code) => {
-        const href = `/${code}${pathname.slice(locale.length + 1)}${suffix}`;
+    <nav
+      aria-label={t("language")}
+      className="flex items-center gap-0.5 rounded-full bg-wash p-[3px] lg:gap-1.5 lg:p-1"
+    >
+      {routing.locales.map((code) => {
         const active = code === locale;
         return (
-          <Link
+          <button
             key={code}
-            href={href}
-            hrefLang={code}
+            type="button"
             lang={code}
             dir={code === "fa" ? "rtl" : "ltr"}
-            aria-current={active ? "page" : undefined}
-            className={`inline-flex h-11 min-w-11 cursor-pointer items-center justify-center rounded-full px-2.5 text-sm font-semibold tracking-wide transition-colors duration-200 ease-out ${
-              active
-                ? "bg-navy text-paper"
-                : "text-ink-soft hover:bg-mist hover:text-navy"
+            aria-current={active ? "true" : undefined}
+            onClick={() => {
+              document.documentElement.lang = code;
+              document.documentElement.dir = localeDir(code);
+              const qs = search.toString();
+              const href = qs ? `${pathname}?${qs}` : pathname;
+              router.replace(href, { locale: code });
+            }}
+            className={`inline-flex h-8 min-w-8 cursor-pointer items-center justify-center rounded-full px-2 text-[11px] font-bold tracking-wide transition-colors duration-200 ease-out lg:min-w-10 lg:px-3 lg:text-[13px] ${
+              active ? "bg-primary text-paper" : "text-muted hover:text-navy"
             }`}
           >
-            {localeLabels[code]}
-          </Link>
+            {labels(code)}
+          </button>
         );
       })}
     </nav>
