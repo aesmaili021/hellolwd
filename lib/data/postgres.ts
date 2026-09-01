@@ -246,30 +246,34 @@ async function insertStore(client: PoolClient, data: StoreData) {
 
 export async function loadPostgresStore(): Promise<StoreData> {
   await ensureSchema();
-  const client = await getPool().connect();
-  try {
-    const [articles, events, rss] = await Promise.all([
-      client.query("select * from articles"),
-      client.query("select * from events"),
-      client.query("select * from rss_sources"),
-    ]);
+  const db = getPool();
+  const [articles, events, rss] = await Promise.all([
+    db.query("select * from articles"),
+    db.query("select * from events"),
+    db.query("select * from rss_sources"),
+  ]);
 
-    if (!articles.rowCount && !events.rowCount && !rss.rowCount) {
-      const next = seed();
+  if (!articles.rowCount && !events.rowCount && !rss.rowCount) {
+    const next = seed();
+    const client = await db.connect();
+    try {
       await client.query("begin");
       await insertStore(client, next);
       await client.query("commit");
-      return next;
+    } catch (error) {
+      await client.query("rollback").catch(() => undefined);
+      throw error;
+    } finally {
+      client.release();
     }
-
-    return {
-      articles: articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
-      events: events.rows.map((row) => mapEvent(row as Record<string, unknown>)),
-      rss: rss.rows.map((row) => mapRss(row as Record<string, unknown>)),
-    };
-  } finally {
-    client.release();
+    return next;
   }
+
+  return {
+    articles: articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
+    events: events.rows.map((row) => mapEvent(row as Record<string, unknown>)),
+    rss: rss.rows.map((row) => mapRss(row as Record<string, unknown>)),
+  };
 }
 
 export async function persistPostgresStore(data: StoreData) {
