@@ -11,6 +11,7 @@
     "eventsTitle": "Weekend nights in Leeuwarden",
     "eventsDescription": "Parties, clubs and live music in Leeuwarden this weekend. Curated for internationals.",
     "aboutDescription": "HelloLWD was started by NHL Stenden students in the summer of 2026. Local news, events and nights in Leeuwarden.",
+    "guideDescription": "First month in Leeuwarden: BSN at the gemeente, DigiD, and when Omrin collects the bins.",
     "privacyDescription": "How HelloLWD handles data, cookies and contact at info@hellolwd.com.",
     "cookiesDescription": "HelloLWD only sets the cookies the site needs. No ads or analytics trackers."
   },
@@ -90,7 +91,26 @@
     "version": "version {version}",
     "place": "NHL Stenden · Leeuwarden · summer 2026",
     "body": "A group of NHL Stenden students started HelloLWD in the summer of 2026. We share the city's news, events and the nights you don't forget.",
-    "more": "Summaries only, for internationals in Leeuwarden. Every story links back to its source. We read public RSS from Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS, show the Leeuwarden weather from Open-Meteo, and keep a weekend list. No accounts, no comments, no full-article copies."
+    "more": "Summaries only, for internationals in Leeuwarden. Every story links back to its source. We read public RSS from Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS, show the Leeuwarden weather from Open-Meteo, and keep a weekend list. No accounts, no comments, no full-article copies.",
+    "guideCta": "First month in Leeuwarden: BSN, DigiD, bins"
+  },
+  "guide": {
+    "kicker": "Arrive · Leeuwarden",
+    "title": "Your first month",
+    "intro": "Three things the Dutch sites bury in long forms. Register first. Then DigiD. Then the bins.",
+    "bsnTitle": "Get a BSN",
+    "bsn": "Stay longer than four months? Book a gemeente appointment within five days of arriving. You register in the BRP and leave with a Burgerservicenummer. NHL Stenden often emails students a booking link. No walk-in. Town hall is Oldehoofsterkerkhof 2. Bring a passport and proof of your Leeuwarden address. Call 14058. Staying under four months is RNI, not BRP. That can still be Leeuwarden, but from 2026 a non-EU passport has to go to Breda or Venlo.",
+    "bsnLink": "Gemeente registration",
+    "bsnBook": "Book an appointment",
+    "digidTitle": "Get DigiD",
+    "digid": "DigiD is the login for tax, healthcare, DUO and most government sites. You need the BSN first. Apply at digid.nl. The activation letter goes to your registered address, so wait until the gemeente has your street.",
+    "digidLink": "Apply on DigiD.nl",
+    "wasteTitle": "When the bins go out",
+    "waste": "Leeuwarden waste is Omrin, not Afvalwijzer. Put your postcode in their calendar. The Omrin app reminds you. In the centre, restafval is often underground; you need a milieupas after you are registered at the address. The gemeente page lists GFT, paper and PMD.",
+    "wasteLink": "Omrin calendar",
+    "wasteGemeente": "Gemeente waste page",
+    "note": "HelloLWD is a student news desk, not the gemeente. Rules change. If a page here disagrees with Leeuwarden.nl or Omrin, trust them.",
+    "back": "About HelloLWD"
   },
   "footer": {
     "version": "v {version}",
@@ -103,6 +123,7 @@
     "email": "info@hellolwd.com",
     "privacy": "Privacy policy",
     "cookies": "Cookies",
+    "guide": "First month",
     "legal": "Legal",
     "sources": "Sources"
   },

@@ -11,6 +11,7 @@
     "eventsTitle": "Weekendavonden in Leeuwarden",
     "eventsDescription": "Feesten, clubs en live muziek in Leeuwarden dit weekend. Voor internationals.",
     "aboutDescription": "HelloLWD is in de zomer van 2026 opgezet door studenten van NHL Stenden. Lokaal nieuws, evenementen en avonden in Leeuwarden.",
+    "guideDescription": "Eerste maand in Leeuwarden: BSN bij de gemeente, DigiD, en wanneer Omrin de bakken ophaalt.",
     "privacyDescription": "Hoe HelloLWD omgaat met gegevens, cookies en contact via info@hellolwd.com.",
     "cookiesDescription": "HelloLWD zet alleen cookies die de site nodig heeft. Geen advertentie- of analysetrackers."
   },
@@ -90,7 +91,26 @@
     "version": "versie {version}",
     "place": "NHL Stenden · Leeuwarden · zomer 2026",
     "body": "Een groep studenten van NHL Stenden zette HelloLWD in de zomer van 2026 op. We delen het nieuws, de evenementen en de avonden in Leeuwarden die je bijblijven.",
-    "more": "Alleen samenvattingen, voor internationals in Leeuwarden. Elk bericht linkt terug naar de bron. We lezen openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS, tonen het weer van Leeuwarden via Open-Meteo, en houden een weekendlijst bij. Geen accounts, geen reacties, geen volledige artikelen."
+    "more": "Alleen samenvattingen, voor internationals in Leeuwarden. Elk bericht linkt terug naar de bron. We lezen openbare RSS van Omrop Fryslân, Omroep Leeuwarden, LC.nl en NOS, tonen het weer van Leeuwarden via Open-Meteo, en houden een weekendlijst bij. Geen accounts, geen reacties, geen volledige artikelen.",
+    "guideCta": "Eerste maand in Leeuwarden: BSN, DigiD, afval"
+  },
+  "guide": {
+    "kicker": "Aankomen · Leeuwarden",
+    "title": "Je eerste maand",
+    "intro": "Drie dingen die de overheidssites in lange formulieren stoppen. Eerst inschrijven. Dan DigiD. Dan de bakken.",
+    "bsnTitle": "Een BSN halen",
+    "bsn": "Blijf je langer dan vier maanden? Maak binnen vijf dagen na aankomst een afspraak bij de gemeente. Je schrijft in in de BRP en krijgt een Burgerservicenummer. NHL Stenden mailt studenten vaak een boekingslink. Zonder afspraak helpen ze je niet. Gemeentehuis: Oldehoofsterkerkhof 2. Paspoort en bewijs van je adres meenemen. Bel 14058. Korter dan vier maanden is RNI, niet BRP. Dat kan nog in Leeuwarden, maar met een niet-EU-paspoort moet je sinds 2026 naar Breda of Venlo.",
+    "bsnLink": "Inschrijven bij de gemeente",
+    "bsnBook": "Afspraak maken",
+    "digidTitle": "DigiD aanvragen",
+    "digid": "DigiD is de login voor belasting, zorg, DUO en de meeste overheidsites. Eerst het BSN. Aanvragen op digid.nl. De activeringsbrief gaat naar je ingeschreven adres, dus wacht tot de gemeente je straat heeft.",
+    "digidLink": "Aanvragen op DigiD.nl",
+    "wasteTitle": "Wanneer de bakken buiten moeten",
+    "waste": "Afval in Leeuwarden is Omrin, niet Afvalwijzer. Vul je postcode in hun kalender. De Omrin-app herinnert je. In het centrum zit restafval vaak ondergronds; daarvoor heb je een milieupas nodig als je op het adres staat ingeschreven. De gemeentepagina zet GFT, papier en PMD op een rij.",
+    "wasteLink": "Omrin-kalender",
+    "wasteGemeente": "Afval bij de gemeente",
+    "note": "HelloLWD is een studentenredactie, niet de gemeente. Regels wijzigen. Als een tekst hier botst met Leeuwarden.nl of Omrin, volg hen.",
+    "back": "Over HelloLWD"
   },
   "footer": {
     "version": "v {version}",
@@ -103,6 +123,7 @@
     "email": "info@hellolwd.com",
     "privacy": "Privacybeleid",
     "cookies": "Cookies",
+    "guide": "Eerste maand",
     "legal": "Juridisch",
     "sources": "Bronnen"
   },

@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/JsonLd";
 import { homeGraph } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -42,6 +43,12 @@ export default async function AboutPage({
       </h1>
       <p className="mt-5 max-w-[62ch] text-base leading-7 text-ink">{t("body")}</p>
       <p className="mt-4 max-w-[62ch] text-base leading-7 text-ink">{t("more")}</p>
+      <Link
+        href="/guide"
+        className="mt-8 inline-flex min-h-11 cursor-pointer items-center rounded-full bg-ice px-4 text-[13px] font-extrabold text-navy hover:bg-wash"
+      >
+        {t("guideCta")} →
+      </Link>
     </main>
   );
 }
