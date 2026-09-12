@@ -10,7 +10,7 @@
     "categoryDescription": "Noticias locales de {category} en Leeuwarden y Frisia, resumidas en tu idioma.",
     "eventsTitle": "Noches de fin de semana en Leeuwarden",
     "eventsDescription": "Fiestas, clubes y música en vivo en Leeuwarden este fin de semana. Para internacionales.",
-    "aboutDescription": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden.",
+    "aboutDescription": "HelloLWD lo lanzaron estudiantes de NHL Stenden en el verano de 2026. Noticias, eventos y noches en Leeuwarden.",
     "privacyDescription": "Cómo HelloLWD trata datos, cookies y el contacto en info@hellolwd.com.",
     "cookiesDescription": "HelloLWD solo pone las cookies que el sitio necesita. Sin anuncios ni analítica."
   },
@@ -79,10 +79,11 @@
     "image": "Imagen del evento"
   },
   "about": {
-    "title": "Acerca de",
+    "title": "Quiénes somos",
     "version": "versión {version}",
-    "body": "HelloLWD es un briefing compacto de noticias locales y noches de fin de semana para internacionales en Leeuwarden. Solo resúmenes. Cada historia enlaza a su fuente.",
-    "more": "Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
+    "place": "NHL Stenden · Leeuwarden · verano de 2026",
+    "body": "Un grupo de estudiantes de NHL Stenden lanzó HelloLWD en el verano de 2026. Compartimos las noticias, los eventos y las noches de Leeuwarden que se quedan.",
+    "more": "Solo resúmenes, para internacionales en Leeuwarden. Cada historia enlaza a su fuente. Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
   },
   "footer": {
     "version": "v {version}",
@@ -102,7 +103,7 @@
     "title": "Política de privacidad",
     "updated": "Última actualización 12 de septiembre de 2026 · HelloLWD {version}",
     "whoTitle": "Quiénes somos",
-    "who": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden, Países Bajos. Contacto: info@hellolwd.com.",
+    "who": "HelloLWD es un briefing local de noticias y fin de semana, lanzado por estudiantes de NHL Stenden en Leeuwarden, Países Bajos. Contacto: info@hellolwd.com.",
     "dataTitle": "Qué tratamos",
     "data": "No hay cuentas, comentarios, boletines ni anuncios. No vendemos datos.\n\nEn nuestro servidor guardamos ítems RSS públicos (titular, resumen corto, enlace a la fuente, foto, categoría) y eventos de fin de semana. Tu navegador no nos envía un perfil de visitante. Si nos escribes, solo guardamos el correo para responder.",
     "cookiesTitle": "Cookies y almacenamiento local",

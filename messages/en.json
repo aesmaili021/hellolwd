@@ -10,7 +10,7 @@
     "categoryDescription": "Local {category} stories from Leeuwarden and Friesland, briefed in your language.",
     "eventsTitle": "Weekend nights in Leeuwarden",
     "eventsDescription": "Parties, clubs and live music in Leeuwarden this weekend. Curated for internationals.",
-    "aboutDescription": "HelloLWD is a compact local news and weekend briefing for internationals in Leeuwarden.",
+    "aboutDescription": "HelloLWD was started by NHL Stenden students in the summer of 2026. Local news, events and nights in Leeuwarden.",
     "privacyDescription": "How HelloLWD handles data, cookies and contact at info@hellolwd.com.",
     "cookiesDescription": "HelloLWD only sets the cookies the site needs. No ads or analytics trackers."
   },
@@ -81,8 +81,9 @@
   "about": {
     "title": "About",
     "version": "version {version}",
-    "body": "HelloLWD is a compact briefing of local news and weekend nights for internationals in Leeuwarden. Summaries only. Every story links back to its source.",
-    "more": "We pull public RSS from Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS, add a Leeuwarden weather strip from Open-Meteo, and keep a curated weekend list. No accounts, no comments, no full-article copies."
+    "place": "NHL Stenden · Leeuwarden · summer 2026",
+    "body": "A group of NHL Stenden students started HelloLWD in the summer of 2026. We share the city's news, events and the nights you don't forget.",
+    "more": "Summaries only, for internationals in Leeuwarden. Every story links back to its source. We read public RSS from Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS, show the Leeuwarden weather from Open-Meteo, and keep a weekend list. No accounts, no comments, no full-article copies."
   },
   "footer": {
     "version": "v {version}",
@@ -102,7 +103,7 @@
     "title": "Privacy policy",
     "updated": "Last updated 12 September 2026 · HelloLWD {version}",
     "whoTitle": "Who we are",
-    "who": "HelloLWD is a local news and weekend briefing for internationals in Leeuwarden, the Netherlands. Contact: info@hellolwd.com.",
+    "who": "HelloLWD is a local news and weekend briefing started by NHL Stenden students in Leeuwarden, the Netherlands. Contact: info@hellolwd.com.",
     "dataTitle": "What we process",
     "data": "We do not run user accounts, comments, newsletters or ads. We do not sell data.\n\nOn our server we store public RSS items (headline, short summary, source link, photo URL, category) and curated weekend events so the site can show them. Your browser does not send us a visitor profile. If you email us, we only keep what you wrote so we can reply.",
     "cookiesTitle": "Cookies and local storage",

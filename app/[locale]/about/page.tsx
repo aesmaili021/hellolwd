@@ -36,6 +36,7 @@ export default async function AboutPage({
       <p className="text-xs font-extrabold tracking-[0.14em] text-primary uppercase">
         HelloLWD · {t("version", { version: SITE_VERSION })}
       </p>
+      <p className="mt-2 text-[13px] font-semibold text-mute">{t("place")}</p>
       <h1 className="mt-2 max-w-[18ch] text-[32px] font-extrabold tracking-[-0.03em] text-navy lg:text-[38px]">
         {t("title")}
       </h1>
