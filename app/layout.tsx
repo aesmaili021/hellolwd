@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope, Vazirmatn } from "next/font/google";
 import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
@@ -25,7 +25,27 @@ export const metadata: Metadata = {
     template: "%s · HelloLWD",
   },
   description: "Local news and weekend nights in Leeuwarden",
-  icons: { icon: "/favicon.svg" },
+  applicationName: "HelloLWD",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "HelloLWD",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0B3D5C" },
+    { media: "(prefers-color-scheme: dark)", color: "#08131C" },
+  ],
 };
 
 const themeScript = `(function(){try{var m=document.cookie.match(/(?:^|; )theme=(dark|light)/);var t=m&&m[1];if(!t){t=localStorage.getItem("theme")}if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})();`;

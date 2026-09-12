@@ -57,6 +57,13 @@
     "fullUnavailable": "متن کامل این خبر پشت سایت منبع قفل است. از لینک پایین صفحه همان‌جا بخوان.",
     "translatedBadge": "ترجمه‌شده",
     "fullBadge": "متن کامل",
+    "share": "اشتراک‌گذاری",
+    "shareLabel": "این خبر را به اشتراک بگذارید",
+    "shareNative": "اشتراک",
+    "shareWhatsApp": "واتساپ",
+    "shareTelegram": "تلگرام",
+    "copyLink": "کپی لینک",
+    "copied": "کپی شد",
     "langEn": "انگلیسی",
     "langEs": "اسپانیایی",
     "langFa": "فارسی",
@@ -152,6 +159,15 @@
       "boxingDay": "دومین روز کریسمس",
       "newYearsEve": "شب سال نو"
     }
+  },
+  "today": {
+    "label": "امروز در لیوواردن",
+    "kicker": "امروز",
+    "weather": "{temp}° · {kind}",
+    "tonight": "امشب",
+    "weekend": "این آخر هفته",
+    "news": "الان",
+    "emptyNight": "هنوز شبی در لیست نیست"
   },
   "weather": {
     "label": "هوای لیوواردن",

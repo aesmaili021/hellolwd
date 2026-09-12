@@ -7,6 +7,7 @@ import { DocumentLocale } from "@/components/DocumentLocale";
 import { Footer } from "@/components/Footer";
 import { MobileTabBar } from "@/components/MobileTabBar";
 import { Nav } from "@/components/Nav";
+import { PwaRegister } from "@/components/PwaRegister";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -50,6 +51,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <DocumentLocale />
+      <PwaRegister />
       <div className="flex min-h-full flex-1 flex-col">
       <a
         href="#content"

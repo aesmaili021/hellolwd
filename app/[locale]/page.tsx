@@ -5,6 +5,7 @@ import { EmptyFilter } from "@/components/EmptyStates";
 import { CambuurStrip } from "@/components/CambuurStrip";
 import { WeatherStrip } from "@/components/WeatherStrip";
 import { BusinessCta } from "@/components/BusinessCta";
+import { TodayStrip } from "@/components/TodayStrip";
 import { WeekendHero } from "@/components/WeekendHero";
 import { JsonLd } from "@/components/JsonLd";
 import { getArticles } from "@/lib/data/articles";
@@ -76,6 +77,7 @@ export default async function HomePage({
   return (
     <>
       {!category ? <JsonLd data={homeGraph()} /> : null}
+      {!category ? <TodayStrip events={events} story={featured ?? null} /> : null}
       <BusinessCta />
       {!category && events.length > 0 ? <WeekendHero events={events} /> : null}
       <WeatherStrip />

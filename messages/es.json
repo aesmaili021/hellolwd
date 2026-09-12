@@ -57,6 +57,13 @@
     "fullUnavailable": "La fuente guarda el artículo completo en su propia web. Léelo con el enlace de abajo.",
     "translatedBadge": "Traducido",
     "fullBadge": "Artículo completo",
+    "share": "Compartir",
+    "shareLabel": "Comparte esta historia",
+    "shareNative": "Compartir",
+    "shareWhatsApp": "WhatsApp",
+    "shareTelegram": "Telegram",
+    "copyLink": "Copiar enlace",
+    "copied": "Copiado",
     "langEn": "inglés",
     "langEs": "español",
     "langFa": "persa",
@@ -152,6 +159,15 @@
       "boxingDay": "Segundo día de Navidad",
       "newYearsEve": "Nochevieja"
     }
+  },
+  "today": {
+    "label": "Hoy en Leeuwarden",
+    "kicker": "Hoy",
+    "weather": "{temp}° · {kind}",
+    "tonight": "Esta noche",
+    "weekend": "Este fin de semana",
+    "news": "Ahora",
+    "emptyNight": "Aún no hay noches en la lista"
   },
   "weather": {
     "label": "Tiempo en Leeuwarden",

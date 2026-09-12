@@ -5,10 +5,11 @@ import { Link } from "@/i18n/navigation";
 import { getArticle } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
+import { ArticleShare } from "@/components/ArticleShare";
 import { ArticleTranslation } from "@/components/ArticleTranslation";
 import { JsonLd } from "@/components/JsonLd";
 import { articleGraph } from "@/lib/schema";
-import { pageMetadata } from "@/lib/seo";
+import { localeUrl, pageMetadata } from "@/lib/seo";
 import { articleBody, articleSummary, articleTitle, textParagraphs } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -99,6 +100,10 @@ export default async function ArticlePage({
           <p key={`${index}-${para.slice(0, 24)}`}>{para}</p>
         ))}
       </div>
+      <ArticleShare
+        url={localeUrl(currentLocale, `/article/${article.id}`)}
+        title={articleTitle(article, currentLocale)}
+      />
       <ArticleTranslation
         articleId={article.id}
         locale={currentLocale}

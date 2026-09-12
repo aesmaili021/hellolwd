@@ -57,6 +57,13 @@
     "fullUnavailable": "The source keeps the full article on its own site. Use the link below to read it there.",
     "translatedBadge": "Translated",
     "fullBadge": "Full article",
+    "share": "Share",
+    "shareLabel": "Share this story",
+    "shareNative": "Share",
+    "shareWhatsApp": "WhatsApp",
+    "shareTelegram": "Telegram",
+    "copyLink": "Copy link",
+    "copied": "Copied",
     "langEn": "English",
     "langEs": "Spanish",
     "langFa": "Persian",
@@ -152,6 +159,15 @@
       "boxingDay": "Second Christmas Day",
       "newYearsEve": "New Year's Eve"
     }
+  },
+  "today": {
+    "label": "Today in Leeuwarden",
+    "kicker": "Today",
+    "weather": "{temp}° · {kind}",
+    "tonight": "Tonight",
+    "weekend": "This weekend",
+    "news": "Now",
+    "emptyNight": "No nights listed yet"
   },
   "weather": {
     "label": "Weather in Leeuwarden",
