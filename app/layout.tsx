@@ -3,6 +3,7 @@ import { Manrope, Vazirmatn } from "next/font/google";
 import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { localeDir } from "@/i18n/routing";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -18,6 +19,7 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "HelloLWD",
     template: "%s · HelloLWD",

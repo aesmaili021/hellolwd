@@ -368,7 +368,7 @@ async function viaMyMemory(text: string, source: string, target: string) {
     rest = rest.slice(cut > 200 ? cut : 450).trim();
   }
 
-  const email = process.env.TRANSLATE_EMAIL || "hello@hellolwd.nl";
+  const email = process.env.TRANSLATE_EMAIL || "info@hellolwd.com";
   const out: string[] = [];
   for (const chunk of chunks) {
     const url =

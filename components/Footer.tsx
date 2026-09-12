@@ -29,16 +29,12 @@ export async function Footer() {
             {t("colofon")}
           </p>
           <p className="text-[13px] text-muted">HelloLWD</p>
-          <p className="text-[13px] text-muted">
-            {t("kvk")} {t("kvkValue")}
-          </p>
           <a
             href={`mailto:${t("email")}`}
             className="cursor-pointer text-[13px] text-muted hover:text-navy"
           >
             {t("email")}
           </a>
-          <p className="text-[13px] text-muted">{t("address")}</p>
         </div>
         <div className="flex flex-col gap-1.5">
           <p className="text-[11px] font-extrabold tracking-[0.1em] text-navy">

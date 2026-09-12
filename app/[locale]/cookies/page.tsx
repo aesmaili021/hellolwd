@@ -1,10 +1,23 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalDoc } from "@/components/LegalDoc";
+import { pageMetadata } from "@/lib/seo";
 import { SITE_VERSION } from "@/lib/version";
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const t = await getTranslations("cookies");
-  return { title: t("title") };
+  const seo = await getTranslations("seo");
+  return pageMetadata({
+    locale,
+    path: "/cookies",
+    title: t("title"),
+    description: seo("cookiesDescription"),
+  });
 }
 
 const SECTIONS = ["needed", "list", "notused", "choice"] as const;

@@ -4,10 +4,47 @@ import { CategoryPills } from "@/components/CategoryPills";
 import { EmptyFilter } from "@/components/EmptyStates";
 import { CambuurStrip } from "@/components/CambuurStrip";
 import { WeatherStrip } from "@/components/WeatherStrip";
+import { BusinessCta } from "@/components/BusinessCta";
 import { WeekendHero } from "@/components/WeekendHero";
+import { JsonLd } from "@/components/JsonLd";
 import { getArticles } from "@/lib/data/articles";
 import { getEvents } from "@/lib/data/events";
+import { homeGraph } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { NEWS_CATEGORIES, type NewsCategory } from "@/lib/types";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
+  const { cat } = await searchParams;
+  const category =
+    cat && (NEWS_CATEGORIES as readonly string[]).includes(cat)
+      ? (cat as NewsCategory)
+      : undefined;
+  const seo = await getTranslations("seo");
+  const categories = await getTranslations("categories");
+  if (category) {
+    const label = categories(category);
+    return pageMetadata({
+      locale,
+      path: `/?cat=${category}`,
+      title: seo("categoryTitle", { category: label }),
+      description: seo("categoryDescription", { category: label.toLowerCase() }),
+    });
+  }
+  return pageMetadata({
+    locale,
+    path: "/",
+    title: seo("homeTitle"),
+    description: seo("homeDescription"),
+  });
+}
 
 export default async function HomePage({
   params,
@@ -38,6 +75,8 @@ export default async function HomePage({
 
   return (
     <>
+      {!category ? <JsonLd data={homeGraph()} /> : null}
+      <BusinessCta />
       {!category && events.length > 0 ? <WeekendHero events={events} /> : null}
       <WeatherStrip />
       <CambuurStrip />

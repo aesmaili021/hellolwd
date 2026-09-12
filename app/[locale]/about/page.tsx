@@ -1,9 +1,24 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { JsonLd } from "@/components/JsonLd";
+import { homeGraph } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { SITE_VERSION } from "@/lib/version";
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const t = await getTranslations("about");
-  return { title: t("title") };
+  const seo = await getTranslations("seo");
+  return pageMetadata({
+    locale,
+    path: "/about",
+    title: t("title"),
+    description: seo("aboutDescription"),
+  });
 }
 
 export default async function AboutPage({
@@ -17,6 +32,7 @@ export default async function AboutPage({
 
   return (
     <main id="content" className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-10 lg:px-10 lg:py-16">
+      <JsonLd data={homeGraph()} />
       <p className="text-xs font-extrabold tracking-[0.14em] text-primary uppercase">
         HelloLWD · {t("version", { version: SITE_VERSION })}
       </p>

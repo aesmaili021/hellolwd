@@ -22,9 +22,13 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "site" });
   return {
-    title: { absolute: t("name") },
+    title: {
+      default: t("name"),
+      template: `%s · ${t("name")}`,
+    },
     description: t("tagline"),
   };
 }

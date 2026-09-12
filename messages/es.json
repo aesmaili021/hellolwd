@@ -3,6 +3,17 @@
     "name": "HelloLWD",
     "tagline": "Noticias locales y fines de semana en Leeuwarden"
   },
+  "seo": {
+    "homeTitle": "HelloLWD — noticias locales y noches de fin de semana en Leeuwarden",
+    "homeDescription": "Briefings locales de Leeuwarden y Frisia, más las noches de este fin de semana. Neerlandés, inglés, español y persa. Cada nota enlaza a la fuente.",
+    "categoryTitle": "{category} en Leeuwarden",
+    "categoryDescription": "Noticias locales de {category} en Leeuwarden y Frisia, resumidas en tu idioma.",
+    "eventsTitle": "Noches de fin de semana en Leeuwarden",
+    "eventsDescription": "Fiestas, clubes y música en vivo en Leeuwarden este fin de semana. Para internacionales.",
+    "aboutDescription": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden.",
+    "privacyDescription": "Cómo HelloLWD trata datos, cookies y el contacto en info@hellolwd.com.",
+    "cookiesDescription": "HelloLWD solo pone las cookies que el sitio necesita. Sin anuncios ni analítica."
+  },
   "nav": {
     "skip": "Saltar al contenido",
     "news": "Noticias",
@@ -74,14 +85,14 @@
     "more": "Leemos RSS públicos de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS, mostramos el tiempo de Leeuwarden con Open-Meteo y mantenemos una lista de fin de semana. Sin cuentas, sin comentarios, sin artículos completos."
   },
   "footer": {
-    "version": "v{version}",
+    "version": "v {version}",
     "blurb": "Noticias locales y fines de semana para internacionales en Leeuwarden. Solo resúmenes: cada historia enlaza a su fuente.",
     "colofon": "Colofón",
     "kvk": "KVK",
     "kvkValue": "00000000",
     "address": "Calle 00, 8900 AA Leeuwarden",
     "contact": "Contacto",
-    "email": "hello@hellolwd.nl",
+    "email": "info@hellolwd.com",
     "privacy": "Política de privacidad",
     "cookies": "Cookies",
     "legal": "Legal",
@@ -89,9 +100,9 @@
   },
   "privacy": {
     "title": "Política de privacidad",
-    "updated": "Última actualización 2 de septiembre de 2026 · HelloLWD {version}",
+    "updated": "Última actualización 12 de septiembre de 2026 · HelloLWD {version}",
     "whoTitle": "Quiénes somos",
-    "who": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden, Países Bajos. Contacto: hello@hellolwd.nl. El número KVK del pie es un marcador hasta que la organización esté registrada.",
+    "who": "HelloLWD es un briefing local de noticias y fin de semana para internacionales en Leeuwarden, Países Bajos. Contacto: info@hellolwd.com.",
     "dataTitle": "Qué tratamos",
     "data": "No hay cuentas, comentarios, boletines ni anuncios. No vendemos datos.\n\nEn nuestro servidor guardamos ítems RSS públicos (titular, resumen corto, enlace a la fuente, foto, categoría) y eventos de fin de semana. Tu navegador no nos envía un perfil de visitante. Si nos escribes, solo guardamos el correo para responder.",
     "cookiesTitle": "Cookies y almacenamiento local",
@@ -99,11 +110,11 @@
     "thirdTitle": "Otros servicios",
     "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.",
     "rightsTitle": "Tus derechos",
-    "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en hello@hellolwd.nl. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
+    "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en info@hellolwd.com. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
   },
   "cookies": {
     "title": "Cookies",
-    "updated": "Última actualización 2 de septiembre de 2026 · HelloLWD {version}",
+    "updated": "Última actualización 12 de septiembre de 2026 · HelloLWD {version}",
     "neededTitle": "Solo lo que el sitio necesita",
     "needed": "HelloLWD usa unas pocas cookies de origen para que el sitio funcione. No usamos cookies de publicidad, analítica o redes sociales, así que no hay banner de marketing.",
     "listTitle": "Cookies que ponemos",
@@ -111,7 +122,7 @@
     "notusedTitle": "Qué no ponemos",
     "notused": "Ni Google Analytics, ni píxeles publicitarios, ni huella digital. El tiempo y las noticias se cargan en el servidor, así que Open-Meteo y las redacciones no dejan cookies en tu navegador a través de este sitio.",
     "choiceTitle": "Tus opciones",
-    "choice": "Puedes borrar cookies y datos del sitio en el navegador. Eso restablece el tema y cierra la sesión de un editor. Preguntas: hello@hellolwd.nl."
+    "choice": "Puedes borrar cookies y datos del sitio en el navegador. Eso restablece el tema y cierra la sesión de un editor. Preguntas: info@hellolwd.com."
   },
   "calendar": {
     "label": "Calendario de Países Bajos y Frisia",
@@ -192,6 +203,13 @@
     "hiphop": "Hip-hop",
     "live-band": "Banda en vivo",
     "student-party": "Fiesta estudiantil"
+  },
+  "business": {
+    "kicker": "Prueba · Leeuwarden",
+    "title": "Tu negocio en HelloLWD. Gratis, por ahora.",
+    "body": "Seguimos en fase de prueba. ¿Café, tienda, salón o local en la ciudad? Te ponemos frente a los internacionales que ya leen este briefing — sin factura.",
+    "cta": "Escribe a info@hellolwd.com",
+    "subject": "Anuncio gratis en HelloLWD"
   },
   "locales": {
     "nl": "NL",

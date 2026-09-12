@@ -1,15 +1,31 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { BusinessCta } from "@/components/BusinessCta";
 import { EmptyWeekend } from "@/components/EmptyStates";
 import { EventCard } from "@/components/EventCard";
 import { WeatherStrip } from "@/components/WeatherStrip";
 import { Link } from "@/i18n/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { getEvents } from "@/lib/data/events";
 import { formatWeekendRange } from "@/lib/format";
+import { eventsGraph } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { EVENT_GENRES, type EventGenre } from "@/lib/types";
 
-export async function generateMetadata() {
-  const t = await getTranslations("nav");
-  return { title: t("events") };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
+  const seo = await getTranslations("seo");
+  return pageMetadata({
+    locale,
+    path: "/events",
+    title: seo("eventsTitle"),
+    description: seo("eventsDescription"),
+    image: "/placeholders/event.jpg",
+  });
 }
 
 export default async function EventsPage({
@@ -29,6 +45,7 @@ export default async function EventsPage({
   const events = await getEvents(active);
   const rangeSource = active ? await getEvents() : events;
   const t = await getTranslations("events");
+  const seo = await getTranslations("seo");
   const filters = await getTranslations("filters");
   const genres = await getTranslations("genres");
   const currentLocale = await getLocale();
@@ -39,6 +56,10 @@ export default async function EventsPage({
 
   return (
     <>
+    <JsonLd
+      data={eventsGraph(events, currentLocale, seo("eventsTitle"), seo("eventsDescription"))}
+    />
+    <BusinessCta />
     <WeatherStrip />
     <main id="content" className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 lg:px-10 lg:py-10">
       <header className="mb-6 flex flex-col gap-2 lg:mb-6 lg:flex-row lg:items-end lg:justify-between">

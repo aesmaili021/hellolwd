@@ -2,10 +2,13 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { CoverImage } from "@/components/CoverImage";
 import { Link } from "@/i18n/navigation";
-import { getArticle, getArticles } from "@/lib/data/articles";
+import { getArticle } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
 import { ArticleTranslation } from "@/components/ArticleTranslation";
+import { JsonLd } from "@/components/JsonLd";
+import { articleGraph } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { articleBody, articleSummary, articleTitle, textParagraphs } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -16,12 +19,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
+  setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const article = await getArticle(id, locale);
   if (!article) return {};
-  return {
+  const categories = await getTranslations("categories");
+  return pageMetadata({
+    locale,
+    path: `/article/${article.id}`,
     title: articleTitle(article, locale),
-    description: articleSummary(article, locale),
-  };
+    description: articleSummary(article, locale).slice(0, 200),
+    image: articleImage(article.image_url, article.category),
+    type: "article",
+    publishedTime: article.published_at,
+    authors: ["HelloLWD"],
+    section: categories(article.category),
+    languages: article.locales,
+  });
 }
 
 export default async function ArticlePage({
@@ -35,6 +48,7 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const t = await getTranslations("article");
+  const nav = await getTranslations("nav");
   const categories = await getTranslations("categories");
   const currentLocale = await getLocale();
   const languageLabel = t(
@@ -50,6 +64,7 @@ export default async function ArticlePage({
 
   return (
     <main id="content" className="mx-auto w-full max-w-[720px] flex-1 px-4 py-8 lg:px-10 lg:py-12">
+      <JsonLd data={articleGraph(article, currentLocale, nav("news"))} />
       <Link
         href="/"
         className="inline-flex min-h-11 cursor-pointer items-center text-sm font-bold text-primary hover:text-navy"
