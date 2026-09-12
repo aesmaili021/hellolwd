@@ -1,5 +1,5 @@
 import { routing, type Locale } from "@/i18n/routing";
-import { normalizeReadableText } from "@/lib/rss/parse";
+import { looksLikePageChrome, normalizeReadableText } from "@/lib/rss/parse";
 
 export const NEWS_CATEGORIES = [
   "politics",
@@ -164,6 +164,7 @@ export function isSubstantialBody(body: string | null | undefined, summary = "")
   const text = (body ?? "").replace(/\s+/g, " ").trim();
   const brief = summary.replace(/\s+/g, " ").trim();
   if (text.length < 280) return false;
+  if (looksLikePageChrome(text)) return false;
   if (brief && text.length < brief.length + 160) return false;
   return true;
 }

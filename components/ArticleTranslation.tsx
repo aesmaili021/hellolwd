@@ -85,7 +85,10 @@ export function ArticleTranslation({
           <p className="text-[10px] font-extrabold tracking-[0.12em] text-mute uppercase">
             {t("fullBadge")}
           </p>
-          <div className="mt-3 max-w-[65ch] space-y-4 text-[15px] leading-[1.65] text-ink text-pretty lg:text-base">
+          <div
+            dir={locale === "fa" ? "rtl" : "ltr"}
+            className="mt-3 max-w-[65ch] space-y-4 text-[15px] leading-[1.65] text-ink text-pretty lg:text-base"
+          >
             {bodyParagraphs(body).map((para, index) => (
               <p key={`${index}-${para.slice(0, 24)}`}>{para}</p>
             ))}

@@ -106,7 +106,10 @@ export function parseRssItems(xml: string): RssItem[] {
 }
 
 const NOISE =
-  /cookie|nieuwsbrief|inschrijven|privacy|abonneer|advertentie|lees ook|fout gezien|just a moment|enable javascript/i;
+  /cookie|nieuwsbrief|inschrijven|privacy|abonneer je|advertentie|lees ook|deel dit artikel|tips van de redactie|formulier is aan het laden|fout gezien|just a moment|enable javascript|whatsapp[- ]kanaal|via ons whatsapp/i;
+
+const PAGE_CHROME =
+  /deel dit artikel|tips van de redactie|formulier is aan het laden|share this article|compartir este art[ií]culo|این مقاله را به اشتراک|فرم در حال بارگذاری/i;
 
 function isBlockedHtml(html: string) {
   return /just a moment|cf-browser-verification|challenge-platform|enable javascript and cookies|sorry, you have been blocked/i.test(
@@ -116,7 +119,39 @@ function isBlockedHtml(html: string) {
 
 function usefulText(value: string, min = 40) {
   const text = normalizeReadableText(value).replace(/[ \t]+/g, " ").trim();
-  return text.length >= min && !NOISE.test(text) ? text : "";
+  return text.length >= min && !NOISE.test(text) && !PAGE_CHROME.test(text) ? text : "";
+}
+
+export function looksLikePageChrome(value: string | null | undefined) {
+  const text = normalizeReadableText(value ?? "");
+  if (!text) return false;
+  if (PAGE_CHROME.test(text)) return true;
+  const paras = text.split(/\n+/).map((para) => para.replace(/[ \t]+/g, " ").trim()).filter(Boolean);
+  const long = paras.filter((para) => para.length >= 120);
+  const cards = paras.filter((para) => para.length < 160 && /[:"""«]/.test(para));
+  return long.length === 0 && cards.length >= 4;
+}
+
+function cleanArticleText(value: string) {
+  return normalizeReadableText(value)
+    .split(/\n+/)
+    .map((para) => para.replace(/[ \t]+/g, " ").trim())
+    .filter((para) => para.length >= 40 && !NOISE.test(para) && !PAGE_CHROME.test(para))
+    .join("\n\n");
+}
+
+function nodeTypes(node: { "@type"?: string | string[] } | null | undefined) {
+  const type = node?.["@type"];
+  return (Array.isArray(type) ? type : type ? [type] : []).map((value) => String(value).toLowerCase());
+}
+
+function collectJsonLdNodes(data: unknown): { articleBody?: string; description?: string; "@type"?: string | string[] }[] {
+  if (!data) return [];
+  if (Array.isArray(data)) return data.flatMap((node) => collectJsonLdNodes(node));
+  if (typeof data !== "object") return [];
+  const record = data as { "@graph"?: unknown; articleBody?: string; description?: string; "@type"?: string | string[] };
+  const self = record.articleBody || record["@type"] ? [record] : [];
+  return [...self, ...collectJsonLdNodes(record["@graph"])];
 }
 
 function extractJsonLdBody(html: string) {
@@ -126,14 +161,13 @@ function extractJsonLdBody(html: string) {
   let best = "";
   for (const match of scripts) {
     try {
-      const data = JSON.parse(match[1] || "null") as
-        | { articleBody?: string; "@graph"?: { articleBody?: string }[] }
-        | { articleBody?: string }[]
-        | null;
-      const nodes = Array.isArray(data) ? data : data?.["@graph"] ? data["@graph"] : data ? [data] : [];
+      const nodes = collectJsonLdNodes(JSON.parse(match[1] || "null"));
       for (const node of nodes) {
-        const body = normalizeReadableText(node?.articleBody || "");
-        if (body.length < 80 || NOISE.test(body)) continue;
+        if (!nodeTypes(node).some((type) => /newsarticle|article|reportage|blogposting/.test(type))) {
+          continue;
+        }
+        const body = cleanArticleText(node.articleBody || "");
+        if (body.length < 80 || looksLikePageChrome(body)) continue;
         if (body.length > best.length) best = body;
       }
     } catch {
@@ -143,9 +177,43 @@ function extractJsonLdBody(html: string) {
   return best;
 }
 
+function clipRelatedChrome(html: string) {
+  const cut = html.search(
+    /lees ook|deel dit artikel|tips van de redactie|share-buttons|formulier is aan het laden|meer verhalen|gerelateerde/i,
+  );
+  return cut > 400 ? html.slice(0, cut) : html;
+}
+
+function mainRegion(html: string) {
+  return (
+    html.match(/<article\b[\s\S]*?<\/article>/i)?.[0] ||
+    html.match(/<main\b[\s\S]*?<\/main>/i)?.[0] ||
+    html
+  );
+}
+
+function extractHtmlBody(html: string) {
+  const region = clipRelatedChrome(mainRegion(html));
+  const blocks = [...region.matchAll(/<(p|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/gi)]
+    .map((match) => usefulText(stripHtml(match[2]), match[1].toLowerCase() === "p" ? 40 : 18))
+    .filter(Boolean);
+  const paragraphs = blocks.filter((block) => block.length >= 80);
+  if (paragraphs.length < 2) return paragraphs.join("\n\n");
+  return blocks.join("\n\n");
+}
+
+function sameStory(left: string, right: string) {
+  const needle = left.slice(0, 48).toLowerCase();
+  return needle.length >= 32 && right.toLowerCase().includes(needle);
+}
+
 export function extractLead(html: string) {
   if (isBlockedHtml(html)) return "";
-  const paras = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+  const jsonLd = extractJsonLdBody(html);
+  if (jsonLd.length >= 80) {
+    return jsonLd.split(/\n+/).filter(Boolean).slice(0, 3).join(" ");
+  }
+  const paras = [...clipRelatedChrome(html).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
     .map((match) => usefulText(stripHtml(match[1])))
     .filter(Boolean);
   return paras.slice(0, 4).join(" ");
@@ -154,12 +222,18 @@ export function extractLead(html: string) {
 export function extractArticleBody(html: string) {
   if (isBlockedHtml(html)) return "";
   const jsonLd = extractJsonLdBody(html);
-  const article = html.match(/<article\b[\s\S]*?<\/article>/i)?.[0] ?? html;
-  const blocks = [...article.matchAll(/<(p|h2|h3)\b[^>]*>([\s\S]*?)<\/\1>/gi)]
-    .map((match) => usefulText(stripHtml(match[2]), match[1].toLowerCase() === "p" ? 40 : 8))
-    .filter(Boolean);
-  const text = blocks.join("\n\n").trim();
-  return (jsonLd.length > text.length ? jsonLd : text).slice(0, 12000);
+  const htmlBody = cleanArticleText(extractHtmlBody(html));
+  const jsonOk = jsonLd.length >= 200 && !looksLikePageChrome(jsonLd);
+  const htmlOk = htmlBody.length >= 200 && !looksLikePageChrome(htmlBody);
+  if (jsonOk && htmlOk) {
+    if (htmlBody.length > jsonLd.length + 80 && sameStory(jsonLd, htmlBody)) {
+      return htmlBody.slice(0, 12000);
+    }
+    return (htmlBody.length > jsonLd.length ? htmlBody : jsonLd).slice(0, 12000);
+  }
+  if (htmlOk) return htmlBody.slice(0, 12000);
+  if (jsonOk) return jsonLd.slice(0, 12000);
+  return (jsonLd.length > htmlBody.length ? jsonLd : htmlBody).slice(0, 12000);
 }
 
 export function normalizeArticleUrl(value: string) {

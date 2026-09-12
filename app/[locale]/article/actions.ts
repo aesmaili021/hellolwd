@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getArticle } from "@/lib/data/articles";
 import { updateStore } from "@/lib/data/store";
-import { extractArticleBody } from "@/lib/rss/parse";
+import { extractArticleBody, looksLikePageChrome } from "@/lib/rss/parse";
 import {
   applyBodyTranslation,
   isTargetLocale,
@@ -70,7 +70,11 @@ export async function requestFullTranslation(
       }
       await updateStore((store) => {
         const row = store.articles.find((item) => item.id === articleId);
-        if (row && !isSubstantialBody(row.body_nl, row.summary_nl)) row.body_nl = dutch;
+        if (!row) return;
+        if (!isSubstantialBody(row.body_nl, row.summary_nl)) row.body_nl = dutch;
+        if (looksLikePageChrome(row.body_en)) row.body_en = null;
+        if (looksLikePageChrome(row.body_es)) row.body_es = null;
+        if (looksLikePageChrome(row.body_fa)) row.body_fa = null;
       });
     }
 
