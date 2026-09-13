@@ -80,6 +80,8 @@
     "allShort": "Todos {count}",
     "updated": "{count} eventos · actualizado jueves 18:00",
     "tickets": "Entradas",
+    "map": "Mapa",
+    "mapLabel": "Abrir {venue} en Google Maps",
     "instagram": "Instagram",
     "emptyGenre": "No hay noches de {genre} este fin de semana",
     "emptyTitle": "Aún no hay nada para este fin de semana",
@@ -266,7 +268,9 @@
     "electronic": "Electrónica",
     "hiphop": "Hip-hop",
     "live-band": "Banda en vivo",
-    "student-party": "Fiesta estudiantil"
+    "student-party": "Fiesta estudiantil",
+    "comedy": "Comedia",
+    "festival": "Festival"
   },
   "business": {
     "kicker": "Prueba · Leeuwarden",

@@ -69,6 +69,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-18T23:00:00+02:00",
     genre: "electronic",
     ticket_link: "https://neushoorn.nl/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=Neushoorn%2C+Ruiterskwartier+41%2C+Leeuwarden",
     image_url: null,
     description_nl:
       "Twee zalen, techno en breaks. Deuren 23:00, last in 01:30. Geen gastlijst na middernacht.",
@@ -87,6 +88,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-18T21:30:00+02:00",
     genre: "student-party",
     ticket_link: "https://neushoorn.nl/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=Neushoorn%2C+Ruiterskwartier+41%2C+Leeuwarden",
     image_url: null,
     description_nl:
       "Eerstejaars en exchange. Gratis met studentenkaart tot 22:30. Jassen in de garderobe verplicht.",
@@ -105,6 +107,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-18T20:00:00+02:00",
     genre: "live-band",
     ticket_link: "https://www.ossekop.nl/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9+de+Ossekop%2C+Leeuwarden",
     image_url: null,
     description_nl:
       "Gitaar en NL/EN vocals. Staand, geen tickets vooraf. Begin stipt 20:30.",
@@ -123,6 +126,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-19T22:00:00+02:00",
     genre: "hiphop",
     ticket_link: "https://www.instagram.com/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=Club+T%2C+Leeuwarden",
     image_url: null,
     description_nl: "Cypher open van 22:00 tot 23:00, daarna dj’s. 18+ en ID aan de deur.",
     description_en: "Open cypher 22:00 to 23:00, then DJs. 18+ and ID at the door.",
@@ -137,6 +141,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-19T16:00:00+02:00",
     genre: "electronic",
     ticket_link: "https://www.dekoperentuin.nl/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=De+Koperen+Tuin%2C+Leeuwarden",
     image_url: null,
     description_nl:
       "Salsa en cumbia in de middagzon. Gratis tot 19:00, daarna entreeprijs. Buiten als het droog blijft.",
@@ -155,6 +160,7 @@ export const mockEvents: EventRow[] = [
     event_datetime: "2026-09-18T22:30:00+02:00",
     genre: "electronic",
     ticket_link: "https://www.instagram.com/",
+    maps_url: "https://www.google.com/maps/search/?api=1&query=Podium+Asteriks%2C+Leeuwarden",
     image_url: null,
     description_nl:
       "Kleine zaal, house tot 03:00. Cap 120. Link in bio voor de gastlijst tot vrijdag 18:00.",

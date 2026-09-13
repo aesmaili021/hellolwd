@@ -49,14 +49,30 @@ export function EventForm({
           required
         />
         <div>
-          <label className={label} htmlFor="genre">Genre</label>
+          <label className={label} htmlFor="genre">Category</label>
           <select id="genre" name="genre" defaultValue={event?.genre ?? "live-band"} className={field}>
             {EVENT_GENRES.map((id) => (
-              <option key={id} value={id}>{id}</option>
+              <option key={id} value={id}>
+                {{
+                  electronic: "Electronic",
+                  hiphop: "Hip-hop",
+                  "live-band": "Live band",
+                  "student-party": "Student party",
+                  comedy: "Comedy",
+                  festival: "Festival",
+                }[id]}
+              </option>
             ))}
           </select>
         </div>
         <Field name="ticket_link" label="Tickets or Instagram URL" defaultValue={event?.ticket_link ?? ""} />
+        <Field
+          name="maps_url"
+          label="Google Maps URL"
+          type="url"
+          defaultValue={event?.maps_url ?? ""}
+          className="sm:col-span-2"
+        />
         <ImageField currentUrl={event?.image_url} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">

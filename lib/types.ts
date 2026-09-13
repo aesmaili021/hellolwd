@@ -18,6 +18,8 @@ export const EVENT_GENRES = [
   "hiphop",
   "live-band",
   "student-party",
+  "comedy",
+  "festival",
 ] as const;
 
 export type EventGenre = (typeof EVENT_GENRES)[number];
@@ -55,6 +57,7 @@ export type EventRow = {
   event_datetime: string;
   genre: EventGenre;
   ticket_link: string | null;
+  maps_url: string | null;
   image_url: string | null;
   description_nl: string | null;
   description_en: string | null;
@@ -240,6 +243,7 @@ export function normalizeEvent(row: Partial<EventRow> & { id: string }): EventRo
     event_datetime: row.event_datetime ?? new Date().toISOString(),
     genre: (row.genre as EventGenre) ?? "live-band",
     ticket_link: row.ticket_link ?? null,
+    maps_url: row.maps_url ?? null,
     image_url: row.image_url ?? null,
     description_nl: row.description_nl ?? null,
     description_en: row.description_en ?? null,

@@ -80,6 +80,8 @@
     "allShort": "همه {count}",
     "updated": "{count} رویداد · به‌روز پنجشنبه ۱۸:۰۰",
     "tickets": "بلیت",
+    "map": "نقشه",
+    "mapLabel": "باز کردن {venue} در گوگل‌مپ",
     "instagram": "اینستاگرام",
     "emptyGenre": "این آخر هفته شبی در ژانر {genre} نیست",
     "emptyTitle": "هنوز چیزی برای این آخر هفته نیست",
@@ -266,7 +268,9 @@
     "electronic": "الکترونیک",
     "hiphop": "هیپ‌هاپ",
     "live-band": "گروه زنده",
-    "student-party": "پارتی دانشجویی"
+    "student-party": "پارتی دانشجویی",
+    "comedy": "کمدی",
+    "festival": "جشنواره"
   },
   "business": {
     "kicker": "آزمایشی · لیوواردن",

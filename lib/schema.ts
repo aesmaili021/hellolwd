@@ -118,6 +118,7 @@ export function eventJson(event: EventRow) {
         addressRegion: "Friesland",
         addressCountry: "NL",
       },
+      ...(event.maps_url ? { hasMap: event.maps_url } : {}),
     },
   };
   const description =

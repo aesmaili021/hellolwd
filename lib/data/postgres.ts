@@ -73,6 +73,7 @@ create table if not exists events (
   event_datetime timestamptz not null,
   genre text not null,
   ticket_link text,
+  maps_url text,
   image_url text,
   description_nl text,
   description_en text,
@@ -108,6 +109,7 @@ alter table articles add column if not exists body_nl text;
 alter table articles add column if not exists body_en text;
 alter table articles add column if not exists body_es text;
 alter table articles add column if not exists body_fa text;
+alter table events add column if not exists maps_url text;
 `;
 
 function iso(value: unknown) {
@@ -166,6 +168,7 @@ function mapEvent(row: Record<string, unknown>): EventRow {
     event_datetime: iso(row.event_datetime),
     genre: row.genre as EventRow["genre"],
     ticket_link: (row.ticket_link as string | null) ?? null,
+    maps_url: (row.maps_url as string | null) ?? null,
     image_url: (row.image_url as string | null) ?? null,
     description_nl: (row.description_nl as string | null) ?? null,
     description_en: (row.description_en as string | null) ?? null,
@@ -229,10 +232,10 @@ async function insertStore(client: PoolClient, data: StoreData) {
   for (const row of data.events) {
     await client.query(
       `insert into events (
-        id, name, venue, event_datetime, genre, ticket_link, image_url,
+        id, name, venue, event_datetime, genre, ticket_link, maps_url, image_url,
         description_nl, description_en, description_es, description_fa, created_at
       ) values (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13
       )`,
       [
         row.id,
@@ -241,6 +244,7 @@ async function insertStore(client: PoolClient, data: StoreData) {
         row.event_datetime,
         row.genre,
         row.ticket_link,
+        row.maps_url,
         row.image_url,
         row.description_nl,
         row.description_en,

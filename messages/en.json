@@ -80,6 +80,8 @@
     "allShort": "All {count}",
     "updated": "{count} events · updated Thursday 18:00",
     "tickets": "Tickets",
+    "map": "Map",
+    "mapLabel": "Open {venue} in Google Maps",
     "instagram": "Instagram",
     "emptyGenre": "No {genre} nights on the list this weekend",
     "emptyTitle": "Nothing listed for this weekend yet",
@@ -266,7 +268,9 @@
     "electronic": "Electronic",
     "hiphop": "Hip-hop",
     "live-band": "Live band",
-    "student-party": "Student party"
+    "student-party": "Student party",
+    "comedy": "Comedy",
+    "festival": "Festival"
   },
   "business": {
     "kicker": "Pilot · Leeuwarden",

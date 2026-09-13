@@ -15,6 +15,7 @@ import {
 import { resolveImageUrl } from "@/lib/data/media";
 import { updateStore } from "@/lib/data/store";
 import { fillMissingBriefings, translateBriefingTo } from "@/lib/rss/translate";
+import { safeHttpUrl } from "@/lib/maps";
 import {
   CONTENT_LOCALES,
   EVENT_GENRES,
@@ -160,6 +161,7 @@ export async function saveEventAction(form: FormData) {
     event_datetime: toIso(text(form, "event_datetime")),
     genre: EVENT_GENRES.includes(genre) ? genre : "live-band",
     ticket_link: optional(form, "ticket_link"),
+    maps_url: safeHttpUrl(optional(form, "maps_url")),
     image_url: await resolveImageUrl(form),
     description_nl: optional(form, "description_nl"),
     description_en: optional(form, "description_en"),

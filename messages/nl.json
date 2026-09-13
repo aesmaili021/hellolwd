@@ -80,6 +80,8 @@
     "allShort": "Alle {count}",
     "updated": "{count} avonden · bijgewerkt donderdag 18:00",
     "tickets": "Tickets",
+    "map": "Kaart",
+    "mapLabel": "Open {venue} in Google Maps",
     "instagram": "Instagram",
     "emptyGenre": "Geen {genre}-avonden op de lijst dit weekend",
     "emptyTitle": "Nog niets voor dit weekend",
@@ -266,7 +268,9 @@
     "electronic": "Electronic",
     "hiphop": "Hip-hop",
     "live-band": "Live band",
-    "student-party": "Studentenfeest"
+    "student-party": "Studentenfeest",
+    "comedy": "Comedy",
+    "festival": "Festival"
   },
   "business": {
     "kicker": "Proef · Leeuwarden",
