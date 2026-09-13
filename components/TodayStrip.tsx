@@ -1,59 +1,36 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { WeatherIcon } from "@/components/WeatherIcon";
+import { getArticles } from "@/lib/data/articles";
+import { getEvents } from "@/lib/data/events";
 import { formatEventChip } from "@/lib/format";
 import { getCambuur } from "@/lib/cambuur";
-import { getLeeuwardenWeather } from "@/lib/weather";
 import { isAmsterdamToday, pickTodayEvent } from "@/lib/today";
-import { articleTitle, type Article, type EventRow } from "@/lib/types";
+import { articleTitle } from "@/lib/types";
 
-export async function TodayStrip({
-  events,
-  story,
-}: {
-  events: EventRow[];
-  story: Article | null;
-}) {
+export async function TodayStrip() {
   const locale = await getLocale();
   const t = await getTranslations("today");
-  const weatherT = await getTranslations("weather");
-  const weather = await getLeeuwardenWeather();
+  const [events, articles, cambuur] = await Promise.all([
+    getEvents(),
+    getArticles(undefined, locale),
+    getCambuur(),
+  ]);
+  const story = articles[0] ?? null;
   const night = pickTodayEvent(events);
-  const cambuur = await getCambuur();
   const match =
     cambuur?.live ||
     (cambuur?.next && isAmsterdamToday(cambuur.next.date) ? cambuur.next : null);
   const headline = story ? articleTitle(story, locale) : "";
   const cambuurT = await getTranslations("cambuur");
 
-  if (!weather && !night.event && !headline) return null;
+  if (!night.event && !match && !headline) return null;
 
   return (
     <section className="border-b border-line bg-ice" aria-label={t("label")}>
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-3 px-4 py-3.5 sm:grid-cols-3 sm:items-center sm:gap-6 lg:px-10 lg:py-4">
-        <p className="text-[11px] font-extrabold tracking-[0.14em] text-primary uppercase sm:col-span-3">
+      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-3 px-4 py-3.5 sm:grid-cols-2 sm:items-center sm:gap-6 lg:px-10 lg:py-4">
+        <p className="text-[11px] font-extrabold tracking-[0.14em] text-primary uppercase sm:col-span-2">
           {t("kicker")}
         </p>
-        {weather ? (
-          <p className="flex min-w-0 items-center gap-2.5 text-navy">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-paper text-brand">
-              <WeatherIcon kind={weather.current.kind} className="h-5 w-5" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[10px] font-extrabold tracking-[0.1em] text-mute uppercase">
-                {weatherT("city")}
-              </span>
-              <span className="block truncate text-[17px] font-extrabold tracking-[-0.02em]">
-                {t("weather", {
-                  temp: weather.current.temp,
-                  kind: weatherT(`kind.${weather.current.kind}`),
-                })}
-              </span>
-            </span>
-          </p>
-        ) : (
-          <span />
-        )}
         {night.event ? (
           <Link href="/events" className="min-w-0 text-navy hover:text-primary">
             <span className="block text-[10px] font-extrabold tracking-[0.1em] text-mute uppercase">

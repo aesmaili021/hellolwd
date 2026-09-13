@@ -1,6 +1,7 @@
 import { copyFile, mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { unstable_noStore as noStore } from "next/cache";
+import { cache } from "react";
 import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
 import { loadPostgresStore, persistPostgresStore } from "@/lib/data/postgres";
 import {
@@ -79,11 +80,11 @@ async function persist(data: StoreData) {
   await unlink(tmp).catch(() => undefined);
 }
 
-export async function loadStore() {
+export const loadStore = cache(async () => {
   noStore();
   if (databaseUrl()) return loadPostgresStore();
   return readStore();
-}
+});
 
 export async function updateStore(mutator: (data: StoreData) => StoreData | void) {
   return enqueue(async () => {

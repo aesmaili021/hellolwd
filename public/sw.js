@@ -1,4 +1,4 @@
-const CACHE = "hellolwd-shell-v1";
+const CACHE = "hellolwd-shell-v3";
 const OFFLINE = "/offline.html";
 const PRECACHE = [OFFLINE, "/favicon.svg", "/icons/icon-192.png", "/icons/icon-512.png"];
 
@@ -25,7 +25,21 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api/")) return;
 
   if (request.mode === "navigate") {
-    event.respondWith(fetch(request).catch(() => caches.match(OFFLINE)));
+    event.respondWith(
+      fetch(request).catch(async () => {
+        const cached = await caches.match(OFFLINE);
+        if (!cached) return new Response("HelloLWD", { status: 503, statusText: "Offline" });
+        const locale = new URL(request.url).pathname.match(/^\/(nl|en|es|fa)(?:\/|$)/)?.[1];
+        if (!locale) return cached;
+        const html = (await cached.text()).replace(
+          'data-locale="en"',
+          `data-locale="${locale}" data-from-sw="1"`,
+        );
+        return new Response(html, {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }),
+    );
     return;
   }
 

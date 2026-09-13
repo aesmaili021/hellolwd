@@ -8,6 +8,8 @@ import { Footer } from "@/components/Footer";
 import { MobileTabBar } from "@/components/MobileTabBar";
 import { Nav } from "@/components/Nav";
 import { PwaRegister } from "@/components/PwaRegister";
+import { StatusBar } from "@/components/StatusBar";
+import { StatusBarSkeleton } from "@/components/Skeletons";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +61,9 @@ export default async function LocaleLayout({
       >
         {t("skip")}
       </a>
+      <Suspense fallback={<StatusBarSkeleton />}>
+        <StatusBar />
+      </Suspense>
       <Suspense fallback={<div className="h-16 border-b border-line bg-paper" />}>
         <Nav />
       </Suspense>

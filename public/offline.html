@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-locale="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,12 +13,10 @@
         place-items: center;
         background: #0b3d5c;
         color: #fff;
-        font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
+        font-family: Manrope, Vazirmatn, ui-sans-serif, system-ui, sans-serif;
         padding: 24px;
       }
-      main {
-        max-width: 28rem;
-      }
+      main { max-width: 28rem; }
       p.kicker {
         margin: 0 0 8px;
         font-size: 11px;
@@ -42,8 +40,29 @@
   <body>
     <main>
       <p class="kicker">HelloLWD</p>
-      <h1>You're offline</h1>
-      <p>Open the site again when you're back. The briefing needs a connection.</p>
+      <h1 id="title">You're offline</h1>
+      <p id="body">Open the site again when you're back. The briefing needs a connection.</p>
     </main>
+    <script>
+      var copy = {
+        nl: ["Je bent offline", "Open de site opnieuw als je verbinding hebt. De briefing heeft internet nodig."],
+        en: ["You're offline", "Open the site again when you're back. The briefing needs a connection."],
+        es: ["Estás sin conexión", "Vuelve a abrir el sitio cuando tengas internet. El briefing necesita conexión."],
+        fa: ["آفلاین هستی", "وقتی وصل شدی دوباره سایت را باز کن. بریفینگ به اینترنت نیاز دارد."]
+      };
+      var locale = "en";
+      try {
+        var stored = localStorage.getItem("hellolwd.locale");
+        if (copy[stored]) locale = stored;
+      } catch (e) {}
+      if (document.documentElement.getAttribute("data-from-sw") === "1") {
+        var injected = document.documentElement.getAttribute("data-locale");
+        if (copy[injected]) locale = injected;
+      }
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === "fa" ? "rtl" : "ltr";
+      document.getElementById("title").textContent = copy[locale][0];
+      document.getElementById("body").textContent = copy[locale][1];
+    </script>
   </body>
 </html>

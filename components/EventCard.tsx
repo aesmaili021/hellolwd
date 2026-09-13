@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { CoverImage } from "@/components/CoverImage";
+import { SaveEventButton } from "@/components/SaveEventButton";
 import { eventImage } from "@/lib/data/placeholders";
 import { formatEventWhen } from "@/lib/format";
 import type { EventRow } from "@/lib/types";
@@ -12,11 +13,14 @@ export async function EventCard({ event }: { event: EventRow }) {
 
   return (
     <article className="flex flex-col overflow-hidden rounded-xl border border-line">
-      <CoverImage
-        src={eventImage(event.image_url)}
-        alt=""
-        className="h-[130px] w-full lg:h-[152px]"
-      />
+      <div className="relative">
+        <CoverImage
+          src={eventImage(event.image_url)}
+          alt=""
+          className="h-[130px] w-full lg:h-[152px]"
+        />
+        <SaveEventButton id={event.id} />
+      </div>
       <div className="flex flex-1 flex-col gap-2 p-3.5 lg:gap-2.5 lg:p-[18px]">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded bg-accent px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-paper">
