@@ -17,6 +17,11 @@ import { updateStore } from "@/lib/data/store";
 import { fillMissingBriefings, translateBriefingTo } from "@/lib/rss/translate";
 import { safeHttpUrl } from "@/lib/maps";
 import {
+  alreadyListed,
+  eventsToCopyForward,
+  shiftIsoDays,
+} from "@/lib/weekend";
+import {
   CONTENT_LOCALES,
   EVENT_GENRES,
   NEWS_CATEGORIES,
@@ -176,7 +181,30 @@ export async function saveEventAction(form: FormData) {
     else store.events.unshift(event);
   });
   refreshPublic();
-  redirect("/admin/events");
+  redirect(`/admin/events?saved=${id}`);
+}
+
+export async function copyWeekendForwardAction() {
+  await requireAdmin();
+  let copied = 0;
+  await updateStore((store) => {
+    const source = eventsToCopyForward(store.events);
+    for (const row of source) {
+      const nextTime = shiftIsoDays(row.event_datetime, 7);
+      if (alreadyListed(store.events, row.name, row.venue, nextTime)) continue;
+      store.events.unshift(
+        normalizeEvent({
+          ...row,
+          id: crypto.randomUUID(),
+          event_datetime: nextTime,
+          created_at: new Date().toISOString(),
+        }),
+      );
+      copied += 1;
+    }
+  });
+  refreshPublic();
+  redirect(`/admin/events?copied=${copied}`);
 }
 
 export async function deleteEventAction(form: FormData) {

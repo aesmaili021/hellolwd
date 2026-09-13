@@ -1,5 +1,7 @@
 import { ArticleDesk } from "@/components/admin/ArticleDesk";
 import { ImageField } from "@/components/admin/ImageField";
+import { VenuePresets } from "@/components/admin/VenuePresets";
+import { EVENT_GENRE_LABELS } from "@/lib/event-labels";
 import {
   CONTENT_LOCALES,
   EVENT_GENRES,
@@ -36,8 +38,9 @@ export function EventForm({
   event?: EventRow;
 }) {
   return (
-    <form action={action} encType="multipart/form-data" className="flex flex-col gap-5">
+    <form id="event-form" action={action} encType="multipart/form-data" className="flex flex-col gap-5">
       {event ? <input type="hidden" name="id" value={event.id} /> : null}
+      <VenuePresets />
       <div className="grid gap-4 sm:grid-cols-2">
         <Field name="name" label="Name" defaultValue={event?.name} required />
         <Field name="venue" label="Venue" defaultValue={event?.venue} required />
@@ -53,14 +56,7 @@ export function EventForm({
           <select id="genre" name="genre" defaultValue={event?.genre ?? "live-band"} className={field}>
             {EVENT_GENRES.map((id) => (
               <option key={id} value={id}>
-                {{
-                  electronic: "Electronic",
-                  hiphop: "Hip-hop",
-                  "live-band": "Live band",
-                  "student-party": "Student party",
-                  comedy: "Comedy",
-                  festival: "Festival",
-                }[id]}
+                {EVENT_GENRE_LABELS[id]}
               </option>
             ))}
           </select>
