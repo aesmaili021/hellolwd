@@ -20,10 +20,10 @@ export async function EmptyWeekend() {
         {t("emptyBody")}
       </p>
       <a
-        href={`mailto:${footer("email")}`}
+        href={`mailto:${footer("email")}?subject=${encodeURIComponent(t("tipSubject"))}&body=${encodeURIComponent(t("tipMailBody"))}`}
         className="mt-5 inline-flex min-h-11 cursor-pointer items-center rounded-full bg-primary px-5 text-[13px] font-extrabold text-brand"
       >
-        {t("submit")}
+        {t("tipCta")}
       </a>
     </section>
   );

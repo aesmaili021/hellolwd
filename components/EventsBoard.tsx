@@ -23,10 +23,12 @@ function useSavedEvents() {
 export function EventsBoard({
   ids,
   filters,
+  aside,
   children,
 }: {
   ids: string[];
   filters: React.ReactNode;
+  aside?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const t = useTranslations("events");
@@ -89,7 +91,10 @@ export function EventsBoard({
       {savedOnly && ids.filter((id) => saved.includes(id)).length === 0 ? (
         <SavedEmptyNotice />
       ) : (
-        <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">{children}</section>
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+          {children}
+          {!savedOnly ? aside : null}
+        </section>
       )}
     </SavedEventsContext.Provider>
   );

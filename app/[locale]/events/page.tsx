@@ -2,6 +2,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { BusinessCta } from "@/components/BusinessCta";
 import { EmptyWeekend } from "@/components/EmptyStates";
 import { EventCard } from "@/components/EventCard";
+import { EventTipCard } from "@/components/EventTipCard";
 import { EventsBoard, SavedEventSlot } from "@/components/EventsBoard";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/JsonLd";
@@ -79,6 +80,7 @@ export default async function EventsPage({
       {events.length > 0 ? (
         <EventsBoard
           ids={events.map((event) => event.id)}
+          aside={<EventTipCard />}
           filters={
             <>
               <li>
@@ -123,13 +125,18 @@ export default async function EventsPage({
           ))}
         </EventsBoard>
       ) : active ? (
-        <div className="flex flex-col items-center gap-2.5 rounded-xl border border-dashed border-line px-5 py-10 text-center">
-          <h2 className="max-w-[24ch] text-[19px] font-extrabold leading-snug text-navy">
-            {t("emptyGenre", { genre: genres(active).toLowerCase() })}
-          </h2>
-          <Link href="/events" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
-            {filters("clear")}
-          </Link>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-center gap-2.5 rounded-xl border border-dashed border-line px-5 py-10 text-center">
+            <h2 className="max-w-[24ch] text-[19px] font-extrabold leading-snug text-navy">
+              {t("emptyGenre", { genre: genres(active).toLowerCase() })}
+            </h2>
+            <Link href="/events" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+              {filters("clear")}
+            </Link>
+          </div>
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+            <EventTipCard />
+          </section>
         </div>
       ) : (
         <EmptyWeekend />
