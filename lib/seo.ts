@@ -5,6 +5,15 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || "https://hellolwd.com"
 ).replace(/\/$/, "");
 
+/** Hostname Google should index (from NEXT_PUBLIC_SITE_URL). */
+export const SITE_HOST = new URL(SITE_URL).hostname.toLowerCase();
+
+/** Apex + www variants of the public site host. */
+export function siteHostAliases(host = SITE_HOST): string[] {
+  const apex = host.replace(/^www\./, "");
+  return apex === host ? [apex, `www.${apex}`] : [host, apex];
+}
+
 export const DEFAULT_OG_PATH = "/placeholders/news.jpg";
 
 const HREFLANG: Record<Locale, string> = {
