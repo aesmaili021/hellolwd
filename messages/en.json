@@ -13,7 +13,7 @@
     "aboutDescription": "HelloLWD was started by NHL Stenden students in the summer of 2026. Local news, events and nights in Leeuwarden.",
     "guideDescription": "First month in Leeuwarden: BSN, DigiD, bins and a huisarts. Written for people who just got here.",
     "privacyDescription": "How HelloLWD handles data, cookies and contact at info@hellolwd.com.",
-    "cookiesDescription": "HelloLWD only sets the cookies the site needs. No ads or analytics trackers."
+    "cookiesDescription": "HelloLWD cookies: theme, optional editor login, and Google Analytics for site traffic."
   },
   "nav": {
     "skip": "Skip to content",
@@ -166,11 +166,11 @@
     "whoTitle": "Who we are",
     "who": "HelloLWD is a local news and weekend briefing started by NHL Stenden students in Leeuwarden, the Netherlands. Contact: info@hellolwd.com.",
     "dataTitle": "What we process",
-    "data": "We do not run user accounts, comments, newsletters or ads. We do not sell data.\n\nOn our server we store public RSS items (headline, short summary, source link, photo URL, category) and curated weekend events so the site can show them. Your browser does not send us a visitor profile. If you email us, we only keep what you wrote so we can reply.",
+    "data": "We do not run user accounts, comments, newsletters or ads. We do not sell data.\n\nOn our server we store public RSS items (headline, short summary, source link, photo URL, category) and curated weekend events so the site can show them. Google Analytics (GA4) records page views and basic usage in your browser so we can see what is read. If you email us, we only keep what you wrote so we can reply.",
     "cookiesTitle": "Cookies and local storage",
-    "cookies": "Language lives in the URL (/nl, /en, /es, /fa), not in a tracking cookie. Light or dark theme is stored in localStorage and in a first-party cookie named theme (one year) so the page does not flash. The admin desk sets a first-party cookie named hellolwd_admin after login; that cookie is only for people who edit the site.",
+    "cookies": "Language lives in the URL (/nl, /en, /es, /fa), not in a tracking cookie. Light or dark theme is stored in localStorage and in a first-party cookie named theme (one year) so the page does not flash. The admin desk sets a first-party cookie named hellolwd_admin after login; that cookie is only for people who edit the site. Google Analytics may set cookies on googletagmanager.com / google-analytics.com to measure traffic.",
     "thirdTitle": "Other services",
-    "third": "News comes from the public RSS of Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS. We always link back to the original article.\n\nWeather for Leeuwarden is fetched on our server from Open-Meteo. SC Cambuur scores and the Eredivisie table are fetched on our server from ESPN. Translations may be made on our server with Google AI Studio (Gemini) and, if that quota is empty, other machine-translation services. Those requests leave our server. They are not sent from your browser.",
+    "third": "News comes from the public RSS of Omrop Fryslân, Omroep Leeuwarden, LC.nl and NOS. We always link back to the original article.\n\nWeather for Leeuwarden is fetched on our server from Open-Meteo. SC Cambuur scores and the Eredivisie table are fetched on our server from ESPN. Translations may be made on our server with Google AI Studio (Gemini) and, if that quota is empty, other machine-translation services. Those requests leave our server. They are not sent from your browser.\n\nGoogle Analytics (measurement ID G-97NT3NCB2M) loads in your browser and sends usage data to Google. Google’s privacy terms apply to that processing.",
     "rightsTitle": "Your rights",
     "rights": "If you think we hold personal data about you, you can ask for access, correction or deletion at info@hellolwd.com. You can complain to the Dutch Data Protection Authority (Autoriteit Persoonsgegevens)."
   },
@@ -178,13 +178,13 @@
     "title": "Cookies",
     "updated": "Last updated 12 September 2026 · HelloLWD {version}",
     "neededTitle": "Only what the site needs",
-    "needed": "HelloLWD uses a few first-party cookies to keep the site working. We do not use advertising, analytics or social-media tracking cookies, so we do not show a marketing-consent banner.",
+    "needed": "HelloLWD uses first-party cookies to keep the site working, plus Google Analytics to measure traffic. We do not use ads or social-media tracking pixels.",
     "listTitle": "Cookies we set",
-    "list": "theme — first-party, functional, one year. Remembers light or dark.\n\nhellolwd_admin — first-party, functional, only after an editor logs in at /admin. Not set for ordinary readers.\n\nLanguage is not a cookie: it is the first part of the address (/fa, /en, /nl, /es).",
+    "list": "theme — first-party, functional, one year. Remembers light or dark.\n\nhellolwd_admin — first-party, functional, only after an editor logs in at /admin. Not set for ordinary readers.\n\nGoogle Analytics (_ga and related) — set by Google when the Analytics script loads, to count visits and page views.\n\nLanguage is not a cookie: it is the first part of the address (/fa, /en, /nl, /es).",
     "notusedTitle": "What we do not set",
-    "notused": "No Google Analytics, no ad pixels, no fingerprinting. Weather and news feeds are loaded on the server, so Open-Meteo and the newsrooms do not drop cookies in your browser through this site.",
+    "notused": "No ad pixels and no fingerprinting. Weather and news feeds are loaded on the server, so Open-Meteo and the newsrooms do not drop cookies in your browser through this site.",
     "choiceTitle": "Your choices",
-    "choice": "You can clear cookies and site data in your browser. That resets the theme and signs an editor out of the desk. Questions: info@hellolwd.com."
+    "choice": "You can clear cookies and site data in your browser, or block googletagmanager.com / google-analytics.com. That resets the theme, stops Analytics in that browser, and signs an editor out of the desk. Questions: info@hellolwd.com."
   },
   "calendar": {
     "label": "Netherlands and Friesland calendar",

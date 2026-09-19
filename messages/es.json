@@ -13,7 +13,7 @@
     "aboutDescription": "HelloLWD lo lanzaron estudiantes de NHL Stenden en el verano de 2026. Noticias, eventos y noches en Leeuwarden.",
     "guideDescription": "Primer mes en Leeuwarden: BSN, DigiD, cubos y médico. Para quien acaba de llegar.",
     "privacyDescription": "Cómo HelloLWD trata datos, cookies y el contacto en info@hellolwd.com.",
-    "cookiesDescription": "HelloLWD solo pone las cookies que el sitio necesita. Sin anuncios ni analítica."
+    "cookiesDescription": "Cookies de HelloLWD: tema, login opcional de edición y Google Analytics para el tráfico."
   },
   "nav": {
     "skip": "Saltar al contenido",
@@ -166,11 +166,11 @@
     "whoTitle": "Quiénes somos",
     "who": "HelloLWD es un briefing local de noticias y fin de semana, lanzado por estudiantes de NHL Stenden en Leeuwarden, Países Bajos. Contacto: info@hellolwd.com.",
     "dataTitle": "Qué tratamos",
-    "data": "No hay cuentas, comentarios, boletines ni anuncios. No vendemos datos.\n\nEn nuestro servidor guardamos ítems RSS públicos (titular, resumen corto, enlace a la fuente, foto, categoría) y eventos de fin de semana. Tu navegador no nos envía un perfil de visitante. Si nos escribes, solo guardamos el correo para responder.",
+    "data": "No hay cuentas, comentarios, boletines ni anuncios. No vendemos datos.\n\nEn nuestro servidor guardamos ítems RSS públicos (titular, resumen corto, enlace a la fuente, foto, categoría) y eventos de fin de semana. Google Analytics (GA4) registra en tu navegador visitas a páginas y uso básico para ver qué se lee. Si nos escribes, solo guardamos el correo para responder.",
     "cookiesTitle": "Cookies y almacenamiento local",
-    "cookies": "El idioma va en la URL (/nl, /en, /es, /fa), no en una cookie de seguimiento. El tema claro u oscuro se guarda en localStorage y en una cookie de origen theme (un año) para que la página no parpadee. El escritorio de edición pone una cookie de origen hellolwd_admin tras el inicio de sesión; solo para quien edita el sitio.",
+    "cookies": "El idioma va en la URL (/nl, /en, /es, /fa), no en una cookie de seguimiento. El tema claro u oscuro se guarda en localStorage y en una cookie de origen theme (un año) para que la página no parpadee. El escritorio de edición pone una cookie de origen hellolwd_admin tras el inicio de sesión; solo para quien edita el sitio. Google Analytics puede poner cookies en googletagmanager.com / google-analytics.com para medir el tráfico.",
     "thirdTitle": "Otros servicios",
-    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.",
+    "third": "Las noticias salen del RSS público de Omrop Fryslân, Omroep Leeuwarden, LC.nl y NOS. Siempre enlazamos al artículo original.\n\nEl tiempo de Leeuwarden lo pedimos en nuestro servidor a Open-Meteo. Los resultados de SC Cambuur y la tabla de Eredivisie llegan a nuestro servidor desde ESPN. Las traducciones pueden hacerse en nuestro servidor con Google AI Studio (Gemini) y, si no hay cuota, con otros traductores automáticos. Esas peticiones salen de nuestro servidor, no de tu navegador.\n\nGoogle Analytics (ID G-97NT3NCB2M) se carga en tu navegador y envía datos de uso a Google. Aplican los términos de privacidad de Google.",
     "rightsTitle": "Tus derechos",
     "rights": "Si crees que tenemos datos personales tuyos, puedes pedir acceso, corrección o borrado en info@hellolwd.com. Puedes reclamar ante la Autoriteit Persoonsgegevens de los Países Bajos."
   },
@@ -178,13 +178,13 @@
     "title": "Cookies",
     "updated": "Última actualización 12 de septiembre de 2026 · HelloLWD {version}",
     "neededTitle": "Solo lo que el sitio necesita",
-    "needed": "HelloLWD usa unas pocas cookies de origen para que el sitio funcione. No usamos cookies de publicidad, analítica o redes sociales, así que no hay banner de marketing.",
+    "needed": "HelloLWD usa cookies de origen para que el sitio funcione, y Google Analytics para medir el tráfico. No usamos píxeles de anuncios ni de redes sociales.",
     "listTitle": "Cookies que ponemos",
-    "list": "theme — de origen, funcional, un año. Recuerda claro u oscuro.\n\nhellolwd_admin — de origen, funcional, solo cuando un editor entra en /admin. No se pone para lectores.\n\nEl idioma no es una cookie: es la primera parte de la dirección (/fa, /en, /nl, /es).",
+    "list": "theme — de origen, funcional, un año. Recuerda claro u oscuro.\n\nhellolwd_admin — de origen, funcional, solo cuando un editor entra en /admin. No se pone para lectores.\n\nGoogle Analytics (_ga y relacionadas) — las pone Google al cargar el script, para contar visitas y páginas vistas.\n\nEl idioma no es una cookie: es la primera parte de la dirección (/fa, /en, /nl, /es).",
     "notusedTitle": "Qué no ponemos",
-    "notused": "Ni Google Analytics, ni píxeles publicitarios, ni huella digital. El tiempo y las noticias se cargan en el servidor, así que Open-Meteo y las redacciones no dejan cookies en tu navegador a través de este sitio.",
+    "notused": "Sin píxeles publicitarios ni huella digital. El tiempo y las noticias se cargan en el servidor, así que Open-Meteo y las redacciones no dejan cookies en tu navegador a través de este sitio.",
     "choiceTitle": "Tus opciones",
-    "choice": "Puedes borrar cookies y datos del sitio en el navegador. Eso restablece el tema y cierra la sesión de un editor. Preguntas: info@hellolwd.com."
+    "choice": "Puedes borrar cookies y datos del sitio en el navegador, o bloquear googletagmanager.com / google-analytics.com. Eso restablece el tema, detiene Analytics en ese navegador y cierra la sesión de un editor. Preguntas: info@hellolwd.com."
   },
   "calendar": {
     "label": "Calendario de Países Bajos y Frisia",

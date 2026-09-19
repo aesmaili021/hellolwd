@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Vazirmatn } from "next/font/google";
 import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { localeDir } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -99,6 +100,7 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col bg-paper text-ink" suppressHydrationWarning>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

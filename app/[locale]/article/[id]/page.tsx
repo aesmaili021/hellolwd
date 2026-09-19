@@ -10,7 +10,13 @@ import { ArticleTranslation } from "@/components/ArticleTranslation";
 import { JsonLd } from "@/components/JsonLd";
 import { articleGraph } from "@/lib/schema";
 import { localeUrl, pageMetadata } from "@/lib/seo";
-import { articleBody, articleSummary, articleTitle, textParagraphs } from "@/lib/types";
+import {
+  articleBody,
+  articleHasTranslation,
+  articleSummary,
+  articleTitle,
+  textParagraphs,
+} from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -22,8 +28,11 @@ export async function generateMetadata({
   const { locale, id } = await params;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const article = await getArticle(id, locale);
-  if (!article) return {};
+  if (!article) notFound();
   const categories = await getTranslations("categories");
+  const languages = article.locales.filter(
+    (code) => code === "nl" || articleHasTranslation(article, code),
+  );
   return pageMetadata({
     locale,
     path: `/article/${article.id}`,
@@ -34,7 +43,7 @@ export async function generateMetadata({
     publishedTime: article.published_at,
     authors: ["HelloLWD"],
     section: categories(article.category),
-    languages: article.locales,
+    languages: languages.length ? languages : article.locales,
   });
 }
 
