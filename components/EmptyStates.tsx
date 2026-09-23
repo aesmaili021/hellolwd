@@ -32,9 +32,11 @@ export async function EmptyWeekend() {
 export async function EmptyFilter({
   categoryLabel,
   meanwhile,
+  archiveHref,
 }: {
   categoryLabel: string;
   meanwhile: Article[];
+  archiveHref?: string;
 }) {
   const t = await getTranslations("article");
   const filters = await getTranslations("filters");
@@ -48,12 +50,16 @@ export async function EmptyFilter({
           {t("emptyTitle", { category: categoryLabel.toLowerCase() })}
         </h2>
         <p className="max-w-[42ch] text-sm leading-relaxed text-muted">{t("empty")}</p>
-        <Link
-          href="/"
-          className="mt-1 cursor-pointer text-[13px] font-bold text-primary hover:text-navy"
-        >
-          {filters("clear")}
-        </Link>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          <Link href="/" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+            {filters("clear")}
+          </Link>
+          {archiveHref ? (
+            <Link href={archiveHref} className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+              {t("olderStories")}
+            </Link>
+          ) : null}
+        </div>
       </div>
       {meanwhile.length > 0 ? (
         <section aria-label={t("meanwhile")}>

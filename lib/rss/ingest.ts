@@ -16,8 +16,6 @@ const MAX_AGE_MS = 21 * 24 * 60 * 60 * 1000;
 const MAX_NATIONAL_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_NEW = 25;
 const MAX_NATIONAL_NEW = 8;
-const MAX_STORE = 80;
-const MAX_NATIONAL_STORE = 20;
 
 export type IngestResult = {
   added: number;
@@ -32,15 +30,6 @@ let running: Promise<IngestResult> | null = null;
 
 function byPublished(a: Article, b: Article) {
   return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
-}
-
-function trimStore(articles: Article[]) {
-  const local = articles.filter((row) => !isNationalSource(row)).sort(byPublished);
-  const national = articles
-    .filter((row) => isNationalSource(row))
-    .sort(byPublished)
-    .slice(0, MAX_NATIONAL_STORE);
-  return [...local.slice(0, Math.max(0, MAX_STORE - national.length)), ...national].sort(byPublished);
 }
 
 async function fetchText(url: string, ms = 20000) {
@@ -211,18 +200,13 @@ async function runIngest(): Promise<IngestResult> {
       if (national) addedNational += 1;
       if (article.image_url) result.images += 1;
     }
-
-    store.articles = trimStore(store.articles);
   });
 
   const pending = (await loadStore()).articles.filter((row) => needsTranslation(row)).slice(0, 25);
   if (pending.length) {
-    const { articles: translated, skippedIds } = await translateMany(pending);
+    const { articles: translated } = await translateMany(pending);
     const byId = new Map(translated.map((row) => [row.id, row]));
     await updateStore((store) => {
-      if (skippedIds.length) {
-        store.articles = store.articles.filter((row) => !skippedIds.includes(row.id));
-      }
       for (const article of store.articles) {
         const next = byId.get(article.id);
         if (!next || needsTranslation(next)) continue;
@@ -245,6 +229,7 @@ async function runIngest(): Promise<IngestResult> {
     revalidatePath("/admin");
     revalidatePath("/admin/news");
     revalidatePath("/admin/rss");
+    revalidatePath("/archive");
   } catch {
     /* cron / scheduler has no request context */
   }

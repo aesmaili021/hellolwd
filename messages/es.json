@@ -13,7 +13,8 @@
     "aboutDescription": "HelloLWD lo lanzaron estudiantes de NHL Stenden en el verano de 2026. Noticias, eventos y noches en Leeuwarden.",
     "guideDescription": "Primer mes en Leeuwarden: BSN, DigiD, cubos y médico. Para quien acaba de llegar.",
     "privacyDescription": "Cómo HelloLWD trata datos, cookies y el contacto en info@hellolwd.com.",
-    "cookiesDescription": "Cookies de HelloLWD: tema, login opcional de edición y Google Analytics para el tráfico."
+    "cookiesDescription": "Cookies de HelloLWD: tema, login opcional de edición y Google Analytics para el tráfico.",
+    "archiveDescription": "Las notas antiguas de Leeuwarden se quedan aquí. La portada muestra dos semanas; cada enlace sigue vivo."
   },
   "nav": {
     "skip": "Saltar al contenido",
@@ -38,7 +39,8 @@
     "readAt": "Leer el artículo en {source}",
     "readSource": "Leer en la fuente",
     "empty": "No hay noticias en esta categoría. Prueba un filtro más amplio o quítalo.",
-    "emptyTitle": "No hay noticias de {category} en los últimos 7 días",
+    "emptyTitle": "No hay noticias de {category} en las últimas dos semanas",
+    "olderStories": "Noticias anteriores",
     "meanwhile": "Mientras tanto",
     "briefing": "Último briefing",
     "more": "Más historias",
@@ -145,6 +147,16 @@
     "note": "Somos una redacción de estudiantes, no el ayuntamiento. Si en el mostrador te dicen otra cosa, ellos tienen razón.",
     "back": "Sobre HelloLWD"
   },
+  "archive": {
+    "kicker": "Archivo de noticias",
+    "title": "Noticias anteriores",
+    "categoryTitle": "Archivo de {category}",
+    "intro": "La portada guarda dos semanas. Todo lo más viejo se queda aquí, y cada enlace sigue vivo.",
+    "count": "{count} noticias",
+    "empty": "Aún no hay nada en el archivo. Las notas recientes se quedan dos semanas en la portada.",
+    "all": "Todas las noticias archivadas",
+    "back": "Volver a noticias"
+  },
   "footer": {
     "version": "v {version}",
     "blurb": "Noticias locales y fines de semana para internacionales en Leeuwarden. Solo resúmenes: cada historia enlaza a su fuente.",
@@ -156,6 +168,7 @@
     "email": "info@hellolwd.com",
     "privacy": "Política de privacidad",
     "cookies": "Cookies",
+    "archive": "Archivo",
     "guide": "Primer mes",
     "legal": "Legal",
     "sources": "Fuentes"

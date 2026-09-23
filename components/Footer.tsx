@@ -62,6 +62,9 @@ export async function Footer() {
           <Link href="/cookies" className="cursor-pointer text-[13px] text-muted hover:text-navy">
             {t("cookies")}
           </Link>
+          <Link href="/archive" className="cursor-pointer text-[13px] text-muted hover:text-navy">
+            {t("archive")}
+          </Link>
           <Link href="/guide" className="cursor-pointer text-[13px] text-muted hover:text-navy">
             {t("guide")}
           </Link>

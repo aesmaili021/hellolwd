@@ -1,5 +1,13 @@
 import { localeTag } from "@/i18n/routing";
 
+export function formatArchiveMonth(iso: string, locale: string) {
+  return new Intl.DateTimeFormat(localeTag(locale), {
+    month: "long",
+    year: "numeric",
+    timeZone: "Europe/Amsterdam",
+  }).format(new Date(iso));
+}
+
 export function formatRelative(iso: string, locale: string) {
   const then = new Date(iso).getTime();
   const minutes = Math.round((then - Date.now()) / 60000);

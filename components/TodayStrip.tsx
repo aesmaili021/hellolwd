@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getArticles } from "@/lib/data/articles";
+import { getRecentArticles } from "@/lib/data/articles";
 import { getEvents } from "@/lib/data/events";
 import { formatEventChip } from "@/lib/format";
 import { getCambuur } from "@/lib/cambuur";
@@ -12,7 +12,7 @@ export async function TodayStrip() {
   const t = await getTranslations("today");
   const [events, articles, cambuur] = await Promise.all([
     getEvents(),
-    getArticles(undefined, locale),
+    getRecentArticles(undefined, locale),
     getCambuur(),
   ]);
   const story = articles[0] ?? null;

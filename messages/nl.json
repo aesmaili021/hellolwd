@@ -13,7 +13,8 @@
     "aboutDescription": "HelloLWD is in de zomer van 2026 opgezet door studenten van NHL Stenden. Lokaal nieuws, evenementen en avonden in Leeuwarden.",
     "guideDescription": "Eerste maand in Leeuwarden: BSN, DigiD, bakken en een huisarts. Voor wie net is aangekomen.",
     "privacyDescription": "Hoe HelloLWD omgaat met gegevens, cookies en contact via info@hellolwd.com.",
-    "cookiesDescription": "Cookies van HelloLWD: thema, optionele redactielogin, en Google Analytics voor bezoekersstatistieken."
+    "cookiesDescription": "Cookies van HelloLWD: thema, optionele redactielogin, en Google Analytics voor bezoekersstatistieken.",
+    "archiveDescription": "Oudere berichten uit Leeuwarden blijven hier staan. De homepage toont twee weken; elke link blijft werken."
   },
   "nav": {
     "skip": "Naar inhoud",
@@ -38,7 +39,8 @@
     "readAt": "Lees het artikel op {source}",
     "readSource": "Lees bij de bron",
     "empty": "Geen berichten in deze categorie. Kies een bredere filter of wis hem.",
-    "emptyTitle": "Geen {category}-berichten in de laatste 7 dagen",
+    "emptyTitle": "Geen {category}-berichten in de laatste twee weken",
+    "olderStories": "Oudere berichten",
     "meanwhile": "Ondertussen",
     "briefing": "Laatste briefing",
     "more": "Meer berichten",
@@ -145,6 +147,16 @@
     "note": "Wij zijn een studentenredactie, niet de gemeente. Zegt iemand achter de balie iets anders, dan heeft die gelijk.",
     "back": "Over HelloLWD"
   },
+  "archive": {
+    "kicker": "Nieuwsarchief",
+    "title": "Oudere berichten",
+    "categoryTitle": "Archief {category}",
+    "intro": "De homepage houdt twee weken vast. Alles wat ouder is blijft hier staan, en elke link blijft werken.",
+    "count": "{count} berichten",
+    "empty": "Nog niets in het archief. Recente berichten blijven twee weken op de homepage.",
+    "all": "Alle gearchiveerde berichten",
+    "back": "Terug naar nieuws"
+  },
   "footer": {
     "version": "v {version}",
     "blurb": "Lokaal nieuws en weekendavonden voor internationals in Leeuwarden. Alleen samenvattingen. Elk bericht linkt terug naar de bron.",
@@ -156,6 +168,7 @@
     "email": "info@hellolwd.com",
     "privacy": "Privacybeleid",
     "cookies": "Cookies",
+    "archive": "Archief",
     "guide": "Eerste maand",
     "legal": "Juridisch",
     "sources": "Bronnen"

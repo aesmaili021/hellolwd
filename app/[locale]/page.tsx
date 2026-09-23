@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { BriefingRow, FeaturedStory, FilterRow } from "@/components/ArticleCard";
+import { Link } from "@/i18n/navigation";
 import { CategoryPills } from "@/components/CategoryPills";
 import { EmptyFilter } from "@/components/EmptyStates";
 import { BusinessCta } from "@/components/BusinessCta";
@@ -8,7 +9,7 @@ import { TodayStrip } from "@/components/TodayStrip";
 import { WeekendHeroSection } from "@/components/WeekendHero";
 import { JsonLd } from "@/components/JsonLd";
 import { NewsSkeleton, TodaySkeleton, WeekendSlotSkeleton } from "@/components/Skeletons";
-import { getArticles } from "@/lib/data/articles";
+import { getArchivedArticles, getRecentArticles } from "@/lib/data/articles";
 import { homeGraph } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { NEWS_CATEGORIES, type NewsCategory } from "@/lib/types";
@@ -48,8 +49,11 @@ export async function generateMetadata({
 
 async function HomeNews({ category }: { category?: NewsCategory }) {
   const locale = await getLocale();
-  const articles = await getArticles(category, locale);
-  const meanwhile = category ? await getArticles(undefined, locale) : [];
+  const articles = await getRecentArticles(category, locale);
+  const meanwhile = category ? await getRecentArticles(undefined, locale) : [];
+  const archived = category
+    ? await getArchivedArticles(category, locale)
+    : await getArchivedArticles(undefined, locale);
   const [featured, ...rest] = articles;
   const briefing = rest.slice(0, 5);
   const more = rest.slice(5);
@@ -81,11 +85,22 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
                 <FilterRow key={article.id} article={article} />
               ))}
             </section>
+            {archived.length ? (
+              <p className="mt-10">
+                <Link
+                  href={`/archive?cat=${category}`}
+                  className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy"
+                >
+                  {t("olderStories")} →
+                </Link>
+              </p>
+            ) : null}
           </>
         ) : (
           <EmptyFilter
             categoryLabel={categories(category)}
             meanwhile={meanwhile.slice(0, 3)}
+            archiveHref={archived.length ? `/archive?cat=${category}` : undefined}
           />
         )
       ) : featured ? (
@@ -117,7 +132,20 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
               </div>
             </section>
           ) : null}
+          {archived.length ? (
+            <p className="mt-10">
+              <Link href="/archive" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+                {t("olderStories")} →
+              </Link>
+            </p>
+          ) : null}
         </>
+      ) : archived.length ? (
+        <p className="mt-10">
+          <Link href="/archive" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+            {t("olderStories")} →
+          </Link>
+        </p>
       ) : (
         <p className="mt-10 text-ink">{t("empty")}</p>
       )}

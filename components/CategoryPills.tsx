@@ -14,9 +14,11 @@ const MARK: Record<NewsCategory, string> = {
 
 export async function CategoryPills({
   active,
+  basePath = "/",
 }: {
   active?: string;
   locale?: string;
+  basePath?: "/" | "/archive";
 }) {
   const t = await getTranslations("categories");
   const filters = await getTranslations("filters");
@@ -29,7 +31,7 @@ export async function CategoryPills({
       <ul className="flex w-max flex-nowrap gap-2 lg:flex-wrap">
         <li>
           <Chip
-            href={{ pathname: "/" }}
+            href={{ pathname: basePath }}
             active={!active}
             label={filters("all")}
           />
@@ -39,8 +41,8 @@ export async function CategoryPills({
             <Chip
               href={
                 active === id
-                  ? { pathname: "/" }
-                  : { pathname: "/", query: { cat: id } }
+                  ? { pathname: basePath }
+                  : { pathname: basePath, query: { cat: id } }
               }
               active={active === id}
               mark={MARK[id]}
@@ -61,7 +63,7 @@ function Chip({
   mark,
   danger,
 }: {
-  href: { pathname: "/"; query?: { cat: string } };
+  href: { pathname: "/" | "/archive"; query?: { cat: string } };
   active: boolean;
   label: string;
   mark?: string;

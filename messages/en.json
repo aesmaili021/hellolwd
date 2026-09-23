@@ -13,7 +13,8 @@
     "aboutDescription": "HelloLWD was started by NHL Stenden students in the summer of 2026. Local news, events and nights in Leeuwarden.",
     "guideDescription": "First month in Leeuwarden: BSN, DigiD, bins and a huisarts. Written for people who just got here.",
     "privacyDescription": "How HelloLWD handles data, cookies and contact at info@hellolwd.com.",
-    "cookiesDescription": "HelloLWD cookies: theme, optional editor login, and Google Analytics for site traffic."
+    "cookiesDescription": "HelloLWD cookies: theme, optional editor login, and Google Analytics for site traffic.",
+    "archiveDescription": "Older Leeuwarden stories stay here. Home shows the last two weeks; every article link stays live."
   },
   "nav": {
     "skip": "Skip to content",
@@ -38,7 +39,8 @@
     "readAt": "Read full article at {source}",
     "readSource": "Read at source",
     "empty": "No stories in this category. Try a wider category or clear the filter.",
-    "emptyTitle": "No {category} stories in the last 7 days",
+    "emptyTitle": "No {category} stories in the last two weeks",
+    "olderStories": "Older stories",
     "meanwhile": "Meanwhile",
     "briefing": "Latest briefing",
     "more": "More stories",
@@ -145,6 +147,16 @@
     "note": "We are a student news desk, not the gemeente. If the person at the counter tells you something else, they are right.",
     "back": "About HelloLWD"
   },
+  "archive": {
+    "kicker": "News archive",
+    "title": "Older stories",
+    "categoryTitle": "{category} archive",
+    "intro": "Home keeps the last two weeks. Everything older stays here, and every article link stays live.",
+    "count": "{count} stories",
+    "empty": "Nothing in the archive yet. Recent stories stay on the home page for two weeks.",
+    "all": "All archived stories",
+    "back": "Back to news"
+  },
   "footer": {
     "version": "v {version}",
     "blurb": "Local news and weekend events for internationals in Leeuwarden. Summaries only. Every story links back to its source.",
@@ -156,6 +168,7 @@
     "email": "info@hellolwd.com",
     "privacy": "Privacy policy",
     "cookies": "Cookies",
+    "archive": "Archive",
     "guide": "First month",
     "legal": "Legal",
     "sources": "Sources"
