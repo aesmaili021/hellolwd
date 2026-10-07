@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LineIcon, type LineIconName } from "@/components/LineIcon";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -7,7 +8,6 @@ import { Link, usePathname } from "@/i18n/navigation";
 const ICONS = {
   news: "newspaper",
   events: "calendar",
-  cambuur: "ball",
   guide: "compass",
 } as const satisfies Record<string, LineIconName>;
 
@@ -52,7 +52,7 @@ function Tab({
   href: "/" | "/events" | "/cambuur" | "/guide";
   current: boolean;
   label: string;
-  icon: keyof typeof ICONS;
+  icon: keyof typeof ICONS | "cambuur";
 }) {
   return (
     <Link
@@ -62,7 +62,17 @@ function Tab({
         current ? "text-navy" : "text-mute"
       }`}
     >
-      <LineIcon name={ICONS[icon]} className="h-6 w-6" />
+      {icon === "cambuur" ? (
+        <Image
+          src="/cambuur-crest.png"
+          alt=""
+          width={24}
+          height={24}
+          className={`h-6 w-6 object-contain ${current ? "" : "opacity-60 saturate-50"}`}
+        />
+      ) : (
+        <LineIcon name={ICONS[icon]} className="h-6 w-6" />
+      )}
       <span className={`text-[11px] ${current ? "font-bold" : "font-semibold"}`}>{label}</span>
     </Link>
   );
