@@ -1,12 +1,13 @@
 import { getTranslations } from "next-intl/server";
+import { LineIcon, type LineIconName } from "@/components/LineIcon";
 import { Link } from "@/i18n/navigation";
 
-const TILES = [
-  { id: "nightlife", emoji: "🍻", title: "nightlifeTitle", blurb: "nightlifeBlurb" },
-  { id: "room", emoji: "🏠", title: "roomTitle", blurb: "roomBlurb" },
-  { id: "first-month", emoji: "📋", title: "firstMonthTitle", blurb: "firstMonthBlurb" },
-  { id: "eats", emoji: "🍜", title: "eatsTitle", blurb: "eatsBlurb" },
-] as const;
+const TILES: { id: string; icon: LineIconName; title: "nightlifeTitle" | "roomTitle" | "firstMonthTitle" | "eatsTitle"; blurb: "nightlifeBlurb" | "roomBlurb" | "firstMonthBlurb" | "eatsBlurb" }[] = [
+  { id: "nightlife", icon: "beer", title: "nightlifeTitle", blurb: "nightlifeBlurb" },
+  { id: "room", icon: "house", title: "roomTitle", blurb: "roomBlurb" },
+  { id: "first-month", icon: "clipboard", title: "firstMonthTitle", blurb: "firstMonthBlurb" },
+  { id: "eats", icon: "utensils", title: "eatsTitle", blurb: "eatsBlurb" },
+];
 
 export async function NewcomerGuides() {
   const t = await getTranslations("guides");
@@ -21,9 +22,7 @@ export async function NewcomerGuides() {
             href={`/guide#${tile.id}`}
             className="min-w-0 cursor-pointer rounded-xl border border-line bg-mist p-4 hover:border-primary lg:p-[18px]"
           >
-            <span className="emoji text-2xl leading-none" aria-hidden>
-              {tile.emoji}
-            </span>
+            <LineIcon name={tile.icon} className="h-6 w-6 text-navy" />
             <span className="mt-2 block text-[15px] font-extrabold text-navy">{t(tile.title)}</span>
             <span className="mt-0.5 block text-xs leading-snug text-muted">{t(tile.blurb)}</span>
           </Link>

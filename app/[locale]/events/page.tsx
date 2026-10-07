@@ -2,6 +2,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { BusinessCta } from "@/components/BusinessCta";
 import { EmptyWeekend } from "@/components/EmptyStates";
 import { EventCard } from "@/components/EventCard";
+import { LineIcon } from "@/components/LineIcon";
 import { EventTipCard } from "@/components/EventTipCard";
 import { EventsBoard, SavedEventSlot } from "@/components/EventsBoard";
 import { Link } from "@/i18n/navigation";
@@ -110,7 +111,7 @@ export default async function EventsPage({
                       }`}
                     >
                       {genres(id)}
-                      {on ? <span className="ms-1.5" aria-hidden>✕</span> : null}
+                      {on ? <LineIcon name="x" className="ms-1.5 h-3.5 w-3.5 shrink-0" /> : null}
                     </Link>
                   </li>
                 );
