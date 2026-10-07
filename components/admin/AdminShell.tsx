@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 const TABS = [
   { href: "/admin/news", label: "News" },
   { href: "/admin/events", label: "Events" },
+  { href: "/admin/places", label: "Places" },
   { href: "/admin/rss", label: "RSS" },
 ] as const;
 
@@ -14,7 +15,7 @@ export async function AdminShell({
   current,
   children,
 }: {
-  current: "news" | "events" | "rss";
+  current: "news" | "events" | "places" | "rss";
   children: React.ReactNode;
 }) {
   await requireAdmin();

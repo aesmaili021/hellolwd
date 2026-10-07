@@ -3,13 +3,16 @@ import path from "node:path";
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
 import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
+import { seedPlaces } from "@/lib/data/places-seed";
 import { loadPostgresStore, persistPostgresStore } from "@/lib/data/postgres";
 import {
   normalizeArticle,
   normalizeEvent,
+  normalizePlace,
   normalizeRss,
   type Article,
   type EventRow,
+  type PlaceRow,
   type RssSource,
 } from "@/lib/types";
 
@@ -17,6 +20,8 @@ export type StoreData = {
   articles: Article[];
   events: EventRow[];
   rss: RssSource[];
+  places: PlaceRow[];
+  placesSeeded?: boolean;
 };
 
 const FILE = path.join(process.cwd(), "data", "store.json");
@@ -45,6 +50,8 @@ function seed(): StoreData {
     articles: [],
     events: mockEvents.map((row) => normalizeEvent(row)),
     rss: mockRss.map((row) => normalizeRss(row)),
+    places: seedPlaces().map((row) => normalizePlace(row)),
+    placesSeeded: true,
   };
 }
 
@@ -52,14 +59,19 @@ async function readStore(): Promise<StoreData> {
   try {
     const raw = await readFile(FILE, "utf8");
     const parsed = JSON.parse(raw) as Partial<StoreData>;
+    const placesSeeded = parsed.placesSeeded === true || Array.isArray(parsed.places);
     const next = {
       articles: withoutSeedArticles(
         (parsed.articles ?? []).map((row) => normalizeArticle(row)),
       ),
       events: (parsed.events ?? []).map((row) => normalizeEvent(row)),
       rss: (parsed.rss ?? []).map((row) => normalizeRss(row)),
+      places: placesSeeded
+        ? (parsed.places ?? []).map((row) => normalizePlace(row))
+        : seedPlaces().map((row) => normalizePlace(row)),
+      placesSeeded: true,
     };
-    if (next.articles.length !== (parsed.articles ?? []).length) {
+    if (next.articles.length !== (parsed.articles ?? []).length || !placesSeeded) {
       await persist(next);
     }
     return next;

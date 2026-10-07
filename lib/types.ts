@@ -24,6 +24,36 @@ export const EVENT_GENRES = [
 
 export type EventGenre = (typeof EVENT_GENRES)[number];
 
+export const PLACE_CATEGORIES = [
+  "cafes",
+  "eats",
+  "bars",
+  "groceries",
+  "hair",
+  "sports",
+  "student",
+] as const;
+
+export type PlaceCategory = (typeof PLACE_CATEGORIES)[number];
+
+export type PlaceRow = {
+  id: string;
+  name: string;
+  category: PlaceCategory;
+  address: string;
+  website: string | null;
+  email: string | null;
+  description_nl: string;
+  description_en: string;
+  description_es: string;
+  description_fa: string;
+  source_url: string;
+  featured: boolean;
+  visible: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
 export const CONTENT_LOCALES = routing.locales;
 export type ContentLocale = Locale;
 
@@ -232,6 +262,31 @@ export function normalizeArticle(row: Partial<Article> & { id: string }): Articl
     image_url: row.image_url ?? null,
     locales:
       row.locales?.length ? row.locales : [...CONTENT_LOCALES],
+    created_at: row.created_at ?? new Date().toISOString(),
+  };
+}
+
+export function isPlaceCategory(value: string): value is PlaceCategory {
+  return (PLACE_CATEGORIES as readonly string[]).includes(value);
+}
+
+export function normalizePlace(row: Partial<PlaceRow> & { id: string }): PlaceRow {
+  const order = Number(row.sort_order);
+  return {
+    id: row.id,
+    name: row.name ?? "",
+    category: row.category && isPlaceCategory(row.category) ? row.category : "cafes",
+    address: row.address ?? "",
+    website: row.website ?? null,
+    email: row.email ?? null,
+    description_nl: row.description_nl ?? "",
+    description_en: row.description_en ?? "",
+    description_es: row.description_es ?? "",
+    description_fa: row.description_fa ?? "",
+    source_url: row.source_url ?? "",
+    featured: row.featured === true,
+    visible: row.visible !== false,
+    sort_order: Number.isFinite(order) ? order : 0,
     created_at: row.created_at ?? new Date().toISOString(),
   };
 }

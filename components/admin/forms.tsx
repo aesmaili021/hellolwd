@@ -5,9 +5,21 @@ import { EVENT_GENRE_LABELS } from "@/lib/event-labels";
 import {
   CONTENT_LOCALES,
   EVENT_GENRES,
+  PLACE_CATEGORIES,
   type Article,
   type EventRow,
+  type PlaceRow,
 } from "@/lib/types";
+
+const PLACE_LABELS: Record<(typeof PLACE_CATEGORIES)[number], string> = {
+  cafes: "Cafes",
+  eats: "Cheap eats",
+  bars: "Bars & nightlife",
+  groceries: "International groceries",
+  hair: "Barbers & hair",
+  sports: "Sports & gyms",
+  student: "Student essentials",
+};
 
 const field =
   "w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm text-navy outline-none";
@@ -94,6 +106,81 @@ export function EventForm({
         className="min-h-11 cursor-pointer self-start rounded-full bg-brand px-5 text-sm font-extrabold text-paper"
       >
         Save event
+      </button>
+    </form>
+  );
+}
+
+export function PlaceForm({
+  action,
+  place,
+  error,
+}: {
+  action: (form: FormData) => void | Promise<void>;
+  place?: PlaceRow;
+  error?: boolean;
+}) {
+  return (
+    <form action={action} className="flex flex-col gap-5">
+      {place ? <input type="hidden" name="id" value={place.id} /> : null}
+      {error ? (
+        <p className="text-sm font-semibold text-accent">Name, address, and a public source URL are required.</p>
+      ) : null}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field name="name" label="Name" defaultValue={place?.name} required />
+        <div>
+          <label className={label} htmlFor="category">Category</label>
+          <select id="category" name="category" defaultValue={place?.category ?? "cafes"} className={field}>
+            {PLACE_CATEGORIES.map((id) => (
+              <option key={id} value={id}>
+                {PLACE_LABELS[id]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <Field name="address" label="Address" defaultValue={place?.address} required className="sm:col-span-2" />
+        <Field name="website" label="Website" type="url" defaultValue={place?.website ?? ""} />
+        <Field name="email" label="Public email" type="email" defaultValue={place?.email ?? ""} />
+        <Field
+          name="source_url"
+          label="Source URL"
+          type="url"
+          defaultValue={place?.source_url}
+          required
+          className="sm:col-span-2"
+        />
+        <Field
+          name="sort_order"
+          label="Order"
+          type="number"
+          defaultValue={place ? String(place.sort_order) : "0"}
+        />
+        <div className="flex flex-col justify-end gap-2">
+          <label className="flex min-h-11 items-center gap-2 text-sm font-bold text-navy">
+            <input type="checkbox" name="visible" defaultChecked={place ? place.visible : true} className="h-4 w-4" />
+            Visible on the site
+          </label>
+          <label className="flex min-h-11 items-center gap-2 text-sm font-bold text-navy">
+            <input type="checkbox" name="featured" defaultChecked={place?.featured === true} className="h-4 w-4" />
+            Featured (gold badge)
+          </label>
+        </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {CONTENT_LOCALES.map((code) => (
+          <Field
+            key={code}
+            name={`description_${code}`}
+            label={`One line · ${code}`}
+            defaultValue={place ? place[`description_${code}`] : ""}
+          />
+        ))}
+      </div>
+      <button
+        type="submit"
+        className="min-h-11 cursor-pointer self-start rounded-full bg-brand px-5 text-sm font-extrabold text-paper"
+      >
+        Save place
       </button>
     </form>
   );

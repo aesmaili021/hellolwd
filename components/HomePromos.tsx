@@ -1,7 +1,7 @@
 import { FeaturedPlaces } from "@/components/FeaturedPlaces";
 import { features } from "@/lib/features";
 
-/** Featured-places samples stay behind the server flag. The advertise banner does not. */
+/** Homepage places slot. On unless FEATURE_PLACES is explicitly off. The advertise banner does not use this flag. */
 export async function HomePromos() {
   if (!features.featuredPlaces) return null;
 

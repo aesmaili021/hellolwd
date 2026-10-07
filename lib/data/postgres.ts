@@ -1,11 +1,14 @@
 import { Pool, type PoolClient } from "pg";
 import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
+import { seedPlaces } from "@/lib/data/places-seed";
 import {
   normalizeArticle,
   normalizeEvent,
+  normalizePlace,
   normalizeRss,
   type Article,
   type EventRow,
+  type PlaceRow,
   type RssSource,
 } from "@/lib/types";
 
@@ -13,6 +16,7 @@ type StoreData = {
   articles: Article[];
   events: EventRow[];
   rss: RssSource[];
+  places: PlaceRow[];
 };
 
 let pool: Pool | null = null;
@@ -111,6 +115,29 @@ alter table articles add column if not exists body_es text;
 alter table articles add column if not exists body_fa text;
 alter table events add column if not exists maps_url text;
 alter table events add column if not exists featured boolean not null default false;
+
+create table if not exists places (
+  id text primary key,
+  name text not null,
+  category text not null,
+  address text not null,
+  website text,
+  email text,
+  description_nl text not null default '',
+  description_en text not null default '',
+  description_es text not null default '',
+  description_fa text not null default '',
+  source_url text not null,
+  featured boolean not null default false,
+  visible boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists app_flags (
+  key text primary key,
+  value text not null
+);
 `;
 
 function iso(value: unknown) {
@@ -124,6 +151,7 @@ function seed(): StoreData {
     articles: [],
     events: mockEvents.map((row) => normalizeEvent(row)),
     rss: mockRss.map((row) => normalizeRss(row)),
+    places: seedPlaces().map((row) => normalizePlace(row)),
   };
 }
 
@@ -176,6 +204,26 @@ function mapEvent(row: Record<string, unknown>): EventRow {
     description_es: (row.description_es as string | null) ?? null,
     description_fa: (row.description_fa as string | null) ?? null,
     featured: row.featured === true,
+    created_at: iso(row.created_at),
+  });
+}
+
+function mapPlace(row: Record<string, unknown>): PlaceRow {
+  return normalizePlace({
+    id: String(row.id),
+    name: String(row.name ?? ""),
+    category: row.category as PlaceRow["category"],
+    address: String(row.address ?? ""),
+    website: (row.website as string | null) ?? null,
+    email: (row.email as string | null) ?? null,
+    description_nl: String(row.description_nl ?? ""),
+    description_en: String(row.description_en ?? ""),
+    description_es: String(row.description_es ?? ""),
+    description_fa: String(row.description_fa ?? ""),
+    source_url: String(row.source_url ?? ""),
+    featured: row.featured === true,
+    visible: row.visible !== false,
+    sort_order: Number(row.sort_order ?? 0),
     created_at: iso(row.created_at),
   });
 }
@@ -258,6 +306,35 @@ async function insertStore(client: PoolClient, data: StoreData) {
     );
   }
 
+  for (const row of data.places) {
+    await client.query(
+      `insert into places (
+        id, name, category, address, website, email,
+        description_nl, description_en, description_es, description_fa,
+        source_url, featured, visible, sort_order, created_at
+      ) values (
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15
+      )`,
+      [
+        row.id,
+        row.name,
+        row.category,
+        row.address,
+        row.website,
+        row.email,
+        row.description_nl,
+        row.description_en,
+        row.description_es,
+        row.description_fa,
+        row.source_url,
+        row.featured,
+        row.visible,
+        row.sort_order,
+        row.created_at,
+      ],
+    );
+  }
+
   for (const row of data.rss) {
     await client.query(
       `insert into rss_sources (
@@ -278,21 +355,34 @@ async function insertStore(client: PoolClient, data: StoreData) {
   }
 }
 
+async function placesSeeded(db: Pool) {
+  const flag = await db.query("select value from app_flags where key = 'places_seeded'");
+  return (flag.rowCount ?? 0) > 0;
+}
+
+async function markPlacesSeeded(db: Pool | PoolClient) {
+  await db.query(
+    "insert into app_flags (key, value) values ('places_seeded', '1') on conflict (key) do nothing",
+  );
+}
+
 export async function loadPostgresStore(): Promise<StoreData> {
   await ensureSchema();
   const db = getPool();
-  const [articles, events, rss] = await Promise.all([
+  const [articles, events, rss, places] = await Promise.all([
     db.query("select * from articles"),
     db.query("select * from events"),
     db.query("select * from rss_sources"),
+    db.query("select * from places"),
   ]);
 
-  if (!articles.rowCount && !events.rowCount && !rss.rowCount) {
+  if (!articles.rowCount && !events.rowCount && !rss.rowCount && !places.rowCount) {
     const next = seed();
     const client = await db.connect();
     try {
       await client.query("begin");
       await insertStore(client, next);
+      await markPlacesSeeded(client);
       await client.query("commit");
     } catch (error) {
       await client.query("rollback").catch(() => undefined);
@@ -303,12 +393,61 @@ export async function loadPostgresStore(): Promise<StoreData> {
     return next;
   }
 
+  let placeRows = places.rows.map((row) => mapPlace(row as Record<string, unknown>));
+  if (!(await placesSeeded(db))) {
+    if (!placeRows.length) {
+      placeRows = seedPlaces().map((row) => normalizePlace(row));
+      const client = await db.connect();
+      try {
+        await client.query("begin");
+        for (const row of placeRows) {
+          await client.query(
+            `insert into places (
+              id, name, category, address, website, email,
+              description_nl, description_en, description_es, description_fa,
+              source_url, featured, visible, sort_order, created_at
+            ) values (
+              $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15
+            ) on conflict (id) do nothing`,
+            [
+              row.id,
+              row.name,
+              row.category,
+              row.address,
+              row.website,
+              row.email,
+              row.description_nl,
+              row.description_en,
+              row.description_es,
+              row.description_fa,
+              row.source_url,
+              row.featured,
+              row.visible,
+              row.sort_order,
+              row.created_at,
+            ],
+          );
+        }
+        await markPlacesSeeded(client);
+        await client.query("commit");
+      } catch (error) {
+        await client.query("rollback").catch(() => undefined);
+        throw error;
+      } finally {
+        client.release();
+      }
+    } else {
+      await markPlacesSeeded(db);
+    }
+  }
+
   const data = {
     articles: withoutSeedArticles(
       articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
     ),
     events: events.rows.map((row) => mapEvent(row as Record<string, unknown>)),
     rss: rss.rows.map((row) => mapRss(row as Record<string, unknown>)),
+    places: placeRows,
   };
   if (data.articles.length !== (articles.rowCount ?? 0)) {
     await persistPostgresStore(data);
@@ -321,7 +460,7 @@ export async function persistPostgresStore(data: StoreData) {
   const client = await getPool().connect();
   try {
     await client.query("begin");
-    await client.query("truncate articles, events, rss_sources");
+    await client.query("truncate articles, events, rss_sources, places");
     await insertStore(client, data);
     await client.query("commit");
   } catch (error) {
