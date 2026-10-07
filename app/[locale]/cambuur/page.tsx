@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FilterRow } from "@/components/ArticleCard";
 import { CambuurBoard, cambuurBoardScore, cambuurFixture, cambuurPlace } from "@/components/CambuurBoard";
+import { ClubCrest } from "@/components/ClubCrest";
 import { JsonLd } from "@/components/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { getCambuur } from "@/lib/cambuur";
@@ -84,7 +85,17 @@ export default async function CambuurPage({
                     className={`border-b border-line ${row.cambuur ? "bg-ice font-extrabold text-navy" : "text-ink"}`}
                   >
                     <td className="py-2.5 pe-3 tabular-nums">{formatNum(row.rank, locale)}</td>
-                    <td className="py-2.5 pe-3">{row.name}</td>
+                    <td className="py-2.5 pe-3">
+                      <span className="inline-flex items-center gap-2">
+                        <ClubCrest
+                          abbr={row.abbr}
+                          logo={row.logo}
+                          ours={row.cambuur}
+                          className="h-6 w-6 text-[8px]"
+                        />
+                        {row.name}
+                      </span>
+                    </td>
                     <td className="py-2.5 pe-3 text-end tabular-nums">{formatNum(row.played, locale)}</td>
                     <td className="py-2.5 pe-3 text-end tabular-nums" dir="ltr">
                       {formatNum(row.gd, locale)}
@@ -127,8 +138,20 @@ export default async function CambuurPage({
                 key={match.id}
                 className="flex items-baseline justify-between gap-4 border-b border-line py-3 text-sm"
               >
-                <span className="min-w-0 font-bold text-navy" dir="ltr">
+                <span className="inline-flex min-w-0 items-center gap-2 font-bold text-navy" dir="ltr">
+                  <ClubCrest
+                    abbr={match.home ? "SCC" : match.opponentAbbr}
+                    logo={match.home ? match.cambuurLogo || data.logo : match.opponentLogo}
+                    ours={match.home}
+                    className="h-6 w-6 text-[8px]"
+                  />
                   {cambuurFixture(match)}
+                  <ClubCrest
+                    abbr={match.home ? match.opponentAbbr : "SCC"}
+                    logo={match.home ? match.opponentLogo : match.cambuurLogo || data.logo}
+                    ours={!match.home}
+                    className="h-6 w-6 text-[8px]"
+                  />
                 </span>
                 <span className="shrink-0 font-extrabold text-ink tabular-nums" dir="ltr">
                   {cambuurBoardScore(match)}

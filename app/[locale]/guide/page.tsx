@@ -18,6 +18,69 @@ const LINKS = {
   dokterswacht: "https://dokterswacht.nl/locaties/huisartsenspoedpost-leeuwarden/",
 };
 
+const ROOM = {
+  studentStay: "https://studentstay.com/",
+  nhl: "https://www.nhlstenden.com/en/practical-information/housing/leeuwarden",
+  campus: "https://www.rug.nl/cf/education/studentinfo/findingaccomodation",
+  markt: "https://www.markt058.com/en/",
+  xior: "https://www.xiorstudenthousing.eu/netherlands/leeuwarden/",
+  kamernet: "https://kamernet.nl/en/for-rent/properties-leeuwarden",
+  pararius: "https://www.pararius.com/apartments/leeuwarden",
+  funda: "https://www.funda.nl/zoeken/huur?selected_area=%5B%22leeuwarden%22%5D",
+  huurwoningen: "https://www.huurwoningen.nl/in/leeuwarden/",
+  housingAnywhere: "https://housinganywhere.com/s/Leeuwarden--Netherlands",
+  elkien: "https://www.elkien.nl/",
+  toeslag: "https://www.belastingdienst.nl/wps/wcm/connect/nl/huurtoeslag/",
+};
+
+const EATS = [
+  {
+    name: "Falafel Mouni",
+    address: "Peperstraat 1, 8911 HZ",
+    href: "https://www.falafelmouni.nl/",
+    note: "eatsMouni",
+  },
+  {
+    name: "Brongers Cafetaria Zus & Zo",
+    address: "Nieuwestad 37, 8911 CH",
+    href: "https://www.brongerszusenzo.nl/",
+    note: "eatsBrongers",
+  },
+  {
+    name: "Garden of Asia",
+    address: "Voorstreek 51, 8911 JJ",
+    href: "https://gardenofasia.nl/",
+    note: "eatsGarden",
+  },
+  {
+    name: "Minato",
+    address: "Vrouwenpoort 1, 8911 DD",
+    href: "https://minatoleeuwarden.nl/",
+    note: "eatsMinato",
+  },
+] as const;
+
+const NIGHTS = [
+  {
+    name: "Neushoorn",
+    address: "Ruiterskwartier 41, 8911 BP",
+    href: "https://www.neushoorn.nl/",
+    note: "venueNeushoorn",
+  },
+  {
+    name: "De Koperen Tuin",
+    address: "Prinsentuin 1, 8911 DE",
+    href: "https://www.dekoperentuin.nl/",
+    note: "venueKoperen",
+  },
+  {
+    name: "Podium Asteriks",
+    address: "Zwettestraat 30a, 8912 AV",
+    href: "https://podiumasteriks.nl/",
+    note: "venueAsteriks",
+  },
+] as const;
+
 const HUB = [
   { id: "nightlife", title: "nightlifeTitle" },
   { id: "room", title: "roomTitle" },
@@ -31,6 +94,47 @@ function paragraphs(text: string) {
 
 function lines(text: string) {
   return text.split("\n").map((part) => part.trim()).filter(Boolean);
+}
+
+function OutLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const external = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      className="inline-flex min-h-11 cursor-pointer items-center rounded-full bg-paper px-4 text-[13px] font-extrabold text-navy hover:bg-wash"
+      {...(external ? { rel: "noopener noreferrer", target: "_blank" } : {})}
+    >
+      {children}
+      {external ? " ↗" : null}
+    </a>
+  );
+}
+
+function Noted({
+  body,
+  links,
+}: {
+  body: string;
+  links?: { href: string; label: string }[];
+}) {
+  return (
+    <div className="mt-3">
+      <div className="space-y-3 text-base leading-7 text-ink">
+        {paragraphs(body).map((part) => (
+          <p key={part}>{part}</p>
+        ))}
+      </div>
+      {links?.length ? (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {links.map((link) => (
+            <OutLink key={`${link.label}-${link.href}`} href={link.href}>
+              {link.label}
+            </OutLink>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export async function generateMetadata({
@@ -152,6 +256,24 @@ export default async function GuidePage({
               <p key={part}>{part}</p>
             ))}
           </div>
+          <ul className="mt-4 space-y-3">
+            {NIGHTS.map((place) => (
+              <li key={place.href} className="rounded-[12px] bg-paper px-4 py-3">
+                <a
+                  href={place.href}
+                  className="text-[15px] font-extrabold text-navy hover:text-primary"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {place.name} ↗
+                </a>
+                <p className="text-[13px] font-semibold text-mute" dir="ltr">
+                  {place.address}
+                </p>
+                <p className="mt-1 text-sm leading-6 text-ink">{guides(place.note)}</p>
+              </li>
+            ))}
+          </ul>
           <h3 className="mt-4 text-[13px] font-extrabold tracking-[0.06em] text-navy uppercase">
             {guides("roomsLabel")}
           </h3>
@@ -180,10 +302,61 @@ export default async function GuidePage({
         <section id="room" className="scroll-mt-24 rounded-[12px] bg-ice px-5 py-5 lg:px-6 lg:py-6">
           <h2 className="text-lg font-extrabold tracking-[-0.02em] text-navy">{guides("roomTitle")}</h2>
           <div className="mt-2 space-y-3 text-base leading-7 text-ink">
-            {paragraphs(guides("roomBody")).map((part) => (
+            {paragraphs(guides("roomIntro")).map((part) => (
               <p key={part}>{part}</p>
             ))}
           </div>
+          <h3 className="mt-4 text-[13px] font-extrabold tracking-[0.06em] text-navy uppercase">
+            {guides("roomWhereTitle")}
+          </h3>
+          <Noted
+            body={guides("roomStudentStay")}
+            links={[
+              { href: ROOM.studentStay, label: "StudentStay" },
+              { href: ROOM.nhl, label: "NHL Stenden" },
+              { href: ROOM.campus, label: "Campus Fryslân" },
+            ]}
+          />
+          <Noted body={guides("roomMarkt")} links={[{ href: ROOM.markt, label: "Markt 058" }, { href: ROOM.nhl, label: "NHL Stenden" }]} />
+          <Noted body={guides("roomXior")} links={[{ href: ROOM.xior, label: "Xior Leeuwarden" }]} />
+          <Noted
+            body={guides("roomSites")}
+            links={[
+              { href: ROOM.kamernet, label: "Kamernet" },
+              { href: ROOM.pararius, label: "Pararius" },
+              { href: ROOM.funda, label: "Funda" },
+              { href: ROOM.huurwoningen, label: "Huurwoningen" },
+              { href: ROOM.housingAnywhere, label: "HousingAnywhere" },
+            ]}
+          />
+          <Noted
+            body={guides("roomFacebook")}
+            links={[
+              { href: ROOM.nhl, label: "NHL Stenden" },
+              { href: ROOM.campus, label: "Campus Fryslân" },
+            ]}
+          />
+          <Noted body={guides("roomElkien")} links={[{ href: ROOM.elkien, label: "Elkien" }]} />
+          <h3 className="mt-4 text-[13px] font-extrabold tracking-[0.06em] text-navy uppercase">
+            {guides("roomCostTitle")}
+          </h3>
+          <Noted
+            body={guides("roomCosts")}
+            links={[
+              { href: ROOM.campus, label: "Campus Fryslân" },
+              { href: ROOM.nhl, label: "NHL Stenden" },
+              { href: ROOM.toeslag, label: guides("roomToeslag") },
+            ]}
+          />
+          <h3 className="mt-4 text-[13px] font-extrabold tracking-[0.06em] text-navy uppercase">
+            {guides("roomSafeTitle")}
+          </h3>
+          <Noted
+            body={guides("roomRegister")}
+            links={[{ href: "#bsn", label: guides("roomBsn") }, { href: LINKS.bsn, label: guides("roomGemeente") }]}
+          />
+          <Noted body={guides("roomScams")} links={[{ href: ROOM.campus, label: "Campus Fryslân" }]} />
+          <p className="mt-4 text-sm leading-6 text-mute">{guides("roomChecked")}</p>
         </section>
 
         <section id="first-month" className="scroll-mt-24">
@@ -251,10 +424,36 @@ export default async function GuidePage({
         <section id="eats" className="scroll-mt-24 rounded-[12px] bg-ice px-5 py-5 lg:px-6 lg:py-6">
           <h2 className="text-lg font-extrabold tracking-[-0.02em] text-navy">{guides("eatsTitle")}</h2>
           <div className="mt-2 space-y-3 text-base leading-7 text-ink">
-            {paragraphs(guides("eatsBody")).map((part) => (
+            {paragraphs(guides("eatsIntro")).map((part) => (
               <p key={part}>{part}</p>
             ))}
           </div>
+          <ul className="mt-4 space-y-3">
+            {EATS.map((place) => (
+              <li key={place.href} className="rounded-[12px] bg-paper px-4 py-3">
+                <a
+                  href={place.href}
+                  className="text-[15px] font-extrabold text-navy hover:text-primary"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {place.name} ↗
+                </a>
+                <p className="text-[13px] font-semibold text-mute" dir="ltr">
+                  {place.address}
+                </p>
+                <p className="mt-1 text-sm leading-6 text-ink">{guides(place.note)}</p>
+              </li>
+            ))}
+          </ul>
+          <h3 className="mt-4 text-[13px] font-extrabold tracking-[0.06em] text-navy uppercase">
+            {guides("eatsMarketTitle")}
+          </h3>
+          <Noted
+            body={guides("eatsMarket")}
+            links={[{ href: "https://www.leeuwarden.nl/andere-vergunningen-en-ontheffingen/standplaatsvergunning/", label: guides("eatsMarketLink") }]}
+          />
+          <p className="mt-4 text-sm leading-6 text-mute">{guides("eatsNoPrice")}</p>
         </section>
       </div>
 

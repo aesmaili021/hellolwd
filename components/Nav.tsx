@@ -12,6 +12,7 @@ export function Nav() {
   const onNews = pathname === "/";
   const onEvents = pathname.startsWith("/events");
   const onAbout = pathname.startsWith("/about");
+  const onGuide = pathname.startsWith("/guide");
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
@@ -36,6 +37,9 @@ export function Nav() {
           <NavText href="/events" current={onEvents}>
             {t("events")}
           </NavText>
+          <NavText href="/guide" current={onGuide}>
+            {t("newcomers")}
+          </NavText>
           <NavText href="/about" current={onAbout}>
             {t("about")}
           </NavText>
@@ -55,7 +59,7 @@ function NavText({
   current,
   children,
 }: {
-  href: "/" | "/events" | "/about";
+  href: "/" | "/events" | "/about" | "/guide";
   current: boolean;
   children: React.ReactNode;
 }) {
