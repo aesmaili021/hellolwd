@@ -68,6 +68,7 @@ function Tab({
           alt=""
           width={24}
           height={24}
+          unoptimized
           className={`h-6 w-6 object-contain ${current ? "" : "opacity-60 saturate-50"}`}
         />
       ) : (
