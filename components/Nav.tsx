@@ -13,6 +13,8 @@ export function Nav() {
   const onEvents = pathname.startsWith("/events");
   const onAbout = pathname.startsWith("/about");
   const onGuide = pathname.startsWith("/guide");
+  const onPlaces = pathname.startsWith("/places");
+  const onAdvertise = pathname.startsWith("/advertise");
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
@@ -27,22 +29,21 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav
-          aria-label="HelloLWD"
-          className="hidden items-center gap-7 md:flex"
-        >
-          <NavText href="/" current={onNews}>
-            {t("news")}
-          </NavText>
-          <NavText href="/events" current={onEvents}>
-            {t("events")}
-          </NavText>
-          <NavText href="/guide" current={onGuide}>
-            {t("newcomers")}
-          </NavText>
-          <NavText href="/about" current={onAbout}>
-            {t("about")}
-          </NavText>
+        <nav aria-label="HelloLWD" className="hidden items-center gap-6 md:flex">
+          <NavLinks
+            onNews={onNews}
+            onEvents={onEvents}
+            onGuide={onGuide}
+            onPlaces={onPlaces}
+            onAdvertise={onAdvertise}
+            onAbout={onAbout}
+            news={t("news")}
+            events={t("events")}
+            newcomers={t("newcomers")}
+            places={t("places")}
+            advertise={t("advertise")}
+            about={t("about")}
+          />
         </nav>
 
         <div className="flex items-center gap-2">
@@ -50,7 +51,74 @@ export function Nav() {
           <LanguageSwitcher />
         </div>
       </div>
+      <nav aria-label="HelloLWD" className="flex gap-5 overflow-x-auto px-4 pb-2.5 [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden">
+        <NavLinks
+          onNews={onNews}
+          onEvents={onEvents}
+          onGuide={onGuide}
+          onPlaces={onPlaces}
+          onAdvertise={onAdvertise}
+          onAbout={onAbout}
+          news={t("news")}
+          events={t("events")}
+          newcomers={t("newcomers")}
+          places={t("places")}
+          advertise={t("advertise")}
+          about={t("about")}
+        />
+      </nav>
     </header>
+  );
+}
+
+function NavLinks({
+  onNews,
+  onEvents,
+  onGuide,
+  onPlaces,
+  onAdvertise,
+  onAbout,
+  news,
+  events,
+  newcomers,
+  places,
+  advertise,
+  about,
+}: {
+  onNews: boolean;
+  onEvents: boolean;
+  onGuide: boolean;
+  onPlaces: boolean;
+  onAdvertise: boolean;
+  onAbout: boolean;
+  news: string;
+  events: string;
+  newcomers: string;
+  places: string;
+  advertise: string;
+  about: string;
+}) {
+  return (
+    <>
+      <NavText href="/" current={onNews}>
+        {news}
+      </NavText>
+      <NavText href="/events" current={onEvents}>
+        {events}
+      </NavText>
+      <NavText href="/guide" current={onGuide}>
+        {newcomers}
+      </NavText>
+      <NavText href="/places" current={onPlaces}>
+        {places}
+      </NavText>
+      <NavText href="/advertise" current={onAdvertise}>
+        {advertise}
+      </NavText>
+      <NavText href="/about" current={onAbout}>
+        {about}
+      </NavText>
+    </>
   );
 }
 
@@ -59,7 +127,7 @@ function NavText({
   current,
   children,
 }: {
-  href: "/" | "/events" | "/about" | "/guide";
+  href: "/" | "/events" | "/about" | "/guide" | "/places" | "/advertise";
   current: boolean;
   children: React.ReactNode;
 }) {

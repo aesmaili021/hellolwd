@@ -16,7 +16,8 @@
     "cookiesDescription": "Cookies van HelloLWD: thema, optionele redactielogin, en Google Analytics voor bezoekersstatistieken.",
     "archiveDescription": "Oudere berichten uit Leeuwarden blijven hier staan. De homepage toont twee weken; elke link blijft werken.",
     "cambuurDescription": "Volgende wedstrijd van SC Cambuur, laatste Eredivisie-uitslag en plek in de stand, plus sportberichten die Cambuur noemen.",
-    "advertiseDescription": "Adverteren op HelloLWD. 300+ lezers per maand in Leeuwarden. Vermeldingen vanaf €0. Mail info@hellolwd.com."
+    "advertiseDescription": "Adverteren op HelloLWD. 300+ lezers per maand in Leeuwarden. Vermeldingen vanaf €0. Mail info@hellolwd.com.",
+    "placesDescription": "Een gratis lijst van cafés, goedkoop eten, bars, boodschappen, barbiers, sportscholen en studentenzaken in Leeuwarden."
   },
   "nav": {
     "skip": "Naar inhoud",
@@ -29,7 +30,9 @@
     "loading": "Laden",
     "cambuur": "Cambuur",
     "guide": "Gids",
-    "newcomers": "Nieuw hier"
+    "newcomers": "Nieuw hier",
+    "places": "Plekken",
+    "advertise": "Adverteren"
   },
   "filters": {
     "all": "Alles",
@@ -199,7 +202,9 @@
     "eatsMarketTitle": "De markt",
     "eatsMarket": "De huidige pagina van de gemeente over standplaatsen zet de vrijdagse warenmarkt op het Wilhelminaplein, en de zaterdagse warenmarkt op het Waagplein en de zuidkant van de Nieuwestad. Het Wilhelminaplein is de vrijdagmarkt, niet de gewone zaterdagmarkt. Is het zaterdagse plein bezet, dan wijkt de markt uit naar de Wirdumerdijk, het Ruiterskwartier en soms het Wilhelminaplein. Op feestdagen, Koningsdag en Bevrijdingsdag is er geen warenmarkt. Kloktijden staan niet op die pagina, dus die drukken we niet af.",
     "eatsMarketLink": "Gemeente Leeuwarden",
-    "eatsNoPrice": "Staat een prijs niet op de site van de zaak, dan staat hij niet op deze pagina."
+    "eatsNoPrice": "Staat een prijs niet op de site van de zaak, dan staat hij niet op deze pagina.",
+    "placesCta": "Winkels, cafés, boodschappen en sportscholen staan op een aparte lijst.",
+    "placesLink": "Open de plekkenlijst"
   },
   "archive": {
     "kicker": "Nieuwsarchief",
@@ -228,6 +233,7 @@
     "sources": "Bronnen",
     "about": "Over",
     "advertise": "Adverteren",
+    "places": "Plekken",
     "cambuur": "Cambuur",
     "whatsapp": "WhatsApp"
   },
@@ -450,14 +456,34 @@
   },
   "places": {
     "title": "Uitgelichte plekken",
-    "sample": "Voorbeeld",
+    "homeAll": "Alle plekken",
     "featured": "Uitgelicht",
-    "barTitle": "Jouw bar hier",
-    "barBody": "Studentenavonden, acties",
-    "restaurantTitle": "Jouw restaurant hier",
-    "restaurantBody": "Menu en deals",
-    "shopTitle": "Jouw zaak hier",
-    "shopBody": "Lokale diensten"
+    "kicker": "Plekken",
+    "pageTitle": "Plekken in Leeuwarden",
+    "intro": "Cafés, goedkoop eten, boodschappen, sportscholen en andere zaken die mensen echt gebruiken.",
+    "search": "Zoek op naam of straat",
+    "searchLabel": "Plekken zoeken",
+    "searchSubmit": "Zoeken",
+    "filters": "Categorieën",
+    "all": "Alles",
+    "website": "Website",
+    "directions": "Route",
+    "claim": "Is dit jouw zaak? Claim hem →",
+    "banner": "Heb je een zaak? Word uitgelicht + een vermelding in ons WhatsApp-kanaal",
+    "slotTitle": "Jouw zaak hier — vanaf €12/maand",
+    "slotFounding": "Oprichtingspartners: 50% korting voor 3 maanden",
+    "featuredRow": "Uitgelicht",
+    "empty": "Geen plekken gevonden.",
+    "categoryTitle": "{category} in Leeuwarden",
+    "cat": {
+      "cafes": "Cafés",
+      "eats": "Goedkoop eten",
+      "bars": "Bars & uitgaan",
+      "groceries": "Internationale boodschappen",
+      "hair": "Barbiers & haar",
+      "sports": "Sport & sportscholen",
+      "student": "Studentenbenodigdheden"
+    }
   },
   "locales": {
     "nl": "NL",

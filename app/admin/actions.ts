@@ -25,8 +25,10 @@ import {
   CONTENT_LOCALES,
   EVENT_GENRES,
   NEWS_CATEGORIES,
+  isPlaceCategory,
   normalizeArticle,
   normalizeEvent,
+  normalizePlace,
   normalizeRss,
   type ContentLocale,
   type EventGenre,
@@ -63,6 +65,26 @@ function refreshPublic() {
   revalidatePath("/admin/news");
   revalidatePath("/admin/events");
   revalidatePath("/admin/rss");
+  revalidatePath("/admin/places");
+}
+
+function placeSlug(name: string) {
+  const base = name
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 48);
+  return base || "place";
+}
+
+function uniquePlaceId(name: string, taken: string[]) {
+  const base = placeSlug(name);
+  if (!taken.includes(base)) return base;
+  let n = 2;
+  while (taken.includes(`${base}-${n}`)) n += 1;
+  return `${base}-${n}`;
 }
 
 export async function loginAction(form: FormData) {
@@ -257,6 +279,75 @@ export async function ingestFeedsAction() {
   const result = await ingestFeeds();
   refreshPublic();
   redirect(`/admin/rss?added=${result.added}&updated=${result.updated}&images=${result.images}`);
+}
+
+export async function savePlaceAction(form: FormData) {
+  await requireAdmin();
+  const postedId = text(form, "id");
+  const name = text(form, "name");
+  const address = text(form, "address");
+  const source = safeHttpUrl(text(form, "source_url"));
+  const categoryRaw = text(form, "category");
+  const category = isPlaceCategory(categoryRaw) ? categoryRaw : "cafes";
+  const back = postedId ? `/admin/places/${postedId}` : "/admin/places/new";
+  if (!name || !address || !source) redirect(`${back}?error=1`);
+
+  const emailRaw = optional(form, "email");
+  const email = emailRaw && emailRaw.includes("@") ? emailRaw : null;
+  const orderRaw = Number(text(form, "sort_order"));
+  let savedId = postedId;
+
+  await updateStore((store) => {
+    const id = postedId || uniquePlaceId(name, store.places.map((row) => row.id));
+    savedId = id;
+    const prev = store.places.find((row) => row.id === id);
+    const place = normalizePlace({
+      id,
+      name,
+      category,
+      address,
+      website: safeHttpUrl(optional(form, "website")),
+      email,
+      description_nl: text(form, "description_nl"),
+      description_en: text(form, "description_en"),
+      description_es: text(form, "description_es"),
+      description_fa: text(form, "description_fa"),
+      source_url: source,
+      featured: form.get("featured") === "on",
+      visible: form.get("visible") === "on",
+      sort_order: Number.isFinite(orderRaw) ? orderRaw : (prev?.sort_order ?? 0),
+      created_at: prev?.created_at,
+    });
+    const index = store.places.findIndex((row) => row.id === id);
+    if (index >= 0) store.places[index] = place;
+    else store.places.push(place);
+  });
+  refreshPublic();
+  redirect(`/admin/places?saved=${savedId}`);
+}
+
+export async function togglePlaceAction(form: FormData) {
+  await requireAdmin();
+  const id = text(form, "id");
+  const flag = text(form, "flag");
+  await updateStore((store) => {
+    const place = store.places.find((row) => row.id === id);
+    if (!place) return;
+    if (flag === "featured") place.featured = !place.featured;
+    if (flag === "visible") place.visible = !place.visible;
+  });
+  refreshPublic();
+  redirect("/admin/places");
+}
+
+export async function deletePlaceAction(form: FormData) {
+  await requireAdmin();
+  const id = text(form, "id");
+  await updateStore((store) => {
+    store.places = store.places.filter((row) => row.id !== id);
+  });
+  refreshPublic();
+  redirect("/admin/places");
 }
 
 export async function deleteRssAction(form: FormData) {
