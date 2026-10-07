@@ -32,6 +32,9 @@ export type CambuurMatch = {
   date: string;
   home: boolean;
   opponent: string;
+  opponentAbbr: string;
+  opponentLogo: string | null;
+  cambuurLogo: string | null;
   score: string | null;
   result: "W" | "D" | "L" | null;
   live: boolean;
@@ -41,6 +44,8 @@ export type CambuurMatch = {
 export type TableRow = {
   rank: number;
   name: string;
+  abbr: string;
+  logo: string | null;
   played: number;
   points: number;
   gd: number;
@@ -71,6 +76,20 @@ function stat(stats: EspnStat[] | undefined, name: string) {
   return Number(row?.value ?? row?.displayValue ?? 0);
 }
 
+/** Prefer the light crest. ESPN also ships a dark variant that disappears on the navy board. */
+function crestUrl(team?: EspnTeam | null) {
+  const hrefs = (team?.logos ?? []).map((logo) => logo.href).filter((href): href is string => Boolean(href));
+  return hrefs.find((href) => !/dark/i.test(href)) || hrefs[0] || null;
+}
+
+function teamAbbr(team?: EspnTeam | null) {
+  const raw = team?.abbreviation?.trim();
+  if (raw) return raw.toUpperCase();
+  const name = team?.shortDisplayName || team?.displayName || "";
+  const letters = name.replace(/[^A-Za-z]/g, "");
+  return (letters || "?").slice(0, 3).toUpperCase();
+}
+
 function scoreOf(competitor?: EspnCompetitor) {
   if (!competitor) return null;
   if (typeof competitor.score === "string") return Number(competitor.score);
@@ -99,6 +118,9 @@ function parseMatch(event: EspnEvent): CambuurMatch | null {
     date: event.date || "",
     home: us.homeAway === "home",
     opponent: them.team?.shortDisplayName || them.team?.displayName || them.team?.abbreviation || "?",
+    opponentAbbr: teamAbbr(them.team),
+    opponentLogo: crestUrl(them.team),
+    cambuurLogo: crestUrl(us.team),
     score: gf != null && ga != null ? `${gf}–${ga}` : null,
     result,
     live,
@@ -149,6 +171,8 @@ export async function getCambuur(): Promise<CambuurSnapshot | null> {
     .map((row) => ({
       rank: stat(row.stats, "rank"),
       name: row.team?.shortDisplayName || row.team?.displayName || "",
+      abbr: teamAbbr(row.team),
+      logo: crestUrl(row.team),
       played: stat(row.stats, "gamesPlayed"),
       points: stat(row.stats, "points"),
       gd: stat(row.stats, "pointDifferential"),
@@ -173,7 +197,7 @@ export async function getCambuur(): Promise<CambuurSnapshot | null> {
 
   return {
     name: team?.team?.displayName || ours.team?.displayName || "SC Cambuur",
-    logo: team?.team?.logos?.[0]?.href || ours.team?.logos?.[0]?.href || null,
+    logo: crestUrl(team?.team) || crestUrl(ours.team),
     rank,
     played: stat(ours.stats, "gamesPlayed"),
     won: stat(ours.stats, "wins"),
