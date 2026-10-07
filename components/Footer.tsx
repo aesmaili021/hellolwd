@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { WhatsAppFollow, WhatsAppIcon } from "@/components/WhatsApp";
 import { SITE_VERSION } from "@/lib/version";
 
 const SOURCES = [
@@ -23,6 +24,13 @@ export async function Footer() {
             {t("version", { version: SITE_VERSION })}
           </p>
           <p className="text-[13px] leading-relaxed text-muted">{t("blurb")}</p>
+          <WhatsAppFollow
+            place="footer"
+            className="mt-1 inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#25D366] text-[#064e3b] hover:bg-[#1ebe5d]"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+            <span className="sr-only">{t("whatsapp")}</span>
+          </WhatsAppFollow>
         </div>
         <div className="flex flex-col gap-1.5">
           <p className="text-[11px] font-extrabold tracking-[0.1em] text-navy">

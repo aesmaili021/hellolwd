@@ -101,3 +101,7 @@ select:focus-visible {
 .story-desk {
   position: relative;
 }
+
+html[data-wa-dismissed="1"] [data-whatsapp-strip] {
+  display: none;
+}

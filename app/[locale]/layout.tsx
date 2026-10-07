@@ -10,6 +10,7 @@ import { Nav } from "@/components/Nav";
 import { PwaRegister } from "@/components/PwaRegister";
 import { StatusBar } from "@/components/StatusBar";
 import { StatusBarSkeleton } from "@/components/Skeletons";
+import { WhatsAppStrip } from "@/components/WhatsApp";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -64,6 +65,7 @@ export default async function LocaleLayout({
       <Suspense fallback={<StatusBarSkeleton />}>
         <StatusBar />
       </Suspense>
+      <WhatsAppStrip />
       <Suspense fallback={<div className="h-16 border-b border-line bg-paper" />}>
         <Nav />
       </Suspense>

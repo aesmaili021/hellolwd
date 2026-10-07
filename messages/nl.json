@@ -228,7 +228,14 @@
     "sources": "Bronnen",
     "about": "Over",
     "advertise": "Adverteren",
-    "cambuur": "Cambuur"
+    "cambuur": "Cambuur",
+    "whatsapp": "WhatsApp"
+  },
+  "whatsapp": {
+    "strip": "Leeuwarder nieuws op WhatsApp",
+    "follow": "Volgen",
+    "dismiss": "Sluiten",
+    "article": "HelloLWD op WhatsApp — ochtendweer en het belangrijkste nieuws, elke dag om 8:30"
   },
   "privacy": {
     "title": "Privacybeleid",
@@ -375,6 +382,7 @@
     "statLabel": "lezers per maand",
     "title": "Jouw zaak, voor Leeuwarden",
     "line": "Meer dan 300 mensen lazen HelloLWD de afgelopen maand.",
+    "whatsapp": "De ochtendbriefing staat ook op WhatsApp.",
     "cta": "Bekijk de pakketten"
   },
   "ads": {
@@ -390,6 +398,17 @@
     "factWho": "Internationals, studenten en locals.",
     "packagesTitle": "Pakketten",
     "founding": "Oprichtingspartner: de eerste 3 maanden 50% korting voor vroege partners.",
+    "waNew": "Nieuw",
+    "waTitle": "Ons WhatsApp-kanaal is net live — elk pakket krijgt nu een vermelding in ons WhatsApp-kanaal",
+    "waFeatured": "Uitgelicht: elke maand een vermelding",
+    "waSponsored": "Gesponsord artikel: gedeeld in het kanaal",
+    "waWeek": "Sponsor van de week: genoemd in de posts van die week",
+    "waMatch": "Cambuur-wedstrijd: in het wedstrijdbericht",
+    "waFreeBullet": "Een vermelding in het WhatsApp-kanaal.",
+    "waFeaturedBullet": "Elke maand een vermelding in het WhatsApp-kanaal.",
+    "waSponsoredBullet": "Gedeeld in het WhatsApp-kanaal.",
+    "waWeekBullet": "Genoemd in de WhatsApp-posts van die week.",
+    "waMatchBullet": "In het WhatsApp-bericht van de wedstrijd.",
     "freeName": "Gratis vermelding",
     "freePrice": "€0",
     "freeBody": "Je naam, wat je doet, en een link. We zetten het erbij als er ruimte is.",

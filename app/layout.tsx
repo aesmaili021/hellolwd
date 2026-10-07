@@ -72,7 +72,7 @@ export const viewport: Viewport = {
   ],
 };
 
-const themeScript = `(function(){try{var m=document.cookie.match(/(?:^|; )theme=(dark|light)/);var t=m&&m[1];if(!t){t=localStorage.getItem("theme")}if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})();`;
+const themeScript = `(function(){try{var m=document.cookie.match(/(?:^|; )theme=(dark|light)/);var t=m&&m[1];if(!t){t=localStorage.getItem("theme")}if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t;if(localStorage.getItem("hellolwd.whatsapp.dismissed")==="1")document.documentElement.dataset.waDismissed="1"}catch(e){}})();`;
 
 export default async function RootLayout({
   children,
