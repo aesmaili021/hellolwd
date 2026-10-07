@@ -16,7 +16,8 @@
     "cookiesDescription": "Cookies de HelloLWD: tema, login opcional de edición y Google Analytics para el tráfico.",
     "archiveDescription": "Las notas antiguas de Leeuwarden se quedan aquí. La portada muestra dos semanas; cada enlace sigue vivo.",
     "cambuurDescription": "Próximo partido del SC Cambuur, último resultado de Eredivisie y puesto en la tabla, más las noticias de deporte que mencionan al club.",
-    "advertiseDescription": "Anúnciate en HelloLWD. 300+ lectores al mes en Leeuwarden. Anuncios desde €0. Escribe a info@hellolwd.com."
+    "advertiseDescription": "Anúnciate en HelloLWD. 300+ lectores al mes en Leeuwarden. Anuncios desde €0. Escribe a info@hellolwd.com.",
+    "placesDescription": "Un directorio gratis de cafés, comida barata, bares, comida internacional, peluquerías, gimnasios y tiendas de estudiante en Leeuwarden. Direcciones solo de fuentes públicas."
   },
   "nav": {
     "skip": "Saltar al contenido",
@@ -29,7 +30,8 @@
     "loading": "Cargando",
     "cambuur": "Cambuur",
     "guide": "Guía",
-    "newcomers": "Recién llegados"
+    "newcomers": "Recién llegados",
+    "places": "Lugares"
   },
   "filters": {
     "all": "Todo",
@@ -199,7 +201,9 @@
     "eatsMarketTitle": "El mercado",
     "eatsMarket": "La página actual del ayuntamiento sobre puestos pone el mercado de mercancías del viernes en Wilhelminaplein, y el del sábado en Waagplein y en el lado sur del Nieuwestad. Wilhelminaplein es el mercado del viernes, no el sábado habitual. Si la plaza del sábado está ocupada, el mercado se mueve a Wirdumerdijk, Ruiterskwartier y a veces Wilhelminaplein. No hay mercado en festivos, el Día del Rey ni el Día de la Liberación. En esa página no hay horarios, así que no los imprimimos.",
     "eatsMarketLink": "Ayuntamiento de Leeuwarden",
-    "eatsNoPrice": "Si un precio no está en la web del local, no está en esta página."
+    "eatsNoPrice": "Si un precio no está en la web del local, no está en esta página.",
+    "placesCta": "Tiendas, cafés, comida y gimnasios están en una lista aparte.",
+    "placesLink": "Abrir el directorio de lugares"
   },
   "archive": {
     "kicker": "Archivo de noticias",
@@ -228,6 +232,7 @@
     "sources": "Fuentes",
     "about": "Acerca de",
     "advertise": "Anúnciate",
+    "places": "Lugares",
     "cambuur": "Cambuur",
     "whatsapp": "WhatsApp"
   },
@@ -436,7 +441,10 @@
     "faqMinQ": "¿Hay un periodo mínimo?",
     "faqMinA": "No.",
     "faqCancelQ": "¿Puedo cancelar?",
-    "faqCancelA": "Sí. Escribe a info@hellolwd.com y cancela cuando quieras."
+    "faqCancelA": "Sí. Escribe a info@hellolwd.com y cancela cuando quieras.",
+    "claimTitle": "Reclama {name}",
+    "claimBody": "Escríbenos si este anuncio es tuyo, o si quieres la insignia destacada. La línea gratis del directorio sigue siendo gratis.",
+    "claimCta": "Escribir sobre este anuncio"
   },
   "newsletter": {
     "label": "Boletín",
@@ -450,14 +458,32 @@
   },
   "places": {
     "title": "Lugares destacados",
-    "sample": "Ejemplo",
+    "homeAll": "Todos los lugares",
     "featured": "Destacado",
-    "barTitle": "Tu bar aquí",
-    "barBody": "Noches de estudiantes, ofertas",
-    "restaurantTitle": "Tu restaurante aquí",
-    "restaurantBody": "Carta y ofertas",
-    "shopTitle": "Tu negocio aquí",
-    "shopBody": "Servicios locales"
+    "kicker": "Lugares",
+    "pageTitle": "Lugares en Leeuwarden",
+    "intro": "Un directorio gratis de negocios reales de Leeuwarden. Direcciones y enlaces solo cuando una fuente pública los publica.",
+    "search": "Busca nombre o calle",
+    "searchLabel": "Buscar lugares",
+    "searchSubmit": "Buscar",
+    "filters": "Categorías",
+    "all": "Todos",
+    "count": "{count} lugares",
+    "empty": "Ningún lugar coincide.",
+    "website": "Web",
+    "map": "Mapa",
+    "source": "Fuente",
+    "claim": "¿Es tu negocio? Reclámalo / destácalo",
+    "categoryTitle": "{category} en Leeuwarden",
+    "cat": {
+      "cafes": "Cafés",
+      "eats": "Comer barato",
+      "bars": "Bares y noche",
+      "groceries": "Comida internacional",
+      "hair": "Peluquerías y barberos",
+      "sports": "Deporte y gimnasios",
+      "student": "Esenciales de estudiante"
+    }
   },
   "locales": {
     "nl": "NL",

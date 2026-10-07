@@ -13,6 +13,7 @@ export function Nav() {
   const onEvents = pathname.startsWith("/events");
   const onAbout = pathname.startsWith("/about");
   const onGuide = pathname.startsWith("/guide");
+  const onPlaces = pathname.startsWith("/places");
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-paper">
@@ -40,12 +41,22 @@ export function Nav() {
           <NavText href="/guide" current={onGuide}>
             {t("newcomers")}
           </NavText>
+          <NavText href="/places" current={onPlaces}>
+            {t("places")}
+          </NavText>
           <NavText href="/about" current={onAbout}>
             {t("about")}
           </NavText>
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/places"
+            aria-current={onPlaces ? "page" : undefined}
+            className="inline-flex min-h-11 cursor-pointer items-center text-[14px] font-extrabold text-navy md:hidden"
+          >
+            {t("places")}
+          </Link>
           <ThemeToggle label={t("theme")} />
           <LanguageSwitcher />
         </div>
@@ -59,7 +70,7 @@ function NavText({
   current,
   children,
 }: {
-  href: "/" | "/events" | "/about" | "/guide";
+  href: "/" | "/events" | "/about" | "/guide" | "/places";
   current: boolean;
   children: React.ReactNode;
 }) {

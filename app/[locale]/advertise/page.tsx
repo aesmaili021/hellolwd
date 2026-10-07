@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FeaturedBadge } from "@/components/FeaturedBadge";
 import { JsonLd } from "@/components/JsonLd";
+import { claimSubject, getPlace } from "@/lib/places";
 import { localeUrl, pageMetadata } from "@/lib/seo";
 
 const MAIL = "info@hellolwd.com";
@@ -46,13 +47,17 @@ export async function generateMetadata({
 
 export default async function AdvertisePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ ref?: string }>;
 }) {
   const { locale } = await params;
+  const { ref } = await searchParams;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const t = await getTranslations("ads");
   const places = await getTranslations("places");
+  const claimed = ref ? getPlace(ref) : null;
 
   return (
     <main id="content" className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-10 lg:px-10 lg:py-16">
@@ -70,6 +75,19 @@ export default async function AdvertisePage({
         {t("title")}
       </h1>
       <p className="mt-4 max-w-[62ch] text-base leading-7 text-ink">{t("intro")}</p>
+
+      {claimed ? (
+        <section className="mt-6 max-w-[72ch] rounded-[12px] border border-[#F6C400] bg-[#fff8dc] px-5 py-5">
+          <h2 className="text-lg font-extrabold text-navy">{t("claimTitle", { name: claimed.name })}</h2>
+          <p className="mt-2 text-sm leading-6 text-ink">{t("claimBody")}</p>
+          <a
+            href={mail(claimSubject(claimed.name))}
+            className="mt-4 inline-flex min-h-11 cursor-pointer items-center rounded-full bg-brand px-5 text-[13px] font-extrabold text-white hover:bg-navy"
+          >
+            {t("claimCta")}
+          </a>
+        </section>
+      ) : null}
 
       <section aria-label={t("waNew")} className="mt-8 max-w-[72ch] rounded-[12px] border-2 border-[#25D366] bg-[#e7f8ef] px-5 py-5 lg:px-6">
         <p className="inline-flex rounded-full bg-[#25D366] px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-[#064e3b] uppercase">
