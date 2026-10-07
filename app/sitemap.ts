@@ -6,7 +6,7 @@ import { articleHasTranslation } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-const STATIC_PATHS = ["/", "/events", "/cambuur", "/about", "/guide", "/places", "/archive", "/advertise", "/privacy", "/cookies"] as const;
+const STATIC_PATHS = ["/", "/events", "/cambuur", "/about", "/guide", "/archive", "/advertise", "/privacy", "/cookies"] as const;
 
 function entry(path: string, lastModified?: string): MetadataRoute.Sitemap[number] {
   return {

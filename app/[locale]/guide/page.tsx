@@ -248,13 +248,6 @@ export default async function GuidePage({
         ))}
       </nav>
 
-      <p className="mt-4 max-w-[62ch] text-base leading-7 text-ink">
-        {guides("placesCta")}{" "}
-        <Link href="/places" className="cursor-pointer font-extrabold text-primary hover:text-navy">
-          {guides("placesLink")}
-        </Link>
-      </p>
-
       <div className="mt-10 grid max-w-[72ch] gap-5">
         <section id="nightlife" className="scroll-mt-24 rounded-[12px] bg-ice px-5 py-5 lg:px-6 lg:py-6">
           <h2 className="text-lg font-extrabold tracking-[-0.02em] text-navy">{guides("nightlifeTitle")}</h2>
