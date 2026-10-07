@@ -75,7 +75,11 @@
     "langEs": "Spaans",
     "langFa": "Perzisch",
     "langNl": "Nederlands",
-    "related": "Gerelateerde berichten"
+    "related": "Gerelateerde berichten",
+    "pagination": "Pagina's",
+    "prev": "Vorige",
+    "next": "Volgende",
+    "pageLabel": "Pagina {page}"
   },
   "events": {
     "title": "Weekendavonden",

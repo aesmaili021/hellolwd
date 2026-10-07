@@ -75,7 +75,11 @@
     "langEs": "español",
     "langFa": "persa",
     "langNl": "neerlandés",
-    "related": "Noticias relacionadas"
+    "related": "Noticias relacionadas",
+    "pagination": "Páginas",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "pageLabel": "Página {page}"
   },
   "events": {
     "title": "Eventos del fin de semana",

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { BriefingRow, FeaturedStory, FilterRow } from "@/components/ArticleCard";
+import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { CategoryPills } from "@/components/CategoryPills";
 import { EmptyFilter } from "@/components/EmptyStates";
@@ -12,9 +13,17 @@ import { TodayStrip } from "@/components/TodayStrip";
 import { WeekendHeroSection } from "@/components/WeekendHero";
 import { JsonLd } from "@/components/JsonLd";
 import { CambuurSkeleton, NewsSkeleton, TodaySkeleton, WeekendSlotSkeleton } from "@/components/Skeletons";
+import { StoryPager } from "@/components/StoryPager";
 import { getArchivedArticles, getRecentArticles } from "@/lib/data/articles";
 import { homeGraph } from "@/lib/schema";
-import { pageMetadata } from "@/lib/seo";
+import { localePath, pageMetadata } from "@/lib/seo";
+import { localeTag } from "@/i18n/routing";
+import {
+  parseStoryPage,
+  storyListPath,
+  storyPageCount,
+  storyPageSlice,
+} from "@/lib/story-page";
 import { NEWS_CATEGORIES, type NewsCategory } from "@/lib/types";
 
 export async function generateMetadata({
@@ -22,35 +31,51 @@ export async function generateMetadata({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ cat?: string }>;
+  searchParams: Promise<{ cat?: string; page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
-  const { cat } = await searchParams;
+  const { cat, page: pageParam } = await searchParams;
   const category =
     cat && (NEWS_CATEGORIES as readonly string[]).includes(cat)
       ? (cat as NewsCategory)
       : undefined;
+  const page = parseStoryPage(pageParam);
   const seo = await getTranslations("seo");
+  const article = await getTranslations("article");
   const categories = await getTranslations("categories");
+  const path = storyListPath(category, page);
+  const pageSuffix =
+    page > 1
+      ? ` — ${article("pageLabel", { page: new Intl.NumberFormat(localeTag(locale)).format(page) })}`
+      : "";
   if (category) {
     const label = categories(category);
     return pageMetadata({
       locale,
-      path: `/?cat=${category}`,
-      title: seo("categoryTitle", { category: label }),
+      path,
+      title: `${seo("categoryTitle", { category: label })}${pageSuffix}`,
       description: seo("categoryDescription", { category: label.toLowerCase() }),
     });
   }
   return pageMetadata({
     locale,
-    path: "/",
-    title: seo("homeTitle"),
+    path,
+    title: `${seo("homeTitle")}${pageSuffix}`,
     description: seo("homeDescription"),
   });
 }
 
-async function HomeNews({ category }: { category?: NewsCategory }) {
+function ensureStoryPage(page: number, total: number, category: string | undefined, locale: string) {
+  const totalPages = storyPageCount(total);
+  const max = total > 0 ? totalPages : 1;
+  if (page > max) {
+    redirect(localePath(locale, storyListPath(category, total > 0 ? max : 1)));
+  }
+  return total > 0 ? totalPages : 1;
+}
+
+async function HomeNews({ category, page }: { category?: NewsCategory; page: number }) {
   const locale = await getLocale();
   const articles = await getRecentArticles(category, locale);
   const meanwhile = category ? await getRecentArticles(undefined, locale) : [];
@@ -59,7 +84,11 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
     : await getArchivedArticles(undefined, locale);
   const [featured, ...rest] = articles;
   const briefing = rest.slice(0, 5);
-  const more = rest.slice(5);
+  const moreAll = rest.slice(5);
+  const listTotal = category ? articles.length : moreAll.length;
+  const totalPages = ensureStoryPage(page, listTotal, category, locale);
+  const visibleCategory = storyPageSlice(articles, page);
+  const more = storyPageSlice(moreAll, page);
 
   const t = await getTranslations("article");
   const filters = await getTranslations("filters");
@@ -84,10 +113,11 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
               </p>
             </div>
             <section className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-11">
-              {articles.map((article) => (
+              {visibleCategory.map((article) => (
                 <FilterRow key={article.id} article={article} />
               ))}
             </section>
+            <StoryPager page={page} totalPages={totalPages} category={category} />
             {archived.length ? (
               <p className="mt-10">
                 <Link
@@ -141,6 +171,7 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
                   <FilterRow key={article.id} article={article} />
                 ))}
               </div>
+              <StoryPager page={page} totalPages={totalPages} />
             </section>
           ) : null}
           {archived.length ? (
@@ -162,15 +193,19 @@ export default async function HomePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ cat?: string }>;
+  searchParams: Promise<{ cat?: string; page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
-  const { cat } = await searchParams;
+  const { cat, page: pageParam } = await searchParams;
   const category =
     cat && (NEWS_CATEGORIES as readonly string[]).includes(cat)
       ? (cat as NewsCategory)
       : undefined;
+  const page = parseStoryPage(pageParam);
+  const listed = await getRecentArticles(category, locale);
+  const listTotal = category ? listed.length : Math.max(0, listed.length - 6);
+  ensureStoryPage(page, listTotal, category, locale);
 
   return (
     <>
@@ -186,7 +221,7 @@ export default async function HomePage({
         </Suspense>
       ) : null}
       <Suspense fallback={<NewsSkeleton filtered={Boolean(category)} />}>
-        <HomeNews category={category} />
+        <HomeNews category={category} page={page} />
       </Suspense>
       <HomePromos />
     </>

@@ -75,7 +75,11 @@
     "langEs": "اسپانیایی",
     "langFa": "فارسی",
     "langNl": "هلندی",
-    "related": "خبرهای مرتبط"
+    "related": "خبرهای مرتبط",
+    "pagination": "صفحه‌ها",
+    "prev": "قبلی",
+    "next": "بعدی",
+    "pageLabel": "صفحهٔ {page}"
   },
   "events": {
     "title": "رویدادهای آخر هفته",
