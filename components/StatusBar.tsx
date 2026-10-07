@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { ClubCrest } from "@/components/ClubCrest";
 import { WeatherIcon } from "@/components/WeatherIcon";
 import { localeTag } from "@/i18n/routing";
 import { getCalendarStrip } from "@/lib/calendar";
@@ -68,12 +69,18 @@ export async function StatusBar() {
         {cambuur && highlight ? (
           <>
             <Rule />
-            <p className="shrink-0 text-[12px] font-bold">
+            <p className="flex shrink-0 items-center gap-1.5 text-[12px] font-bold">
+              <ClubCrest abbr="SCC" logo={cambuur.logo} ours className="h-4 w-4 text-[7px]" />
               <span className="text-[#F6C400]">{cambuurT("short")}</span>
               <span className="text-paper/45"> · </span>
               {cambuur.live ? (
-                <span className="text-[#F6C400]">
+                <span className="flex items-center gap-1 text-[#F6C400]">
                   {cambuurT("live")}{" "}
+                  <ClubCrest
+                    abbr={highlight.opponentAbbr}
+                    logo={highlight.opponentLogo}
+                    className="h-4 w-4 text-[7px]"
+                  />
                   {highlight.home
                     ? cambuurT("vs", { team: highlight.opponent })
                     : cambuurT("at", { team: highlight.opponent })}{" "}
@@ -83,7 +90,12 @@ export async function StatusBar() {
                 <>
                   <span className="text-[#F6C400]">{cambuurT("rank", { rank: cambuur.rank })}</span>
                   <span className="text-paper/45"> · </span>
-                  {highlight.result ? <span className="text-[#F6C400]">{highlight.result} </span> : null}
+                  {highlight.result ? <span className="text-[#F6C400]">{highlight.result}</span> : null}
+                  <ClubCrest
+                    abbr={highlight.opponentAbbr}
+                    logo={highlight.opponentLogo}
+                    className="h-4 w-4 text-[7px]"
+                  />
                   {highlight.home
                     ? cambuurT("vs", { team: highlight.opponent })
                     : cambuurT("at", { team: highlight.opponent })}
@@ -94,6 +106,11 @@ export async function StatusBar() {
                     <>
                       <span className="text-paper/45"> · </span>
                       <span className="text-[#F6C400]">{cambuurT("next")}</span>{" "}
+                      <ClubCrest
+                        abbr={cambuur.next.opponentAbbr}
+                        logo={cambuur.next.opponentLogo}
+                        className="h-4 w-4 text-[7px]"
+                      />
                       {cambuur.next.home
                         ? cambuurT("vs", { team: cambuur.next.opponent })
                         : cambuurT("at", { team: cambuur.next.opponent })}{" "}

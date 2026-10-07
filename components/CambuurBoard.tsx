@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { localeTag } from "@/i18n/routing";
+import { ClubCrest } from "@/components/ClubCrest";
 import { getCambuur, type CambuurMatch } from "@/lib/cambuur";
 import { getCambuurArticles } from "@/lib/data/articles";
 import { articleTitle, type Article } from "@/lib/types";
@@ -37,11 +38,6 @@ export function cambuurPlace(rank: number, locale: string) {
   return `${n}${suffix}`;
 }
 
-function abbrev(name: string) {
-  const letters = name.replace(/[^A-Za-z]/g, "");
-  return (letters || name).slice(0, 3).toUpperCase();
-}
-
 /** Home-away score. Stored scores are Cambuur goals–opponent goals. */
 export function cambuurBoardScore(match: CambuurMatch) {
   if (!match.score) return null;
@@ -52,32 +48,6 @@ export function cambuurBoardScore(match: CambuurMatch) {
 
 export function cambuurFixture(match: CambuurMatch) {
   return match.home ? `SC Cambuur – ${match.opponent}` : `${match.opponent} – SC Cambuur`;
-}
-
-function Crest({
-  label,
-  logo,
-  ours,
-}: {
-  label: string;
-  logo?: string | null;
-  ours?: boolean;
-}) {
-  return (
-    <span
-      className={`grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full text-[11px] font-black ${
-        ours ? "bg-[#F6C400] text-brand" : "bg-white text-brand"
-      }`}
-      dir="ltr"
-    >
-      {logo ? (
-        // eslint-disable-next-line @next/next/no-img-element -- ESPN crest host is not in the image allowlist
-        <img src={logo} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
-      ) : (
-        label
-      )}
-    </span>
-  );
 }
 
 function MatchCard({
@@ -95,9 +65,19 @@ function MatchCard({
   foot?: string;
   empty?: string;
 }) {
-  const us = { label: "SCC", logo, ours: true, name: "SC Cambuur" };
+  const us = {
+    label: "SCC",
+    logo: match?.cambuurLogo || logo,
+    ours: true,
+    name: "SC Cambuur",
+  };
   const them = match
-    ? { label: abbrev(match.opponent), logo: null as string | null, ours: false, name: match.opponent }
+    ? {
+        label: match.opponentAbbr,
+        logo: match.opponentLogo,
+        ours: false,
+        name: match.opponent,
+      }
     : null;
   const left = match && them ? (match.home ? us : them) : null;
   const right = match && them ? (match.home ? them : us) : null;
@@ -109,13 +89,13 @@ function MatchCard({
       {match && left && right ? (
         <>
           <div className="mt-3 flex items-center justify-between gap-3" dir="ltr">
-            <Crest label={left.label} logo={left.logo} ours={left.ours} />
+            <ClubCrest abbr={left.label} logo={left.logo} ours={left.ours} />
             {score ? (
               <span className="text-[28px] leading-none font-black tabular-nums text-white">{score}</span>
             ) : (
               <span className="text-xs font-semibold text-white/60">vs</span>
             )}
-            <Crest label={right.label} logo={right.logo} ours={right.ours} />
+            <ClubCrest abbr={right.label} logo={right.logo} ours={right.ours} />
           </div>
           <p className="mt-3 text-[15px] font-extrabold text-white" dir="ltr">
             {left.name} – {right.name}
