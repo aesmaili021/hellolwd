@@ -1,7 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { LineIcon, type LineIconName } from "@/components/LineIcon";
 import { Link, usePathname } from "@/i18n/navigation";
+
+const ICONS = {
+  news: "newspaper",
+  events: "calendar",
+  cambuur: "ball",
+  guide: "compass",
+} as const satisfies Record<string, LineIconName>;
 
 export function MobileTabBar() {
   const t = useTranslations("nav");
@@ -44,26 +52,18 @@ function Tab({
   href: "/" | "/events" | "/cambuur" | "/guide";
   current: boolean;
   label: string;
-  icon: "news" | "events" | "cambuur" | "guide";
+  icon: keyof typeof ICONS;
 }) {
-  const glyph =
-    icon === "news" ? "📰" : icon === "events" ? "📅" : icon === "cambuur" ? "⚽" : "🧭";
   return (
     <Link
       href={href}
       aria-current={current ? "page" : undefined}
-      className="flex min-h-12 flex-1 cursor-pointer flex-col items-center justify-center gap-1 py-3"
+      className={`flex min-h-12 flex-1 cursor-pointer flex-col items-center justify-center gap-1 py-3 ${
+        current ? "text-navy" : "text-mute"
+      }`}
     >
-      <span className="emoji text-[17px] leading-none" aria-hidden>
-        {glyph}
-      </span>
-      <span
-        className={`text-[11px] ${
-          current ? "font-extrabold text-navy" : "font-semibold text-mute"
-        }`}
-      >
-        {label}
-      </span>
+      <LineIcon name={ICONS[icon]} className="h-6 w-6" />
+      <span className={`text-[11px] ${current ? "font-bold" : "font-semibold"}`}>{label}</span>
     </Link>
   );
 }

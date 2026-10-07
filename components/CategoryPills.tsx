@@ -1,15 +1,16 @@
 import { getTranslations } from "next-intl/server";
+import { LineIcon, type LineIconName } from "@/components/LineIcon";
 import { Link } from "@/i18n/navigation";
 import { NEWS_CATEGORIES, type NewsCategory } from "@/lib/types";
 
-const MARK: Record<NewsCategory, string> = {
-  politics: "🏛️",
-  infrastructure: "🚧",
-  culture: "🎭",
-  business: "💼",
-  safety: "🚨",
-  education: "🎓",
-  sports: "⚽",
+const MARK: Record<NewsCategory, LineIconName> = {
+  politics: "landmark",
+  infrastructure: "cone",
+  culture: "drama",
+  business: "briefcase",
+  safety: "siren",
+  education: "cap",
+  sports: "ball",
 };
 
 export async function CategoryPills({
@@ -66,7 +67,7 @@ function Chip({
   href: { pathname: "/" | "/archive"; query?: { cat: string } };
   active: boolean;
   label: string;
-  mark?: string;
+  mark?: LineIconName;
   danger?: boolean;
 }) {
   return (
@@ -81,13 +82,9 @@ function Chip({
           : "bg-wash font-semibold text-ink hover:text-navy"
       }`}
     >
-      {mark ? (
-        <span className="emoji me-1.5" dir="ltr" aria-hidden>
-          {mark}
-        </span>
-      ) : null}
+      {mark ? <LineIcon name={mark} className="me-1.5 h-4 w-4 shrink-0" /> : null}
       {label}
-      {active && danger ? <span className="ms-1.5" aria-hidden>✕</span> : null}
+      {active && danger ? <LineIcon name="x" className="ms-1.5 h-3.5 w-3.5 shrink-0" /> : null}
     </Link>
   );
 }

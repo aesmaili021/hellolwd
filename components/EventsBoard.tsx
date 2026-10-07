@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { LineIcon } from "@/components/LineIcon";
 import { readSavedEventIds, SAVED_EVENTS_KEY } from "@/lib/saved-events";
 
 const SYNC = "hellolwd-saved-events";
@@ -79,11 +80,7 @@ export function EventsBoard({
                   {saved.length}
                 </span>
               ) : null}
-              {savedOnly ? (
-                <span className="ms-1.5" aria-hidden>
-                  ✕
-                </span>
-              ) : null}
+              {savedOnly ? <LineIcon name="x" className="ms-1.5 h-3.5 w-3.5 shrink-0" /> : null}
             </button>
           </li>
         </ul>

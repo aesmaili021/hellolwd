@@ -60,10 +60,6 @@ html[dir="rtl"] body {
   font-family: var(--font-arabic), var(--font-latin), ui-sans-serif, system-ui, sans-serif;
 }
 
-.emoji {
-  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
-}
-
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
