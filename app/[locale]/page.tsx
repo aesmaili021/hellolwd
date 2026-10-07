@@ -4,11 +4,14 @@ import { BriefingRow, FeaturedStory, FilterRow } from "@/components/ArticleCard"
 import { Link } from "@/i18n/navigation";
 import { CategoryPills } from "@/components/CategoryPills";
 import { EmptyFilter } from "@/components/EmptyStates";
-import { BusinessCta } from "@/components/BusinessCta";
+import { CambuurBoard } from "@/components/CambuurBoard";
+import { HomePromos } from "@/components/HomePromos";
+import { NewcomerGuides } from "@/components/NewcomerGuides";
+import { NewsletterBlock } from "@/components/NewsletterBlock";
 import { TodayStrip } from "@/components/TodayStrip";
 import { WeekendHeroSection } from "@/components/WeekendHero";
 import { JsonLd } from "@/components/JsonLd";
-import { NewsSkeleton, TodaySkeleton, WeekendSlotSkeleton } from "@/components/Skeletons";
+import { CambuurSkeleton, NewsSkeleton, TodaySkeleton, WeekendSlotSkeleton } from "@/components/Skeletons";
 import { getArchivedArticles, getRecentArticles } from "@/lib/data/articles";
 import { homeGraph } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -103,23 +106,31 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
             archiveHref={archived.length ? `/archive?cat=${category}` : undefined}
           />
         )
-      ) : featured ? (
+      ) : (
         <>
-          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-9">
-            <FeaturedStory article={featured} />
-            {briefing.length > 0 ? (
-              <aside aria-label={t("briefing")}>
-                <p className="mb-0 hidden border-b-2 border-brand pb-3 text-xs font-extrabold tracking-[0.12em] text-mute uppercase lg:block">
-                  {t("briefing")}
-                </p>
-                <div className="flex flex-col">
-                  {briefing.map((article) => (
-                    <BriefingRow key={article.id} article={article} />
-                  ))}
-                </div>
-              </aside>
-            ) : null}
-          </div>
+          {featured ? (
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-9">
+              <FeaturedStory article={featured} />
+              {briefing.length > 0 ? (
+                <aside aria-label={t("briefing")}>
+                  <p className="mb-0 hidden border-b-2 border-brand pb-3 text-xs font-extrabold tracking-[0.12em] text-mute uppercase lg:block">
+                    {t("briefing")}
+                  </p>
+                  <div className="flex flex-col">
+                    {briefing.map((article) => (
+                      <BriefingRow key={article.id} article={article} />
+                    ))}
+                  </div>
+                </aside>
+              ) : null}
+            </div>
+          ) : archived.length ? null : (
+            <p className="text-ink">{t("empty")}</p>
+          )}
+          <Suspense fallback={<CambuurSkeleton />}>
+            <CambuurBoard pageLink newsLimit={3} />
+          </Suspense>
+          <NewcomerGuides />
           {more.length > 0 ? (
             <section className="mt-10 lg:mt-14" aria-label={t("more")}>
               <p className="mb-1 border-b-2 border-brand pb-3 text-xs font-extrabold tracking-[0.12em] text-mute uppercase">
@@ -139,15 +150,8 @@ async function HomeNews({ category }: { category?: NewsCategory }) {
               </Link>
             </p>
           ) : null}
+          <NewsletterBlock />
         </>
-      ) : archived.length ? (
-        <p className="mt-10">
-          <Link href="/archive" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
-            {t("olderStories")} →
-          </Link>
-        </p>
-      ) : (
-        <p className="mt-10 text-ink">{t("empty")}</p>
       )}
     </main>
   );
@@ -184,7 +188,7 @@ export default async function HomePage({
       <Suspense fallback={<NewsSkeleton filtered={Boolean(category)} />}>
         <HomeNews category={category} />
       </Suspense>
-      <BusinessCta />
+      <HomePromos />
     </>
   );
 }

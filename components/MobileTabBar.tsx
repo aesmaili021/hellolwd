@@ -20,10 +20,16 @@ export function MobileTabBar() {
         icon="events"
       />
       <Tab
-        href="/about"
-        current={pathname.startsWith("/about")}
-        label={t("about")}
-        icon="about"
+        href="/cambuur"
+        current={pathname.startsWith("/cambuur")}
+        label={t("cambuur")}
+        icon="cambuur"
+      />
+      <Tab
+        href="/guide"
+        current={pathname.startsWith("/guide")}
+        label={t("guide")}
+        icon="guide"
       />
     </nav>
   );
@@ -35,19 +41,21 @@ function Tab({
   label,
   icon,
 }: {
-  href: "/" | "/events" | "/about";
+  href: "/" | "/events" | "/cambuur" | "/guide";
   current: boolean;
   label: string;
-  icon: "news" | "events" | "about";
+  icon: "news" | "events" | "cambuur" | "guide";
 }) {
+  const glyph =
+    icon === "news" ? "📰" : icon === "events" ? "📅" : icon === "cambuur" ? "⚽" : "🧭";
   return (
     <Link
       href={href}
       aria-current={current ? "page" : undefined}
       className="flex min-h-12 flex-1 cursor-pointer flex-col items-center justify-center gap-1 py-3"
     >
-      <span className="text-[17px] leading-none" aria-hidden>
-        {icon === "news" ? "📰" : icon === "events" ? "🎧" : "ℹ️"}
+      <span className="emoji text-[17px] leading-none" aria-hidden>
+        {glyph}
       </span>
       <span
         className={`text-[11px] ${

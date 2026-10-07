@@ -2,9 +2,31 @@ import { getTranslations } from "next-intl/server";
 
 const MAIL = "info@hellolwd.com";
 
-export async function BusinessCta() {
+export async function BusinessCta({ variant = "band" }: { variant?: "band" | "card" } = {}) {
   const t = await getTranslations("business");
   const href = `mailto:${MAIL}?subject=${encodeURIComponent(t("subject"))}`;
+
+  if (variant === "card") {
+    return (
+      <div className="flex h-full flex-col justify-between gap-5 rounded-[14px] border border-line bg-mist px-5 py-6 lg:px-6">
+        <div>
+          <p className="mb-2 text-[11px] font-extrabold tracking-[0.14em] text-accent uppercase">
+            {t("kicker")}
+          </p>
+          <h2 className="text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-balance text-navy lg:text-[28px]">
+            {t("title")}
+          </h2>
+          <p className="mt-3 text-[15px] leading-relaxed text-pretty text-ink">{t("body")}</p>
+        </div>
+        <a
+          href={href}
+          className="inline-flex min-h-12 w-fit shrink-0 cursor-pointer items-center rounded-full bg-accent px-6 text-[15px] font-extrabold text-paper hover:bg-navy"
+        >
+          {t("cta")}
+        </a>
+      </div>
+    );
+  }
 
   return (
     <section

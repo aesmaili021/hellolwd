@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 
 const btn =
@@ -8,13 +8,13 @@ const btn =
 
 export function ArticleShare({ url, title }: { url: string; title: string }) {
   const t = useTranslations("article");
-  const [canShare, setCanShare] = useState(false);
+  const canShare = useSyncExternalStore(
+    () => () => {},
+    () => typeof navigator.share === "function",
+    () => false,
+  );
   const [copied, setCopied] = useState(false);
   const message = `${title}\n${url}`;
-
-  useEffect(() => {
-    setCanShare(typeof navigator !== "undefined" && typeof navigator.share === "function");
-  }, []);
 
   async function shareNative() {
     try {

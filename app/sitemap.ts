@@ -6,14 +6,14 @@ import { articleHasTranslation } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-const STATIC_PATHS = ["/", "/events", "/about", "/guide", "/archive", "/privacy", "/cookies"] as const;
+const STATIC_PATHS = ["/", "/events", "/cambuur", "/about", "/guide", "/archive", "/privacy", "/cookies"] as const;
 
 function entry(path: string, lastModified?: string): MetadataRoute.Sitemap[number] {
   return {
     url: localeUrl("en", path),
     lastModified: lastModified ? new Date(lastModified) : new Date(),
-    changeFrequency: path === "/" ? "hourly" : path === "/events" ? "daily" : "monthly",
-    priority: path === "/" ? 1 : path === "/events" ? 0.8 : 0.5,
+    changeFrequency: path === "/" ? "hourly" : path === "/events" || path === "/cambuur" ? "daily" : "monthly",
+    priority: path === "/" ? 1 : path === "/events" || path === "/cambuur" ? 0.8 : 0.5,
     alternates: {
       languages: languageAlternates(path),
     },

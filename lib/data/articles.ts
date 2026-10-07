@@ -52,3 +52,39 @@ export async function getArticle(id: string, locale?: string): Promise<Article |
   if (locale && !articleVisible(article, locale)) return null;
   return article;
 }
+
+const CAMBUUR_NAME = /cambuur|کامبور/i;
+
+export function articleMentionsCambuur(article: Article) {
+  const fields = [
+    article.title_nl,
+    article.title_en,
+    article.title_es,
+    article.title_fa,
+    article.summary_nl,
+    article.summary_en,
+    article.summary_es,
+    article.summary_fa,
+    article.body_nl,
+    article.body_en,
+    article.body_es,
+    article.body_fa,
+  ];
+  return fields.some((value) => Boolean(value && CAMBUUR_NAME.test(value)));
+}
+
+/** Sports rows that actually name the club, newest first. */
+export async function getCambuurArticles(locale?: string, limit?: number): Promise<Article[]> {
+  const rows = (await getArticles("sports", locale)).filter(articleMentionsCambuur);
+  return typeof limit === "number" ? rows.slice(0, limit) : rows;
+}
+
+/** Same category, newer first, excluding the story already on screen. */
+export async function getRelatedArticles(
+  article: Article,
+  locale?: string,
+  limit = 4,
+): Promise<Article[]> {
+  const rows = await getArticles(article.category, locale);
+  return rows.filter((row) => row.id !== article.id).slice(0, limit);
+}
