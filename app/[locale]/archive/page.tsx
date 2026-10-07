@@ -1,11 +1,15 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { redirect } from "next/navigation";
 import { FilterRow } from "@/components/ArticleCard";
 import { CategoryPills } from "@/components/CategoryPills";
 import { JsonLd } from "@/components/JsonLd";
+import { StoryPager } from "@/components/StoryPager";
 import { Link } from "@/i18n/navigation";
 import { getArchivedArticles } from "@/lib/data/articles";
 import { formatArchiveMonth } from "@/lib/format";
-import { localeUrl, pageMetadata } from "@/lib/seo";
+import { localeTag } from "@/i18n/routing";
+import { localePath, localeUrl, pageMetadata } from "@/lib/seo";
+import { parseStoryPage, storyListPath, storyPageCount, storyPageSlice } from "@/lib/story-page";
 import { NEWS_CATEGORIES, type Article, type NewsCategory } from "@/lib/types";
 
 function monthKey(iso: string) {
@@ -32,31 +36,38 @@ export async function generateMetadata({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ cat?: string }>;
+  searchParams: Promise<{ cat?: string; page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
-  const { cat } = await searchParams;
+  const { cat, page: pageParam } = await searchParams;
   const category =
     cat && (NEWS_CATEGORIES as readonly string[]).includes(cat)
       ? (cat as NewsCategory)
       : undefined;
+  const page = parseStoryPage(pageParam);
   const t = await getTranslations("archive");
+  const article = await getTranslations("article");
   const seo = await getTranslations("seo");
   const categories = await getTranslations("categories");
+  const path = storyListPath(category, page, "/archive");
+  const pageSuffix =
+    page > 1
+      ? ` — ${article("pageLabel", { page: new Intl.NumberFormat(localeTag(locale)).format(page) })}`
+      : "";
   if (category) {
     const label = categories(category);
     return pageMetadata({
       locale,
-      path: `/archive?cat=${category}`,
-      title: t("categoryTitle", { category: label }),
+      path,
+      title: `${t("categoryTitle", { category: label })}${pageSuffix}`,
       description: seo("archiveDescription"),
     });
   }
   return pageMetadata({
     locale,
-    path: "/archive",
-    title: t("title"),
+    path,
+    title: `${t("title")}${pageSuffix}`,
     description: seo("archiveDescription"),
   });
 }
@@ -66,18 +77,24 @@ export default async function ArchivePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ cat?: string }>;
+  searchParams: Promise<{ cat?: string; page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
-  const { cat } = await searchParams;
+  const { cat, page: pageParam } = await searchParams;
   const category =
     cat && (NEWS_CATEGORIES as readonly string[]).includes(cat)
       ? (cat as NewsCategory)
       : undefined;
+  const page = parseStoryPage(pageParam);
   const currentLocale = await getLocale();
   const articles = await getArchivedArticles(category, currentLocale);
-  const groups = groupByMonth(articles, currentLocale);
+  const totalPages = articles.length ? storyPageCount(articles.length) : 1;
+  if (page > totalPages) {
+    redirect(localePath(locale, storyListPath(category, articles.length ? totalPages : 1, "/archive")));
+  }
+  const visible = storyPageSlice(articles, page);
+  const groups = groupByMonth(visible, currentLocale);
   const t = await getTranslations("archive");
   const categories = await getTranslations("categories");
 
@@ -130,6 +147,7 @@ export default async function ArchivePage({
               </div>
             </section>
           ))}
+          <StoryPager page={page} totalPages={totalPages} category={category} base="/archive" />
         </div>
       ) : (
         <div className="mt-6 max-w-[52ch]">

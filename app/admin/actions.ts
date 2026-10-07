@@ -172,6 +172,7 @@ export async function saveEventAction(form: FormData) {
     description_en: optional(form, "description_en"),
     description_es: optional(form, "description_es"),
     description_fa: optional(form, "description_fa"),
+    featured: form.get("featured") === "on",
   });
   if (!event.name || !event.venue) redirect("/admin/events/new?error=1");
 

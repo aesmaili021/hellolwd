@@ -110,6 +110,7 @@ alter table articles add column if not exists body_en text;
 alter table articles add column if not exists body_es text;
 alter table articles add column if not exists body_fa text;
 alter table events add column if not exists maps_url text;
+alter table events add column if not exists featured boolean not null default false;
 `;
 
 function iso(value: unknown) {
@@ -174,6 +175,7 @@ function mapEvent(row: Record<string, unknown>): EventRow {
     description_en: (row.description_en as string | null) ?? null,
     description_es: (row.description_es as string | null) ?? null,
     description_fa: (row.description_fa as string | null) ?? null,
+    featured: row.featured === true,
     created_at: iso(row.created_at),
   });
 }
@@ -233,9 +235,9 @@ async function insertStore(client: PoolClient, data: StoreData) {
     await client.query(
       `insert into events (
         id, name, venue, event_datetime, genre, ticket_link, maps_url, image_url,
-        description_nl, description_en, description_es, description_fa, created_at
+        description_nl, description_en, description_es, description_fa, featured, created_at
       ) values (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14
       )`,
       [
         row.id,
@@ -250,6 +252,7 @@ async function insertStore(client: PoolClient, data: StoreData) {
         row.description_en,
         row.description_es,
         row.description_fa,
+        row.featured,
         row.created_at,
       ],
     );

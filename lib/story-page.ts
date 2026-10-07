@@ -17,13 +17,14 @@ export function storyPageSlice<T>(items: T[], page: number) {
   return items.slice(start, start + STORY_PAGE_SIZE);
 }
 
-/** Shareable home URL. Page 1 omits `page` so it matches the bare homepage. */
-export function storyListPath(category?: string, page = 1) {
+/** Shareable list URL. Page 1 omits `page`. `base` is `/` or `/archive`. */
+export function storyListPath(category?: string, page = 1, base: "/" | "/archive" = "/") {
   const params = new URLSearchParams();
   if (category) params.set("cat", category);
   if (page > 1) params.set("page", String(page));
   const query = params.toString();
-  return query ? `/?${query}` : "/";
+  if (base === "/") return query ? `/?${query}` : "/";
+  return query ? `${base}?${query}` : base;
 }
 
 /** Numbered pages, with gaps when the list is long. */

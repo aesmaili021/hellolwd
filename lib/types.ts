@@ -63,6 +63,7 @@ export type EventRow = {
   description_en: string | null;
   description_es: string | null;
   description_fa: string | null;
+  featured: boolean;
   created_at: string;
 };
 
@@ -249,6 +250,7 @@ export function normalizeEvent(row: Partial<EventRow> & { id: string }): EventRo
     description_en: row.description_en ?? null,
     description_es: row.description_es ?? null,
     description_fa: row.description_fa ?? null,
+    featured: row.featured === true,
     created_at: row.created_at ?? new Date().toISOString(),
   };
 }
