@@ -44,7 +44,7 @@ export default async function AboutPage({
       <p className="mt-5 max-w-[62ch] text-base leading-7 text-ink">{t("body")}</p>
       <p className="mt-4 max-w-[62ch] text-base leading-7 text-ink">{t("more")}</p>
       <Link
-        href="/guide"
+        href="/guide#first-month"
         className="mt-8 inline-flex min-h-11 cursor-pointer items-center rounded-full bg-ice px-4 text-[13px] font-extrabold text-navy hover:bg-wash"
       >
         {t("guideCta")} →

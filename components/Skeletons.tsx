@@ -149,6 +149,14 @@ export function ArticleSkeleton() {
   );
 }
 
+export function CambuurSkeleton() {
+  return (
+    <div className="mt-10 lg:mt-14" aria-hidden>
+      <div className="shimmer h-52 rounded-[14px] bg-brand/80 lg:h-44" />
+    </div>
+  );
+}
+
 export function EventsSkeleton() {
   return (
     <main

@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 function currentTheme() {
-  if (typeof document === "undefined") return "light";
   return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
-export function ThemeToggle({ label }: { label: string }) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+function subscribe(onStoreChange: () => void) {
+  const observer = new MutationObserver(onStoreChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+}
 
-  useEffect(() => {
-    setTheme(currentTheme());
-  }, []);
+export function ThemeToggle({ label }: { label: string }) {
+  const theme = useSyncExternalStore(subscribe, currentTheme, () => "light" as const);
 
   return (
     <button
@@ -24,7 +25,6 @@ export function ThemeToggle({ label }: { label: string }) {
         document.documentElement.dataset.theme = next;
         localStorage.setItem("theme", next);
         document.cookie = `theme=${next};path=/;max-age=31536000;samesite=lax`;
-        setTheme(next);
       }}
       className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-wash text-navy transition-colors duration-200 ease-out hover:text-primary"
     >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function ImageField({
   currentUrl,
@@ -8,10 +8,11 @@ export function ImageField({
   currentUrl?: string | null;
 }) {
   const [preview, setPreview] = useState(currentUrl ?? "");
-
-  useEffect(() => {
+  const [seenUrl, setSeenUrl] = useState(currentUrl);
+  if (currentUrl !== seenUrl) {
+    setSeenUrl(currentUrl);
     setPreview(currentUrl ?? "");
-  }, [currentUrl]);
+  }
 
   return (
     <div className="sm:col-span-2">

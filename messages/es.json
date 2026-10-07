@@ -11,10 +11,11 @@
     "eventsTitle": "Noches de fin de semana en Leeuwarden",
     "eventsDescription": "Fiestas, clubes y música en vivo en Leeuwarden este fin de semana. Para internacionales.",
     "aboutDescription": "HelloLWD lo lanzaron estudiantes de NHL Stenden en el verano de 2026. Noticias, eventos y noches en Leeuwarden.",
-    "guideDescription": "Primer mes en Leeuwarden: BSN, DigiD, cubos y médico. Para quien acaba de llegar.",
+    "guideDescription": "Guías para recién llegados a Leeuwarden. Primer mes revisado: BSN, DigiD, cubos y médico de cabecera. La noche apunta a la lista del fin de semana. Habitación y comida barata quedan vacías hasta que los datos estén comprobados.",
     "privacyDescription": "Cómo HelloLWD trata datos, cookies y el contacto en info@hellolwd.com.",
     "cookiesDescription": "Cookies de HelloLWD: tema, login opcional de edición y Google Analytics para el tráfico.",
-    "archiveDescription": "Las notas antiguas de Leeuwarden se quedan aquí. La portada muestra dos semanas; cada enlace sigue vivo."
+    "archiveDescription": "Las notas antiguas de Leeuwarden se quedan aquí. La portada muestra dos semanas; cada enlace sigue vivo.",
+    "cambuurDescription": "Próximo partido del SC Cambuur, último resultado de Eredivisie y puesto en la tabla, más las noticias de deporte que mencionan al club."
   },
   "nav": {
     "skip": "Saltar al contenido",
@@ -24,7 +25,9 @@
     "tabs": "Principal",
     "language": "Idioma",
     "theme": "Tema oscuro",
-    "loading": "Cargando"
+    "loading": "Cargando",
+    "cambuur": "Cambuur",
+    "guide": "Guía"
   },
   "filters": {
     "all": "Todo",
@@ -71,7 +74,8 @@
     "langEn": "inglés",
     "langEs": "español",
     "langFa": "persa",
-    "langNl": "neerlandés"
+    "langNl": "neerlandés",
+    "related": "Noticias relacionadas"
   },
   "events": {
     "title": "Eventos del fin de semana",
@@ -147,6 +151,23 @@
     "note": "Somos una redacción de estudiantes, no el ayuntamiento. Si en el mostrador te dicen otra cosa, ellos tienen razón.",
     "back": "Sobre HelloLWD"
   },
+  "guides": {
+    "title": "Guías para recién llegados",
+    "intro": "Guías cortas para tus primeras semanas en Leeuwarden. Las páginas del primer mes siguen los pasos del ayuntamiento. Las otras tres solo repiten lo que HelloLWD ya publica, o dicen con claridad que la lista aún no está escrita.",
+    "nightlifeTitle": "Guía de noche",
+    "nightlifeBlurb": "Bares, clubs y sitios de madrugada",
+    "nightlifeBody": "La lista del fin de semana es, por ahora, la guía de noche. Fiestas, clubs y música en vivo, actualizada el jueves a las 18:00. No publicamos horarios ni precios de copas.",
+    "roomsLabel": "Salas que ya están en la redacción del fin de semana",
+    "weekendCta": "Ver este fin de semana",
+    "roomTitle": "Encontrar habitación",
+    "roomBlurb": "Sitios, precios, estafas",
+    "roomBody": "Una guía revisada de habitaciones, webs y estafas todavía no está escrita. Solo nombraremos un sitio o un precio cuando lo hayamos comprobado. Hasta entonces esta página no recomienda casero ni alquiler.",
+    "firstMonthTitle": "Primer mes",
+    "firstMonthBlurb": "BSN, DigiD, médico",
+    "eatsTitle": "Comer barato",
+    "eatsBlurb": "Buena comida por menos de 12 €",
+    "eatsBody": "Una lista revisada de comidas baratas todavía no está escrita. Esta página no nombra restaurantes ni precios — tampoco nada “por menos de 12 €” — hasta que lo hayamos comprobado nosotros."
+  },
   "archive": {
     "kicker": "Archivo de noticias",
     "title": "Noticias anteriores",
@@ -171,7 +192,9 @@
     "archive": "Archivo",
     "guide": "Primer mes",
     "legal": "Legal",
-    "sources": "Fuentes"
+    "sources": "Fuentes",
+    "about": "Acerca de",
+    "cambuur": "Cambuur"
   },
   "privacy": {
     "title": "Política de privacidad",
@@ -272,6 +295,27 @@
       "relegation": "Zona de descenso",
       "playoff": "Play-off de descenso",
       "mid": "Eredivisie"
+    },
+    "league": "Eredivisie",
+    "nextMatch": "Próximo partido",
+    "lastResult": "Último resultado",
+    "news": "Noticias del SC Cambuur",
+    "pageLink": "Todas las noticias de Cambuur",
+    "pageTitle": "SC Cambuur",
+    "pageIntro": "Próximo partido, último resultado y puesto en la tabla, más las noticias de deporte que mencionan a Cambuur. Los marcadores y la tabla salen del feed de la Eredivisie.",
+    "position": "Cambuur {place}",
+    "emptyNext": "Ahora mismo no hay un próximo partido en la lista.",
+    "emptyLast": "Todavía no hay un resultado reciente en la lista.",
+    "emptyNews": "Aún no hay noticias de deporte que mencionen a Cambuur en este idioma.",
+    "scoresUnavailable": "Los marcadores no están disponibles ahora.",
+    "colRank": "#",
+    "colPlayed": "PJ",
+    "colGd": "DG",
+    "colPoints": "Pts",
+    "result": {
+      "W": "Victoria",
+      "D": "Empate",
+      "L": "Derrota"
     }
   },
   "categories": {
@@ -297,6 +341,27 @@
     "body": "Seguimos en fase de prueba. ¿Café, tienda, salón o local en la ciudad? Te ponemos frente a los internacionales que ya leen este briefing — sin factura.",
     "cta": "Escribe a info@hellolwd.com",
     "subject": "Anuncio gratis en HelloLWD"
+  },
+  "newsletter": {
+    "label": "Boletín",
+    "kicker": "Gratis · cada jueves",
+    "title": "Leeuwarden weekly en inglés",
+    "body": "Las noticias de la semana y los planes del fin de semana en un correo de 3 minutos.",
+    "email": "Correo electrónico",
+    "placeholder": "tu@email.com",
+    "subscribe": "Suscribirme",
+    "notOpen": "La suscripción aún no está abierta. Esta dirección no se guarda."
+  },
+  "places": {
+    "title": "Lugares destacados",
+    "sample": "Ejemplo",
+    "featured": "Destacado",
+    "barTitle": "Tu bar aquí",
+    "barBody": "Noches de estudiantes, ofertas",
+    "restaurantTitle": "Tu restaurante aquí",
+    "restaurantBody": "Carta y ofertas",
+    "shopTitle": "Tu negocio aquí",
+    "shopBody": "Servicios locales"
   },
   "locales": {
     "nl": "NL",
