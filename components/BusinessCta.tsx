@@ -21,6 +21,7 @@ export async function BusinessCta() {
             {t("title")}
           </h2>
           <p className="mt-3 max-w-[42ch] text-[15px] leading-relaxed text-white/80">{t("line")}</p>
+          <p className="mt-1 max-w-[42ch] text-[15px] leading-relaxed text-white/80">{t("whatsapp")}</p>
         </div>
         <Link
           href="/advertise"

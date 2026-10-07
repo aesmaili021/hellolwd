@@ -228,7 +228,14 @@
     "sources": "Fuentes",
     "about": "Acerca de",
     "advertise": "Anúnciate",
-    "cambuur": "Cambuur"
+    "cambuur": "Cambuur",
+    "whatsapp": "WhatsApp"
+  },
+  "whatsapp": {
+    "strip": "Noticias de Leeuwarden en WhatsApp",
+    "follow": "Seguir",
+    "dismiss": "Cerrar",
+    "article": "HelloLWD en WhatsApp — el tiempo por la mañana y las noticias principales, cada día a las 8:30"
   },
   "privacy": {
     "title": "Política de privacidad",
@@ -375,6 +382,7 @@
     "statLabel": "lectores al mes",
     "title": "Tu local, delante de Leeuwarden",
     "line": "Más de 300 personas leyeron HelloLWD el mes pasado.",
+    "whatsapp": "El briefing de la mañana también va por WhatsApp.",
     "cta": "Ver los paquetes"
   },
   "ads": {
@@ -390,6 +398,17 @@
     "factWho": "Internacionales, estudiantes y gente local.",
     "packagesTitle": "Paquetes",
     "founding": "Socio fundador: los primeros 3 meses al 50% para los primeros socios.",
+    "waNew": "Nuevo",
+    "waTitle": "Acabamos de abrir nuestro canal de WhatsApp — cada paquete incluye ahora una mención en el canal",
+    "waFeatured": "Destacado: mención mensual",
+    "waSponsored": "Artículo patrocinado: compartido en el canal",
+    "waWeek": "Patrocinador de la semana: mencionado en las publicaciones de esa semana",
+    "waMatch": "Partido de Cambuur: en el mensaje del día del partido",
+    "waFreeBullet": "Una mención en el canal de WhatsApp.",
+    "waFeaturedBullet": "Mención mensual en el canal de WhatsApp.",
+    "waSponsoredBullet": "Compartido en el canal de WhatsApp.",
+    "waWeekBullet": "Mencionado en las publicaciones de WhatsApp de esa semana.",
+    "waMatchBullet": "En el mensaje de WhatsApp del día del partido.",
     "freeName": "Anuncio gratis",
     "freePrice": "€0",
     "freeBody": "Tu nombre, a qué te dedicas y un enlace. Lo añadimos cuando hay sitio.",

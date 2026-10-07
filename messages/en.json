@@ -228,7 +228,14 @@
     "cambuur": "Cambuur",
     "guide": "First month",
     "legal": "Legal",
-    "sources": "Sources"
+    "sources": "Sources",
+    "whatsapp": "WhatsApp"
+  },
+  "whatsapp": {
+    "strip": "Get Leeuwarden news on WhatsApp",
+    "follow": "Follow",
+    "dismiss": "Dismiss",
+    "article": "Get HelloLWD on WhatsApp — morning weather + top news, daily at 8:30"
   },
   "privacy": {
     "title": "Privacy policy",
@@ -375,6 +382,7 @@
     "statLabel": "readers a month",
     "title": "Your place, in front of Leeuwarden",
     "line": "Over 300 people read HelloLWD last month.",
+    "whatsapp": "The morning briefing is on WhatsApp too.",
     "cta": "See the packages"
   },
   "ads": {
@@ -390,6 +398,17 @@
     "factWho": "Internationals, students, and locals.",
     "packagesTitle": "Packages",
     "founding": "Founding partner: the first 3 months are 50% off for early partners.",
+    "waNew": "New",
+    "waTitle": "We just launched our WhatsApp channel — every package now includes a mention in our WhatsApp channel",
+    "waFeatured": "Featured: monthly mention",
+    "waSponsored": "Sponsored article: shared in channel",
+    "waWeek": "Sponsor of the week: mentioned in that week's posts",
+    "waMatch": "Cambuur matchday: in the matchday message",
+    "waFreeBullet": "A mention in the WhatsApp channel.",
+    "waFeaturedBullet": "Monthly mention in the WhatsApp channel.",
+    "waSponsoredBullet": "Shared in the WhatsApp channel.",
+    "waWeekBullet": "Mentioned in that week's WhatsApp posts.",
+    "waMatchBullet": "In the matchday WhatsApp message.",
     "freeName": "Free listing",
     "freePrice": "€0",
     "freeBody": "Your name, what you do, and a link. We add it when there is room.",

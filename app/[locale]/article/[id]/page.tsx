@@ -6,6 +6,7 @@ import { getArticle } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
 import { RelatedStories } from "@/components/RelatedStories";
+import { WhatsAppArticle } from "@/components/WhatsApp";
 import { ArticleShare } from "@/components/ArticleShare";
 import { ArticleTranslation } from "@/components/ArticleTranslation";
 import { JsonLd } from "@/components/JsonLd";
@@ -129,6 +130,7 @@ export default async function ArticlePage({
         {t("readAt", { source: article.source_name })} ↗
       </a>
       <RelatedStories article={article} />
+      <WhatsAppArticle />
     </main>
   );
 }
