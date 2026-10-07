@@ -16,7 +16,8 @@
     "privacyDescription": "How HelloLWD handles data, cookies and contact at info@hellolwd.com.",
     "cookiesDescription": "HelloLWD cookies: theme, optional editor login, and Google Analytics for site traffic.",
     "archiveDescription": "Older Leeuwarden stories stay here. Home shows the last two weeks; every article link stays live.",
-    "advertiseDescription": "Advertise on HelloLWD. 300+ readers a month in Leeuwarden. Listings from €0. Email info@hellolwd.com."
+    "advertiseDescription": "Advertise on HelloLWD. 300+ readers a month in Leeuwarden. Listings from €0. Email info@hellolwd.com.",
+    "placesDescription": "A free directory of cafés, cheap eats, bars, groceries, hairdressers, gyms and student shops in Leeuwarden. Addresses only from public sources."
   },
   "nav": {
     "skip": "Skip to content",
@@ -26,6 +27,7 @@
     "cambuur": "Cambuur",
     "guide": "Guide",
     "newcomers": "Newcomers",
+    "places": "Places",
     "tabs": "Primary",
     "language": "Language",
     "theme": "Toggle dark theme",
@@ -199,7 +201,9 @@
     "eatsMarketTitle": "The market",
     "eatsMarket": "The gemeente’s current stall page puts the Friday goods market on Wilhelminaplein, and the Saturday goods market on the Waagplein and the south side of the Nieuwestad. Wilhelminaplein is the Friday market, not the regular Saturday one. When the Saturday square is taken, the market moves to the Wirdumerdijk, the Ruiterskwartier, and sometimes Wilhelminaplein. There is no goods market on public holidays, King’s Day or Liberation Day. Clock times are not on that page, so we are not printing any.",
     "eatsMarketLink": "Gemeente Leeuwarden",
-    "eatsNoPrice": "If a price is not on the place’s own site, it is not on this page."
+    "eatsNoPrice": "If a price is not on the place’s own site, it is not on this page.",
+    "placesCta": "Shops, cafés, groceries and gyms are on a separate list.",
+    "placesLink": "Open the places directory"
   },
   "archive": {
     "kicker": "News archive",
@@ -225,6 +229,7 @@
     "archive": "Archive",
     "about": "About",
     "advertise": "Advertise",
+    "places": "Places",
     "cambuur": "Cambuur",
     "guide": "First month",
     "legal": "Legal",
@@ -436,7 +441,10 @@
     "faqMinQ": "Is there a minimum period?",
     "faqMinA": "No.",
     "faqCancelQ": "Can I cancel?",
-    "faqCancelA": "Yes. Email info@hellolwd.com and cancel anytime."
+    "faqCancelA": "Yes. Email info@hellolwd.com and cancel anytime.",
+    "claimTitle": "Claim {name}",
+    "claimBody": "Email us to say this listing is yours, or to ask about a featured badge. The free directory line stays free.",
+    "claimCta": "Email about this listing"
   },
   "newsletter": {
     "label": "Newsletter",
@@ -450,14 +458,32 @@
   },
   "places": {
     "title": "Featured places",
-    "sample": "Sample",
+    "homeAll": "All places",
     "featured": "Featured",
-    "barTitle": "Your bar here",
-    "barBody": "Student nights, offers",
-    "restaurantTitle": "Your restaurant here",
-    "restaurantBody": "Menu and deals",
-    "shopTitle": "Your shop here",
-    "shopBody": "Local services"
+    "kicker": "Places",
+    "pageTitle": "Places in Leeuwarden",
+    "intro": "A free directory of real Leeuwarden businesses. Addresses and links are only here when a public source publishes them.",
+    "search": "Search name or street",
+    "searchLabel": "Search places",
+    "searchSubmit": "Search",
+    "filters": "Categories",
+    "all": "All",
+    "count": "{count} places",
+    "empty": "No places match.",
+    "website": "Website",
+    "map": "Map",
+    "source": "Source",
+    "claim": "Is this your business? Claim it / Get featured",
+    "categoryTitle": "{category} in Leeuwarden",
+    "cat": {
+      "cafes": "Cafes",
+      "eats": "Cheap eats",
+      "bars": "Bars & nightlife",
+      "groceries": "International groceries",
+      "hair": "Hairdressers & barbers",
+      "sports": "Sports & gyms",
+      "student": "Student essentials"
+    }
   },
   "locales": {
     "nl": "NL",

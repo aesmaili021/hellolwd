@@ -1,0 +1,514 @@
+[
+  {
+    "slug": "de-walrus",
+    "name": "Grand Café De Walrus",
+    "category": "cafes",
+    "address": "Gouverneursplein 37, 8911 HH Leeuwarden",
+    "website": "https://www.dewalrus.nl/",
+    "email": "info@dewalrusleeuwarden.nl",
+    "description": {
+      "nl": "Grand café op het Gouverneursplein, voor koffie, lunch en diner.",
+      "en": "Grand café on Gouverneursplein, for coffee, lunch and dinner.",
+      "es": "Grand café en Gouverneursplein, para café, almuerzo y cena.",
+      "fa": "گرندکافه در گاورنورسپلاین، برای قهوه، ناهار و شام."
+    },
+    "source": "https://www.dewalrus.nl/",
+    "featured": false
+  },
+  {
+    "slug": "de-brass",
+    "name": "Grand Café De Brass",
+    "category": "cafes",
+    "address": "Nieuwestad 71, 8911 CK Leeuwarden",
+    "website": "https://www.de-brass.nl/",
+    "email": "info@de-brass.nl",
+    "description": {
+      "nl": "Grand café aan de Nieuwestad, open voor lunch, diner en een borrel.",
+      "en": "Grand café on the Nieuwestad, open for lunch, dinner and a drink.",
+      "es": "Grand café en Nieuwestad, abierto para almuerzo, cena y una copa.",
+      "fa": "گرندکافه در نیوه‌ستاد، برای ناهار، شام و یک نوشیدنی."
+    },
+    "source": "https://www.de-brass.nl/",
+    "featured": false
+  },
+  {
+    "slug": "dikke-van-dale",
+    "name": "De Dikke van Dale",
+    "category": "cafes",
+    "address": "Nieuwestad 69, 8911 CK Leeuwarden",
+    "website": "https://www.dedikkevandale.nl/",
+    "email": null,
+    "description": {
+      "nl": "Grand café aan de gracht op de Nieuwestad, met terras.",
+      "en": "Grand café on the Nieuwestad canal, with a terrace.",
+      "es": "Grand café junto al canal en Nieuwestad, con terraza.",
+      "fa": "گرندکافه کنار کانال در نیوه‌ستاد، با تراس."
+    },
+    "source": "https://www.dedikkevandale.nl/",
+    "featured": false
+  },
+  {
+    "slug": "bakery-cafe",
+    "name": "The Bakery Café",
+    "category": "cafes",
+    "address": "Nieuwestad 137, 8911 CR Leeuwarden",
+    "website": "https://www.thebakerycafes.nl/",
+    "email": null,
+    "description": {
+      "nl": "Ontbijt en lunch op de Nieuwestad.",
+      "en": "Breakfast and lunch on the Nieuwestad.",
+      "es": "Desayuno y almuerzo en Nieuwestad.",
+      "fa": "صبحانه و ناهار در نیوه‌ستاد."
+    },
+    "source": "https://www.thebakerycafes.nl/",
+    "featured": false
+  },
+  {
+    "slug": "de-cafe",
+    "name": "D.E Café",
+    "category": "cafes",
+    "address": "Ruiterskwartier 111, 8911 BR Leeuwarden",
+    "website": "https://www.de.nl/de-cafes/de-cafe-leeuwarden/",
+    "email": null,
+    "description": {
+      "nl": "Koffie, gebak en sandwiches. Douwe Egberts noemt Ruiterskwartier 111 als adres.",
+      "en": "Coffee, cake and sandwiches. Douwe Egberts lists Ruiterskwartier 111 as the address.",
+      "es": "Café, pastel y sándwiches. Douwe Egberts da Ruiterskwartier 111 como dirección.",
+      "fa": "قهوه، کیک و ساندویچ. Douwe Egberts نشانی را Ruiterskwartier 111 نوشته است."
+    },
+    "source": "https://www.de.nl/de-cafes/de-cafe-leeuwarden/",
+    "featured": false
+  },
+  {
+    "slug": "fer-koffie",
+    "name": "Fer Koffie",
+    "category": "cafes",
+    "address": "Wirdumerdijk 20, 8911 CD Leeuwarden",
+    "website": "https://ferkoffie.nl/",
+    "email": null,
+    "description": {
+      "nl": "Specialty-koffiebar aan de Wirdumerdijk.",
+      "en": "Specialty coffee bar on the Wirdumerdijk.",
+      "es": "Cafetería de specialty coffee en Wirdumerdijk.",
+      "fa": "کافه قهوه تخصصی در ویردومردیک."
+    },
+    "source": "https://www.ferkoffie.nl/offerte/",
+    "featured": false
+  },
+  {
+    "slug": "wannee",
+    "name": "Restaurant Wannee",
+    "category": "cafes",
+    "address": "Rengerslaan 8, 8917 DD Leeuwarden",
+    "website": "https://www.restaurantwannee.nl/",
+    "email": "info@restaurantwannee.nl",
+    "description": {
+      "nl": "Restaurant van de hotelschool aan de Rengerslaan: ontbijt, lunch en diner.",
+      "en": "Hotel-school restaurant on Rengerslaan: breakfast, lunch and dinner.",
+      "es": "Restaurante de la escuela de hostelería en Rengerslaan: desayuno, almuerzo y cena.",
+      "fa": "رستوران مدرسه هتلداری در رنخرسلان: صبحانه، ناهار و شام."
+    },
+    "source": "https://www.restaurantwannee.nl/",
+    "featured": false
+  },
+  {
+    "slug": "koperen-tuin",
+    "name": "De Koperen Tuin",
+    "category": "cafes",
+    "address": "Prinsentuin 1, 8911 DE Leeuwarden",
+    "website": "https://www.dekoperentuin.nl/contact/",
+    "email": "info@dekoperentuin.nl",
+    "description": {
+      "nl": "Grand café in de Prinsentuin, voor lunch en diner.",
+      "en": "Grand café in the Prinsentuin, for lunch and dinner.",
+      "es": "Grand café en el Prinsentuin, para almuerzo y cena.",
+      "fa": "گرندکافه در پرینسنتین، برای ناهار و شام."
+    },
+    "source": "https://www.dekoperentuin.nl/contact/",
+    "featured": false
+  },
+  {
+    "slug": "falafel-mouni",
+    "name": "Falafel Mouni",
+    "category": "eats",
+    "address": "Peperstraat 1, 8911 HZ Leeuwarden",
+    "website": "https://www.falafelmouni.nl/",
+    "email": null,
+    "description": {
+      "nl": "Falafel, kapsalon en patat. Afhalen en bezorgen vanuit de Peperstraat.",
+      "en": "Falafel, kapsalon and fries. Takeaway and delivery from Peperstraat.",
+      "es": "Falafel, kapsalon y patatas. Para llevar y a domicilio desde Peperstraat.",
+      "fa": "فلافل، کپسالون و سیب‌زمینی. بیرون‌بر و پیک از پیپرسترات."
+    },
+    "source": "https://www.falafelmouni.nl/",
+    "featured": false
+  },
+  {
+    "slug": "garden-of-asia",
+    "name": "Garden of Asia",
+    "category": "eats",
+    "address": "Voorstreek 51, 8911 JJ Leeuwarden",
+    "website": "https://gardenofasia.nl/",
+    "email": "info@gardenofasia.nl",
+    "description": {
+      "nl": "Chinees-Indisch restaurant aan de Voorstreek, ook afhalen.",
+      "en": "Chinese-Indonesian restaurant on the Voorstreek, with takeaway.",
+      "es": "Restaurante chino-indonesio en Voorstreek, también para llevar.",
+      "fa": "رستوران چینی-اندونزیایی در فورستریک، با بیرون‌بر."
+    },
+    "source": "https://gardenofasia.nl/",
+    "featured": false
+  },
+  {
+    "slug": "brongers",
+    "name": "Brongers Cafetaria Zus & Zo",
+    "category": "eats",
+    "address": "Nieuwestad 37, 8911 CH Leeuwarden",
+    "website": null,
+    "email": null,
+    "description": {
+      "nl": "Snackbar aan de Nieuwestad. De menukaart noemt friet, burgers en snacks.",
+      "en": "Snackbar on the Nieuwestad. Its menu lists fries, burgers and snacks.",
+      "es": "Snackbar en Nieuwestad. Su carta incluye patatas, hamburguesas y snacks.",
+      "fa": "اسنک‌بار در نیوه‌ستاد. منو سیب‌زمینی، برگر و اسنک را نام می‌برد."
+    },
+    "source": "https://cdn.website.dish.co/media/ed/19/8906271/Menu-1.pdf",
+    "featured": false
+  },
+  {
+    "slug": "neushoorn",
+    "name": "Neushoorn",
+    "category": "bars",
+    "address": "Ruiterskwartier 41, 8911 BP Leeuwarden",
+    "website": "https://www.neushoorn.nl/contact",
+    "email": "info@neushoorn.nl",
+    "description": {
+      "nl": "Poppodium. Het café is donderdag, vrijdag en zaterdag open vanaf 16:00.",
+      "en": "Pop venue. The café is open Thursday, Friday and Saturday from 16:00.",
+      "es": "Sala de pop. El café abre jueves, viernes y sábado desde las 16:00.",
+      "fa": "سالن پاپ. کافه پنجشنبه، جمعه و شنبه از ساعت ۱۶ باز است."
+    },
+    "source": "https://www.neushoorn.nl/contact",
+    "featured": false
+  },
+  {
+    "slug": "strohoed",
+    "name": "Café De Strohoed",
+    "category": "bars",
+    "address": "Eewal 72, 8911 GV Leeuwarden",
+    "website": "https://www.cafedestrohoed.nl/",
+    "email": "info@cafedestrohoed.nl",
+    "description": {
+      "nl": "Bruin café aan de Eewal, met een lange lijst speciaalbieren.",
+      "en": "Brown café on the Eewal, with a long list of speciality beers.",
+      "es": "Café clásico en Eewal, con una lista larga de cervezas especiales.",
+      "fa": "کافه قدیمی در ایوال، با فهرست بلند آبجوی خاص."
+    },
+    "source": "https://www.cafedestrohoed.nl/",
+    "featured": false
+  },
+  {
+    "slug": "asteriks",
+    "name": "Podium Asteriks",
+    "category": "bars",
+    "address": "Zwettestraat 30a, 8912 AV Leeuwarden",
+    "website": "https://podiumasteriks.nl/",
+    "email": null,
+    "description": {
+      "nl": "Onafhankelijk poppodium aan de Zwettestraat.",
+      "en": "Independent pop venue on the Zwettestraat.",
+      "es": "Sala de pop independiente en Zwettestraat.",
+      "fa": "سالن پاپ مستقل در زوتسترات."
+    },
+    "source": "https://podiumasteriks.nl/nieuws/podium-asteriks-neemt-neushoorn-over",
+    "featured": false
+  },
+  {
+    "slug": "toko-saigon",
+    "name": "Toko Saigon",
+    "category": "groceries",
+    "address": "Amelandsstraat 18, 8911 KA Leeuwarden",
+    "website": "https://thienhung.nl/",
+    "email": "info@tokosaigon.nl",
+    "description": {
+      "nl": "Aziatische, Surinaamse en Antilliaanse boodschappen. Vestiging van Thien Hung.",
+      "en": "Asian, Surinamese and Antillean groceries. A Thien Hung shop.",
+      "es": "Comestibles de Asia, Surinam y las Antillas. Tienda de Thien Hung.",
+      "fa": "خواربار آسیایی، سورینامی و آنتیل. شعبه تین هونگ."
+    },
+    "source": "https://thienhung.nl/",
+    "featured": false
+  },
+  {
+    "slug": "toko-anadolu",
+    "name": "Toko Anadolu",
+    "category": "groceries",
+    "address": "Nieuwe Oosterstraat 4, 8911 KN Leeuwarden",
+    "website": "https://tokoanadolu.nl/welkom/index.htm",
+    "email": null,
+    "description": {
+      "nl": "Toko voor oosterse producten. Het telefoonboek noemt Nieuwe Oosterstraat 4.",
+      "en": "Shop for Eastern groceries. The phone book lists Nieuwe Oosterstraat 4.",
+      "es": "Tienda de productos orientales. La guía telefónica da Nieuwe Oosterstraat 4.",
+      "fa": "فروشگاه خواربار شرقی. دفتر تلفن نشانی را نیووه اوستربسترات ۴ نوشته است."
+    },
+    "source": "https://www.telefoonboek.nl/bedrijven/t2083994/leeuwarden/toko-anadolu/",
+    "featured": false
+  },
+  {
+    "slug": "aikon-gym",
+    "name": "Aikon Gym",
+    "category": "sports",
+    "address": "Rengerslaan 1, 8917 DD Leeuwarden",
+    "website": "https://www.aikongym.nl/",
+    "email": "info@aikongym.nl",
+    "description": {
+      "nl": "Sportschool aan de Rengerslaan, met fitness en groepslessen.",
+      "en": "Gym on Rengerslaan, with fitness and group classes.",
+      "es": "Gimnasio en Rengerslaan, con fitness y clases en grupo.",
+      "fa": "باشگاه در رنخرسلان، با فیتنس و کلاس گروهی."
+    },
+    "source": "https://www.aikongym.nl/",
+    "featured": false
+  },
+  {
+    "slug": "trx-fabriek",
+    "name": "TRX Training Leeuwarden",
+    "category": "sports",
+    "address": "James Wattstraat 4 G4/G6, 8912 AR Leeuwarden",
+    "website": "https://trxtrainingleeuwarden.nl/",
+    "email": "info@trxtrainingleeuwarden.nl",
+    "description": {
+      "nl": "Sportschool in De Fabriek, op bedrijventerrein De Zwette.",
+      "en": "Gym in De Fabriek, on the De Zwette business park.",
+      "es": "Gimnasio en De Fabriek, en el polígono De Zwette.",
+      "fa": "باشگاه در د فابریک، در شهرک صنعتی د زوته."
+    },
+    "source": "https://trxtrainingleeuwarden.nl/",
+    "featured": false
+  },
+  {
+    "slug": "sportschool-de-leeuw",
+    "name": "Sportschool de Leeuw",
+    "category": "sports",
+    "address": "Oostergrachtswal 123, 8921 AC Leeuwarden",
+    "website": "https://sportcentrumdeleeuw.nl/",
+    "email": "sportschooldeleeuw@hotmail.com",
+    "description": {
+      "nl": "Sportschool met judo, fitness en vechtsport aan de Oostergrachtswal.",
+      "en": "Gym with judo, fitness and martial arts on the Oostergrachtswal.",
+      "es": "Gimnasio con judo, fitness y artes marciales en Oostergrachtswal.",
+      "fa": "باشگاه با جودو، فیتنس و ورزش رزمی در اوسترخراختسوال."
+    },
+    "source": "https://sportcentrumdeleeuw.nl/",
+    "featured": false
+  },
+  {
+    "slug": "basic-fit-stadionplein",
+    "name": "Basic-Fit Stadionplein",
+    "category": "sports",
+    "address": "Stadionplein 35, 8914 BX Leeuwarden",
+    "website": "https://www.basic-fit.com/en-nl/clubs/basic-fit-leeuwarden-stadionplein-24-7-fe4bb08822f8427481ed42b3894f8872.html",
+    "email": null,
+    "description": {
+      "nl": "Basic-Fit-club aan het Stadionplein. De clubpagina zegt 24/7 open.",
+      "en": "Basic-Fit club at Stadionplein. The club page says it is open 24/7.",
+      "es": "Club Basic-Fit en Stadionplein. La ficha dice que abre 24/7.",
+      "fa": "باشگاه بیسیک‌فیت در استادین‌پلین. صفحه باشگاه می‌گوید ۲۴ ساعته باز است."
+    },
+    "source": "https://www.basic-fit.com/en-nl/clubs/basic-fit-leeuwarden-stadionplein-24-7-fe4bb08822f8427481ed42b3894f8872.html",
+    "featured": false
+  },
+  {
+    "slug": "basic-fit-tijsmaweg",
+    "name": "Basic-Fit Tijsmaweg",
+    "category": "sports",
+    "address": "Tijsmaweg 4, 8924 JP Leeuwarden",
+    "website": "https://www.basic-fit.com/en-nl/clubs/basic-fit-leeuwarden-tijsmaweg-24-7-d572530ef46541b098e88d499223f757.html",
+    "email": null,
+    "description": {
+      "nl": "Basic-Fit-club aan de Tijsmaweg. De clubpagina zegt 24/7 open.",
+      "en": "Basic-Fit club on Tijsmaweg. The club page says it is open 24/7.",
+      "es": "Club Basic-Fit en Tijsmaweg. La ficha dice que abre 24/7.",
+      "fa": "باشگاه بیسیک‌فیت در تیسماوخ. صفحه باشگاه می‌گوید ۲۴ ساعته باز است."
+    },
+    "source": "https://www.basic-fit.com/en-nl/clubs/basic-fit-leeuwarden-tijsmaweg-24-7-d572530ef46541b098e88d499223f757.html",
+    "featured": false
+  },
+  {
+    "slug": "basic-fit-zuidersingel",
+    "name": "Basic-Fit Zuidersingel",
+    "category": "sports",
+    "address": "Zuidersingel 8, Leeuwarden",
+    "website": "https://www.basic-fit.com/en-nl/gyms/leeuwarden",
+    "email": null,
+    "description": {
+      "nl": "Basic-Fit-club aan de Zuidersingel. De stadspagina noemt Zuidersingel 8.",
+      "en": "Basic-Fit club on the Zuidersingel. The city page lists Zuidersingel 8.",
+      "es": "Club Basic-Fit en Zuidersingel. La página de la ciudad cita Zuidersingel 8.",
+      "fa": "باشگاه بیسیک‌فیت در زایدرسینگل. صفحه شهر زایدرسینگل ۸ را نام می‌برد."
+    },
+    "source": "https://www.basic-fit.com/en-nl/gyms/leeuwarden",
+    "featured": false
+  },
+  {
+    "slug": "decathlon",
+    "name": "Decathlon Leeuwarden",
+    "category": "sports",
+    "address": "De Centrale 35, 8924 CZ Leeuwarden",
+    "website": "https://www.decathlon.nl/vc/leeuwarden",
+    "email": null,
+    "description": {
+      "nl": "Sportwinkel aan De Centrale, met een fietsreparatiedienst.",
+      "en": "Sports shop at De Centrale, with a bike-repair service.",
+      "es": "Tienda de deporte en De Centrale, con servicio de reparación de bicis.",
+      "fa": "فروشگاه ورزشی در د سنتراله، با تعمیر دوچرخه."
+    },
+    "source": "https://www.decathlon.nl/vc/leeuwarden",
+    "featured": false
+  },
+  {
+    "slug": "barbier-39",
+    "name": "Barbier '39",
+    "category": "hair",
+    "address": "Noordvliet 247, 8921 GG Leeuwarden",
+    "website": "https://www.barbier39.nl/",
+    "email": "info@barbier39.nl",
+    "description": {
+      "nl": "Herenkapper aan de Noordvliet. Werkt op afspraak.",
+      "en": "Barber on the Noordvliet. Appointments only.",
+      "es": "Barbería en Noordvliet. Solo con cita.",
+      "fa": "پیرایش مردانه در نوردولیت. فقط با وقت قبلی."
+    },
+    "source": "https://www.barbier39.nl/",
+    "featured": false
+  },
+  {
+    "slug": "kk-kappers",
+    "name": "K & K Kappers",
+    "category": "hair",
+    "address": "Ruiterskwartier 121, 8911 BS Leeuwarden",
+    "website": "https://www.kenkkappers.nl/",
+    "email": null,
+    "description": {
+      "nl": "Kapsalon aan het Ruiterskwartier.",
+      "en": "Hair salon on the Ruiterskwartier.",
+      "es": "Peluquería en Ruiterskwartier.",
+      "fa": "آرایشگاه در روترسخوارتییر."
+    },
+    "source": "https://www.kenkkappers.nl/",
+    "featured": false
+  },
+  {
+    "slug": "la-vie",
+    "name": "Kapsalon La Vie",
+    "category": "hair",
+    "address": "Lombardplein 2a, 8911 BM Leeuwarden",
+    "website": "https://www.kapsalon-lavie.nl/",
+    "email": "r-glas@kapsalon-lavie.nl",
+    "description": {
+      "nl": "Kapsalon voor dames en heren aan het Lombardplein.",
+      "en": "Salon for women and men on Lombardplein.",
+      "es": "Peluquería para mujeres y hombres en Lombardplein.",
+      "fa": "آرایشگاه زنانه و مردانه در لومباردپلین."
+    },
+    "source": "https://www.kapsalon-lavie.nl/",
+    "featured": false
+  },
+  {
+    "slug": "dawara",
+    "name": "Dawara Barbershop",
+    "category": "hair",
+    "address": "Wortelhaven 83, 8911 GL Leeuwarden",
+    "website": "https://www.dawarabarbershop.nl/",
+    "email": "info@dawarabarbershop.nl",
+    "description": {
+      "nl": "Barbershop aan de Wortelhaven.",
+      "en": "Barbershop on the Wortelhaven.",
+      "es": "Barbería en Wortelhaven.",
+      "fa": "پیرایشگاه در ورتل‌هاون."
+    },
+    "source": "https://www.dawarabarbershop.nl/",
+    "featured": false
+  },
+  {
+    "slug": "hema",
+    "name": "HEMA Leeuwarden",
+    "category": "student",
+    "address": "Nieuwestad 126, 8911 DA Leeuwarden",
+    "website": "https://winkels.hema.nl/nl/leeuwarden/hema-leeuwarden",
+    "email": null,
+    "description": {
+      "nl": "HEMA-winkel aan de Nieuwestad, ook voor school- en huishoudspullen.",
+      "en": "HEMA shop on the Nieuwestad, including school and household basics.",
+      "es": "Tienda HEMA en Nieuwestad, también con material escolar y de casa.",
+      "fa": "فروشگاه HEMA در نیوه‌ستاد، از جمله لوازم مدرسه و خانه."
+    },
+    "source": "https://winkels.hema.nl/nl/leeuwarden/hema-leeuwarden",
+    "featured": false
+  },
+  {
+    "slug": "voordeelfiets",
+    "name": "Voordeelfiets Leeuwarden",
+    "category": "student",
+    "address": "Kelvinstraat 9, 8912 AN Leeuwarden",
+    "website": "https://voordeelfiets.nl/pages/fietsenwinkel-leeuwarden",
+    "email": "info@voordeelfiets.nl",
+    "description": {
+      "nl": "Fietsenwinkel en werkplaats aan de Kelvinstraat.",
+      "en": "Bike shop and workshop on the Kelvinstraat.",
+      "es": "Tienda y taller de bicis en Kelvinstraat.",
+      "fa": "فروشگاه و تعمیرگاه دوچرخه در کلوین‌سترات."
+    },
+    "source": "https://voordeelfiets.nl/pages/fietsenwinkel-leeuwarden",
+    "featured": false
+  },
+  {
+    "slug": "dyna-store",
+    "name": "Dyna Store",
+    "category": "student",
+    "address": "Willem Alexanderplein 12, 8931 DW Leeuwarden",
+    "website": "https://dyna-store.nl/",
+    "email": "info@dyna-store.nl",
+    "description": {
+      "nl": "Reparatie van telefoons en computers aan het Willem Alexanderplein.",
+      "en": "Phone and computer repair on Willem Alexanderplein.",
+      "es": "Reparación de teléfonos y ordenadores en Willem Alexanderplein.",
+      "fa": "تعمیر گوشی و کامپیوتر در ویلم الکساندرپلین."
+    },
+    "source": "https://dyna-store.nl/",
+    "featured": false
+  },
+  {
+    "slug": "telefoonmaken",
+    "name": "Telefoonmaken Leeuwarden",
+    "category": "student",
+    "address": "Berlikumermarkt 21, 8911 LB Leeuwarden",
+    "website": "https://www.telefoonmaken.nl/telefoonmaken-leeuwarden/",
+    "email": null,
+    "description": {
+      "nl": "Telefoonreparatie aan de Berlikumermarkt.",
+      "en": "Phone repair on the Berlikumermarkt.",
+      "es": "Reparación de teléfonos en Berlikumermarkt.",
+      "fa": "تعمیر گوشی در برلیکوم‌مارکت."
+    },
+    "source": "https://www.telefoonmaken.nl/telefoonmaken-leeuwarden/",
+    "featured": false
+  },
+  {
+    "slug": "ms-telecom",
+    "name": "M&S Telecom 4U",
+    "category": "student",
+    "address": "Wirdumerdijk 17, 8911 CB Leeuwarden",
+    "website": "https://www.telefoonreparatieleeuwarden.nl/locaties/",
+    "email": null,
+    "description": {
+      "nl": "Reparatie van telefoons, tablets en laptops aan de Wirdumerdijk.",
+      "en": "Phone, tablet and laptop repair on the Wirdumerdijk.",
+      "es": "Reparación de teléfonos, tabletas y portátiles en Wirdumerdijk.",
+      "fa": "تعمیر گوشی، تبلت و لپ‌تاپ در ویردومردیک."
+    },
+    "source": "https://www.telefoonreparatieleeuwarden.nl/locaties/",
+    "featured": false
+  }
+]
