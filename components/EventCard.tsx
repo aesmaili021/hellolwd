@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { CoverImage } from "@/components/CoverImage";
+import { FeaturedBadge } from "@/components/FeaturedBadge";
 import { SaveEventButton } from "@/components/SaveEventButton";
 import { eventImage } from "@/lib/data/placeholders";
 import { formatEventWhen } from "@/lib/format";
@@ -22,6 +23,7 @@ function MapPin({ className }: { className?: string }) {
 export async function EventCard({ event }: { event: EventRow }) {
   const locale = await getLocale();
   const t = await getTranslations("events");
+  const places = await getTranslations("places");
   const genres = await getTranslations("genres");
   const instagram = Boolean(event.ticket_link?.includes("instagram.com"));
   const mapsHref = eventMapsHref(event);
@@ -41,6 +43,7 @@ export async function EventCard({ event }: { event: EventRow }) {
           <span className="rounded bg-accent px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-paper">
             {genres(event.genre).toUpperCase()}
           </span>
+          {event.featured ? <FeaturedBadge>{places("featured")}</FeaturedBadge> : null}
           <time
             dateTime={event.event_datetime}
             className="text-xs font-bold text-navy"

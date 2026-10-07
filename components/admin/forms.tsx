@@ -62,6 +62,10 @@ export function EventForm({
           </select>
         </div>
         <Field name="ticket_link" label="Tickets or Instagram URL" defaultValue={event?.ticket_link ?? ""} />
+        <label className="flex min-h-11 items-center gap-2 text-sm font-bold text-navy sm:col-span-2">
+          <input type="checkbox" name="featured" defaultChecked={event?.featured === true} className="h-4 w-4" />
+          Featured (gold badge, top of the list)
+        </label>
         <Field
           name="maps_url"
           label="Google Maps URL"

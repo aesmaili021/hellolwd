@@ -10,10 +10,12 @@ export async function StoryPager({
   page,
   totalPages,
   category,
+  base = "/",
 }: {
   page: number;
   totalPages: number;
   category?: string;
+  base?: "/" | "/archive";
 }) {
   if (totalPages <= 1) return null;
 
@@ -21,7 +23,7 @@ export async function StoryPager({
   const locale = await getLocale();
   const format = new Intl.NumberFormat(localeTag(locale));
   const pages = storyPageWindow(page, totalPages);
-  const hrefFor = (target: number) => localePath(locale, storyListPath(category, target));
+  const hrefFor = (target: number) => localePath(locale, storyListPath(category, target, base));
 
   return (
     <nav aria-label={t("pagination")} className="mt-6 flex flex-wrap items-center justify-center gap-2">

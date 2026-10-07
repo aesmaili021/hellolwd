@@ -79,6 +79,7 @@ export const mockEvents: EventRow[] = [
       "Dos salas, techno y breaks. Puertas 23:00, último acceso 01:30. Sin lista después de medianoche.",
     description_fa:
       "دو سالن، تکنو و بریکس. درها ۲۳:۰۰، ورود آخر ۰۱:۳۰. بعد نیمه‌شب لیست مهمان نیست.",
+    featured: false,
     created_at: created,
   },
   {
@@ -98,6 +99,7 @@ export const mockEvents: EventRow[] = [
       "Primer curso e intercambio. Gratis con carnet hasta las 22:30. Guardarropa obligatorio.",
     description_fa:
       "سال‌اولی و تبادل. تا ۲۲:۳۰ با کارت دانشجویی رایگان. سپردن کت لازم است.",
+    featured: false,
     created_at: created,
   },
   {
@@ -117,6 +119,7 @@ export const mockEvents: EventRow[] = [
       "Guitarra y voces NL/EN. De pie, sin entradas previas. Empieza a las 20:30 en punto.",
     description_fa:
       "گیتار و آواز هلندی/انگلیسی. ایستاده، بلیت از قبل نیست. شروع دقیق ۲۰:۳۰.",
+    featured: false,
     created_at: created,
   },
   {
@@ -132,6 +135,7 @@ export const mockEvents: EventRow[] = [
     description_en: "Open cypher 22:00 to 23:00, then DJs. 18+ and ID at the door.",
     description_es: "Cifrado abierto de 22:00 a 23:00, luego DJs. +18 y DNI en la puerta.",
     description_fa: "سایفر باز از ۲۲:۰۰ تا ۲۳:۰۰، بعد دی‌جی. ۱۸+ و کارت شناسایی دم در.",
+    featured: false,
     created_at: created,
   },
   {
@@ -151,6 +155,7 @@ export const mockEvents: EventRow[] = [
       "Salsa y cumbia por la tarde. Gratis hasta las 19:00, luego entrada. Fuera si no llueve.",
     description_fa:
       "سالسا و کومبیا بعدازظهر. تا ۱۹:۰۰ رایگان، بعد ورودی. اگر باران نباشد بیرون.",
+    featured: false,
     created_at: created,
   },
   {
@@ -170,6 +175,7 @@ export const mockEvents: EventRow[] = [
       "Sala pequeña, house hasta las 03:00. Cupo 120. Enlace en bio para la lista hasta el viernes 18:00.",
     description_fa:
       "سالن کوچک، هاوس تا ۰۳:۰۰. ظرفیت ۱۲۰. لینک بیو برای لیست مهمان تا جمعه ۱۸:۰۰.",
+    featured: false,
     created_at: created,
   },
 ];

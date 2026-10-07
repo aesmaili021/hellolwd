@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { CategoryPills } from "@/components/CategoryPills";
 import { EmptyFilter } from "@/components/EmptyStates";
+import { BusinessCta } from "@/components/BusinessCta";
 import { CambuurBoard } from "@/components/CambuurBoard";
 import { HomePromos } from "@/components/HomePromos";
 import { NewcomerGuides } from "@/components/NewcomerGuides";
@@ -95,8 +96,35 @@ async function HomeNews({ category, page }: { category?: NewsCategory; page: num
   const categories = await getTranslations("categories");
   const currentLocale = await getLocale();
 
+  const tail = !category ? (
+    <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 lg:px-10">
+      {more.length > 0 ? (
+        <section className="mt-10 lg:mt-14" aria-label={t("more")}>
+          <p className="mb-1 border-b-2 border-brand pb-3 text-xs font-extrabold tracking-[0.12em] text-mute uppercase">
+            {t("more")}
+          </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-11">
+            {more.map((article) => (
+              <FilterRow key={article.id} article={article} />
+            ))}
+          </div>
+          <StoryPager page={page} totalPages={totalPages} />
+        </section>
+      ) : null}
+      {archived.length ? (
+        <p className="mt-10">
+          <Link href="/archive" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
+            {t("olderStories")} →
+          </Link>
+        </p>
+      ) : null}
+      <NewsletterBlock />
+    </div>
+  ) : null;
+
   return (
-    <main id="content" className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 lg:px-10 lg:py-8">
+    <div className="flex flex-1 flex-col">
+    <main id="content" className="mx-auto w-full max-w-[1440px] px-4 py-4 lg:px-10 lg:py-8">
       <div className="mb-5 lg:mb-7">
         <CategoryPills active={category} locale={currentLocale} />
       </div>
@@ -161,30 +189,13 @@ async function HomeNews({ category, page }: { category?: NewsCategory; page: num
             <CambuurBoard pageLink newsLimit={3} />
           </Suspense>
           <NewcomerGuides />
-          {more.length > 0 ? (
-            <section className="mt-10 lg:mt-14" aria-label={t("more")}>
-              <p className="mb-1 border-b-2 border-brand pb-3 text-xs font-extrabold tracking-[0.12em] text-mute uppercase">
-                {t("more")}
-              </p>
-              <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-11">
-                {more.map((article) => (
-                  <FilterRow key={article.id} article={article} />
-                ))}
-              </div>
-              <StoryPager page={page} totalPages={totalPages} />
-            </section>
-          ) : null}
-          {archived.length ? (
-            <p className="mt-10">
-              <Link href="/archive" className="cursor-pointer text-[13px] font-bold text-primary hover:text-navy">
-                {t("olderStories")} →
-              </Link>
-            </p>
-          ) : null}
-          <NewsletterBlock />
         </>
       )}
     </main>
+    <BusinessCta />
+    <HomePromos />
+    {tail}
+    </div>
   );
 }
 
@@ -223,7 +234,6 @@ export default async function HomePage({
       <Suspense fallback={<NewsSkeleton filtered={Boolean(category)} />}>
         <HomeNews category={category} page={page} />
       </Suspense>
-      <HomePromos />
     </>
   );
 }

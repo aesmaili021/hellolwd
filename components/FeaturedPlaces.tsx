@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
-
-const MAIL = "info@hellolwd.com";
+import { FeaturedBadge } from "@/components/FeaturedBadge";
+import { Link } from "@/i18n/navigation";
 
 const SLOTS = [
   { title: "barTitle", body: "barBody" },
@@ -10,8 +10,6 @@ const SLOTS = [
 
 export async function FeaturedPlaces() {
   const t = await getTranslations("places");
-  const business = await getTranslations("business");
-  const href = `mailto:${MAIL}?subject=${encodeURIComponent(business("subject"))}`;
 
   return (
     <div className="flex h-full flex-col rounded-[14px] border border-line bg-paper p-5 lg:p-6">
@@ -23,17 +21,15 @@ export async function FeaturedPlaces() {
       </div>
       <div className="mt-3 grid flex-1 grid-cols-1 gap-2.5 sm:grid-cols-3">
         {SLOTS.map((slot) => (
-          <a
+          <Link
             key={slot.title}
-            href={href}
+            href="/advertise"
             className="block cursor-pointer rounded-[10px] border border-dashed border-slate p-3 hover:border-primary"
           >
-            <span className="text-[9px] font-extrabold tracking-wide text-[#8a6d00] uppercase">
-              {t("featured")}
-            </span>
+            <FeaturedBadge>{t("featured")}</FeaturedBadge>
             <span className="mt-1 block text-sm font-extrabold text-navy">{t(slot.title)}</span>
             <span className="mt-0.5 block text-xs text-muted">{t(slot.body)}</span>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

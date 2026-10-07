@@ -9,11 +9,10 @@ export async function getAllEvents(): Promise<EventRow[]> {
   const store = await loadStore();
   return store.events
     .map(normalizeEvent)
-    .sort(
-      (a, b) =>
-        new Date(a.event_datetime).getTime() -
-        new Date(b.event_datetime).getTime(),
-    );
+    .sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
+      return new Date(a.event_datetime).getTime() - new Date(b.event_datetime).getTime();
+    });
 }
 
 export async function getEvents(genre?: string): Promise<EventRow[]> {
