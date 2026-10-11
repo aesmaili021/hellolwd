@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { CoverImage } from "@/components/CoverImage";
 import { Link } from "@/i18n/navigation";
+import { articlePath } from "@/lib/article-path";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatRelative } from "@/lib/format";
 import { articleHasTranslation, articleSummary, articleTitle, type Article } from "@/lib/types";
@@ -14,7 +15,7 @@ export async function FeaturedStory({ article }: { article: Article }) {
     <article className="flex flex-col gap-3.5">
       <CoverImage
         src={articleImage(article.image_url, article.category)}
-        alt=""
+        alt={articleTitle(article, locale)}
         className="h-[190px] w-full rounded-[10px] lg:h-[300px] lg:rounded-xl"
       />
       <div className="flex flex-wrap items-center gap-2.5">
@@ -31,7 +32,7 @@ export async function FeaturedStory({ article }: { article: Article }) {
         ) : null}
       </div>
       <h2 className="max-w-[22ch] text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-navy text-pretty lg:text-[34px] lg:leading-[1.15]">
-        <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
+        <Link href={articlePath(article)} className="cursor-pointer hover:underline">
           {articleTitle(article, locale)}
         </Link>
       </h2>
@@ -74,7 +75,7 @@ export async function BriefingRow({ article }: { article: Article }) {
         ) : null}
       </div>
       <h3 className="text-base font-bold leading-snug tracking-[-0.01em] text-navy lg:text-[17px] lg:leading-[1.3]">
-        <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
+        <Link href={articlePath(article)} className="cursor-pointer hover:underline">
           {articleTitle(article, locale)}
         </Link>
       </h3>
@@ -106,7 +107,7 @@ export async function FilterRow({ article }: { article: Article }) {
           </span>
         ) : null}
         <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em] text-navy">
-          <Link href={`/article/${article.id}`} className="cursor-pointer hover:underline">
+          <Link href={articlePath(article)} className="cursor-pointer hover:underline">
             {articleTitle(article, locale)}
           </Link>
         </h3>

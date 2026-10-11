@@ -7,7 +7,7 @@ import {
   type NewsCategory,
 } from "@/lib/types";
 
-/** Home and category lists stay a briefing. Older rows stay in the store for /archive and /article/[id]. */
+/** Home and category lists stay a briefing. Older rows stay in the store for /archive and /article/[slug]. */
 export const BRIEFING_MS = 14 * 24 * 60 * 60 * 1000;
 
 function isCategory(value: string): value is NewsCategory {
@@ -47,7 +47,9 @@ export async function getArchivedArticles(category?: string, locale?: string): P
 
 export async function getArticle(id: string, locale?: string): Promise<Article | null> {
   const store = await loadStore();
-  const article = store.articles.map(normalizeArticle).find((item) => item.id === id);
+  const article = store.articles
+    .map(normalizeArticle)
+    .find((item) => item.id === id || item.slug === id);
   if (!article) return null;
   if (locale && !articleVisible(article, locale)) return null;
   return article;
@@ -79,12 +81,15 @@ export async function getCambuurArticles(locale?: string, limit?: number): Promi
   return typeof limit === "number" ? rows.slice(0, limit) : rows;
 }
 
-/** Same category, newer first, excluding the story already on screen. */
+/** Same category first, then other recent stories, excluding the one on screen. */
 export async function getRelatedArticles(
   article: Article,
   locale?: string,
   limit = 4,
 ): Promise<Article[]> {
-  const rows = await getArticles(article.category, locale);
-  return rows.filter((row) => row.id !== article.id).slice(0, limit);
+  const rows = await getArticles(undefined, locale);
+  const others = rows.filter((row) => row.id !== article.id);
+  const same = others.filter((row) => row.category === article.category);
+  const rest = others.filter((row) => row.category !== article.category);
+  return [...same, ...rest].slice(0, limit);
 }

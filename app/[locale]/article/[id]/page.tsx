@@ -1,7 +1,8 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { CoverImage } from "@/components/CoverImage";
 import { Link } from "@/i18n/navigation";
+import { articlePath, isArticleId } from "@/lib/article-path";
 import { getArticle } from "@/lib/data/articles";
 import { articleImage } from "@/lib/data/placeholders";
 import { formatPublished } from "@/lib/format";
@@ -31,13 +32,16 @@ export async function generateMetadata({
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const article = await getArticle(id, locale);
   if (!article) notFound();
+  if (isArticleId(id) && article.slug && article.slug !== id) {
+    permanentRedirect(`/${locale}${articlePath(article)}`);
+  }
   const categories = await getTranslations("categories");
   const languages = article.locales.filter(
     (code) => code === "nl" || articleHasTranslation(article, code),
   );
   return pageMetadata({
     locale,
-    path: `/article/${article.id}`,
+    path: articlePath(article),
     title: articleTitle(article, locale),
     description: articleSummary(article, locale).slice(0, 200),
     image: articleImage(article.image_url, article.category),
@@ -58,6 +62,9 @@ export default async function ArticlePage({
   setRequestLocale(locale as "nl" | "en" | "es" | "fa");
   const article = await getArticle(id, locale);
   if (!article) notFound();
+  if (isArticleId(id) && article.slug && article.slug !== id) {
+    permanentRedirect(`/${locale}${articlePath(article)}`);
+  }
 
   const t = await getTranslations("article");
   const nav = await getTranslations("nav");
@@ -88,7 +95,7 @@ export default async function ArticlePage({
       </Link>
       <CoverImage
         src={articleImage(article.image_url, article.category)}
-        alt=""
+        alt={articleTitle(article, currentLocale)}
         className="mt-6 h-[190px] w-full rounded-[10px] lg:h-[300px] lg:rounded-xl"
       />
       <div className="mt-4 flex flex-wrap items-center gap-2.5">
@@ -112,7 +119,7 @@ export default async function ArticlePage({
         ))}
       </div>
       <ArticleShare
-        url={localeUrl(currentLocale, `/article/${article.id}`)}
+        url={localeUrl(currentLocale, articlePath(article))}
         title={articleTitle(article, currentLocale)}
       />
       <ArticleTranslation

@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { localeTag } from "@/i18n/routing";
 import { ClubCrest } from "@/components/ClubCrest";
 import { getCambuur, type CambuurMatch } from "@/lib/cambuur";
+import { articlePath } from "@/lib/article-path";
 import { getCambuurArticles } from "@/lib/data/articles";
 import { articleTitle, type Article } from "@/lib/types";
 
@@ -171,7 +172,7 @@ export async function CambuurBoard({
                   {articles.map((article) => (
                     <li key={article.id} className="border-b border-white/15">
                       <Link
-                        href={`/article/${article.id}`}
+                        href={articlePath(article)}
                         className="block cursor-pointer py-2.5 hover:underline"
                       >
                         <span className="block text-sm leading-snug font-semibold text-white">

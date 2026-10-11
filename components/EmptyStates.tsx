@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Pompebled } from "@/components/Pompebled";
+import { articlePath } from "@/lib/article-path";
 import { articleTitle, type Article } from "@/lib/types";
 
 export async function EmptyWeekend() {
@@ -77,7 +78,7 @@ export async function EmptyFilter({
                 </span>
                 <h3 className="pb-3 text-[15px] font-bold leading-snug text-navy">
                   <Link
-                    href={`/article/${article.id}`}
+                    href={articlePath(article)}
                     className="cursor-pointer hover:underline"
                   >
                     {articleTitle(article, locale)}

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { articlePath } from "@/lib/article-path";
 import { getArticles } from "@/lib/data/articles";
 import { routing } from "@/i18n/routing";
 import { languageAlternates, localeUrl } from "@/lib/seo";
@@ -25,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const rows: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => entry(path));
 
   for (const article of articles) {
-    const path = `/article/${article.id}`;
+    const path = articlePath(article);
     const allowed = article.locales?.length ? article.locales : routing.locales;
     const locales = allowed.filter(
       (code) => code === "nl" || articleHasTranslation(article, code),

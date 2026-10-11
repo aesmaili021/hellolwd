@@ -96,6 +96,10 @@ export async function requestFullTranslation(
     try {
       revalidatePath("/", "layout");
       revalidatePath(`/article/${articleId}`);
+      const published = await getArticle(articleId);
+      if (published?.slug && published.slug !== articleId) {
+        revalidatePath(`/article/${published.slug}`);
+      }
     } catch {
       /* no request context */
     }

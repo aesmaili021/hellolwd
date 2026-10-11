@@ -1,4 +1,5 @@
 import { Pool, type PoolClient } from "pg";
+import { assignArticleSlugs } from "@/lib/article-path";
 import { mockEvents, mockRss, withoutSeedArticles } from "@/lib/data/mock";
 import { seedPlaces } from "@/lib/data/places-seed";
 import {
@@ -115,6 +116,7 @@ alter table articles add column if not exists body_es text;
 alter table articles add column if not exists body_fa text;
 alter table events add column if not exists maps_url text;
 alter table events add column if not exists featured boolean not null default false;
+alter table articles add column if not exists slug text;
 
 create table if not exists places (
   id text primary key,
@@ -167,6 +169,7 @@ async function ensureSchema() {
 function mapArticle(row: Record<string, unknown>): Article {
   return normalizeArticle({
     id: String(row.id),
+    slug: row.slug ? String(row.slug) : undefined,
     source_url: String(row.source_url ?? ""),
     source_name: String(row.source_name ?? ""),
     category: row.category as Article["category"],
@@ -246,16 +249,17 @@ async function insertStore(client: PoolClient, data: StoreData) {
   for (const row of data.articles) {
     await client.query(
       `insert into articles (
-        id, source_url, source_name, category, published_at,
+        id, slug, source_url, source_name, category, published_at,
         title_nl, title_en, title_es, title_fa,
         summary_nl, summary_en, summary_es, summary_fa,
         body_nl, body_en, body_es, body_fa,
         image_url, locales, created_at
       ) values (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21
       )`,
       [
         row.id,
+        row.slug,
         row.source_url,
         row.source_name,
         row.category,
@@ -441,15 +445,16 @@ export async function loadPostgresStore(): Promise<StoreData> {
     }
   }
 
+  const slugs = assignArticleSlugs(
+    withoutSeedArticles(articles.rows.map((row) => mapArticle(row as Record<string, unknown>))),
+  );
   const data = {
-    articles: withoutSeedArticles(
-      articles.rows.map((row) => mapArticle(row as Record<string, unknown>)),
-    ),
+    articles: slugs.articles,
     events: events.rows.map((row) => mapEvent(row as Record<string, unknown>)),
     rss: rss.rows.map((row) => mapRss(row as Record<string, unknown>)),
     places: placeRows,
   };
-  if (data.articles.length !== (articles.rowCount ?? 0)) {
+  if (data.articles.length !== (articles.rowCount ?? 0) || slugs.changed) {
     await persistPostgresStore(data);
   }
   return data;
@@ -457,11 +462,12 @@ export async function loadPostgresStore(): Promise<StoreData> {
 
 export async function persistPostgresStore(data: StoreData) {
   await ensureSchema();
+  const slugged = { ...data, articles: assignArticleSlugs(data.articles).articles };
   const client = await getPool().connect();
   try {
     await client.query("begin");
     await client.query("truncate articles, events, rss_sources, places");
-    await insertStore(client, data);
+    await insertStore(client, slugged);
     await client.query("commit");
   } catch (error) {
     await client.query("rollback").catch(() => undefined);

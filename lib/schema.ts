@@ -1,3 +1,4 @@
+import { articlePath } from "@/lib/article-path";
 import { articleImage, eventImage } from "@/lib/data/placeholders";
 import { SITE_URL, absUrl, absoluteImage, localeUrl } from "@/lib/seo";
 import { articleSummary, articleTitle, type Article, type EventRow } from "@/lib/types";
@@ -48,7 +49,7 @@ export function homeGraph() {
 }
 
 export function newsArticleJson(article: Article, locale: string) {
-  const path = `/article/${article.id}`;
+  const path = articlePath(article);
   const url = localeUrl(locale, path);
   const title = articleTitle(article, locale);
   const description = articleSummary(article, locale);
@@ -74,7 +75,7 @@ export function newsArticleJson(article: Article, locale: string) {
 }
 
 export function articleGraph(article: Article, locale: string, homeLabel: string) {
-  const path = `/article/${article.id}`;
+  const path = articlePath(article);
   return {
     "@context": "https://schema.org",
     "@graph": [

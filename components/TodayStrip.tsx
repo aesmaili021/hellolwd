@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { articlePath } from "@/lib/article-path";
 import { getRecentArticles } from "@/lib/data/articles";
 import { getEvents } from "@/lib/data/events";
 import { formatEventChip } from "@/lib/format";
@@ -62,7 +63,7 @@ export async function TodayStrip() {
           <p className="min-w-0 text-[13px] font-semibold text-mute">{t("emptyNight")}</p>
         )}
         {story && headline ? (
-          <Link href={`/article/${story.id}`} className="min-w-0 text-navy hover:text-primary">
+          <Link href={articlePath(story)} className="min-w-0 text-navy hover:text-primary">
             <span className="block text-[10px] font-extrabold tracking-[0.1em] text-mute uppercase">
               {t("news")}
             </span>

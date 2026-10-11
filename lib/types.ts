@@ -1,4 +1,5 @@
 import { routing, type Locale } from "@/i18n/routing";
+import { slugifyTitle } from "@/lib/article-path";
 import { looksLikePageChrome, normalizeReadableText } from "@/lib/rss/parse";
 
 export const NEWS_CATEGORIES = [
@@ -59,6 +60,7 @@ export type ContentLocale = Locale;
 
 export type Article = {
   id: string;
+  slug: string;
   source_url: string;
   source_name: string;
   category: NewsCategory;
@@ -243,6 +245,7 @@ export function eventDescription(event: EventRow, locale: string) {
 export function normalizeArticle(row: Partial<Article> & { id: string }): Article {
   return {
     id: row.id,
+    slug: row.slug?.trim() || slugifyTitle(row.title_nl || row.title_en || row.id),
     source_url: row.source_url ?? "",
     source_name: row.source_name ?? "",
     category: (row.category as NewsCategory) ?? "culture",
